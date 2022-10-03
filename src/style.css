@@ -1,0 +1,626 @@
+/* 初始化 */
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Noto Sans TC", sans-serif;
+  letter-spacing: 2px;
+  font-size: 1rem;
+}
+
+:root {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  color-scheme: light dark;
+  color: #000;
+  background-color: #fff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: medium;
+  font-weight: 400;
+}
+
+a {
+  text-decoration: none;
+  display: flex;
+}
+
+::placeholder {
+  font-size: 0.5px;
+}
+
+.el-form-item .el-form-item__label {
+  font-size: 1rem;
+  color: #000;
+}
+
+.title_msg h4 {
+  font-size: 1rem;
+  font-weight: bolder;
+  margin-bottom: 0.5rem;
+  color: #000;
+}
+
+.title_main h4 {
+  color: #000;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 2.5rem;
+}
+
+.tableForm {
+  margin-top: -25px;
+}
+
+.el-form--default.el-form--label-top .el-form-item .el-form-item__label {
+  font-weight: 800;
+}
+
+.el-select {
+  max-width: 240px;
+  min-width: 240px;
+}
+
+/* /初始化 */
+
+
+/* html樣式 */
+
+.el-header {
+  background-color: #0276ab;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  --el-header-height: 75px !important;
+  color: #fff;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.el-header a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.el-header a h1 {
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.el-header h3 {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.el-header p {
+  font-size: 1rem;
+  font-weight: normal;
+  width: 356px;
+  text-align: end;
+}
+
+
+.el-main {
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+.el-table td.el-table__cell div .el-button {
+  width: 24px;
+  height: 24px;
+}
+
+i.el-icon {
+  width: 24px;
+  height: 24px;
+}
+
+i.el-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* index */
+
+.el-main .index_row {
+  justify-content: center;
+}
+
+.el-main a .el-button {
+  border: #0276ab 1px solid;
+  color: #0276ab;
+  transition: all 0.4s;
+  margin: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.el-main .el-button.index_button:hover {
+  background-color: #0276ab;
+  color: #fff;
+}
+
+
+/* /index */
+
+
+/* search_event */
+
+
+
+.searchForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.searchSelectTop {
+  display: flex;
+  justify-content: space-between;
+}
+
+.label {
+  font-weight: 600;
+  vertical-align: top;
+}
+
+.labelRadio {
+  margin-bottom: 5px;
+}
+
+.el-radio-group {
+  margin-right: auto;
+  margin-left: 30px;
+}
+
+.el-form-item__content .el-date-editor.el-input {
+  width: 240px;
+}
+
+.searchDate {
+  width: max-content;
+}
+
+.decoration {
+  width: 30px;
+  text-align: center;
+}
+
+.searchSelectBottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.el-form--label-top .el-form-item.button-items {
+  display: flex;
+  width: 240px;
+  align-items: flex-end;
+}
+
+
+.el-form--default.el-form--label-top .el-row .el-form-item.label-left .el-form-item__label {
+  padding-left: 10px;
+}
+
+.label-left .el-form-item__content {
+  justify-content: space-between;
+}
+
+.el-form-item.button-items .el-form-item__content {
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+
+.el-form-item.button-items .el-form-item__content .button-items-search,
+.el-form-item.button-items .el-form-item__content .button-items-export {
+  margin: 0 15px;
+}
+
+.el-form-item.button-items .el-form-item__content .button-items-search .el-button,
+.el-form-item.button-items .el-form-item__content .button-items-export .el-button {
+  display: block;
+  padding: 0;
+  height: 40px;
+  background-color: transparent;
+  color: #0276ab;
+  border: none;
+}
+
+.el-form-item.button-items .el-form-item__content .button-items-search .el-button>span,
+.el-form-item.button-items .el-form-item__content .button-items-export .el-button>span {
+  font-weight: 700;
+  display: unset;
+  width: 70px;
+  text-align-last: justify;
+}
+
+.el-form-item.button-items .el-form-item__content .button-items-search .el-button:hover,
+.el-form-item.button-items .el-form-item__content .button-items-export .el-button:hover {
+  background-color: transparent;
+}
+
+.el-range-editor--large input.el-range-input {
+  font-size: 1rem;
+}
+
+.el-table td.el-table__cell div {
+  color: #000;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+}
+
+label.el-radio {
+  color: #000;
+  height: max-content;
+}
+
+label.el-radio .el-radio__label {
+  font-size: 0.5rem;
+}
+
+.el-range-editor.el-input__wrapper,
+.el-input__wrapper {
+  border: 1px solid #027BCE;
+  box-shadow: none;
+}
+
+.el-range-editor.el-input__wrapper:hover {
+  border: 1px solid #027BCE;
+  box-shadow: none;
+}
+
+div.el-select:hover .el-input__wrapper {
+  box-shadow: none;
+}
+
+label .el-radio__input .el-radio__inner {
+  border-color: #027BCE;
+}
+
+.el-table td.el-table__cell div .el-button {
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+
+/* /search_event */
+
+
+/* search_statistics */
+
+
+.el-form--inline.el-form--label-top .el-form-item {
+  display: flex;
+  margin-right: 0;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.el-form--inline.el-form--label-top .el-form-item.datepicker {
+  margin-right: 36px;
+}
+
+.search-top {
+  background-color: #ECF5FF;
+  padding: 1.5rem;
+  border-radius: 20px;
+}
+
+div.el-tabs__item {
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+
+.container_left {
+  width: 85%;
+  flex: auto;
+}
+
+.input_position {
+  display: flex;
+}
+
+.input_position .el-form-item__content {
+  width: 100%;
+}
+
+.input_position .el-select .el-input {
+  width: 100%;
+}
+
+.el-select--large {
+  width: 100%;
+}
+
+.msg_position {
+  width: 100%;
+}
+
+.msg_position .el-carousel--vertical {
+  border-left: 20px solid #0276ab;
+}
+
+.button_position {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 15%;
+  flex: 2 1 115px;
+  margin: 0 15px;
+}
+
+.button_position .el-form-item {
+  margin: 0;
+}
+
+.button_position .el-form-item__content {
+  flex-direction: column;
+}
+
+.button_position .el-button {
+  margin: 30px 0 20px 0;
+  width: 110px;
+  height: 40px;
+  background-color: #0276ab;
+  border: none;
+}
+
+.button_position .el-button+.el-button {
+  margin: 20px 0 20px 0;
+}
+
+.button_position .el-button>span {
+  font-weight: 700;
+  display: unset;
+  width: 70px;
+  text-align-last: justify;
+}
+
+.illustrate {
+  color: #000;
+  padding: 10px 0;
+}
+
+
+
+/* /search_statistics */
+
+
+/* contact */
+
+.contact_main {
+  position: relative;
+}
+
+.title_main.contact-title {
+  margin: 0 auto;
+}
+
+.el-form.contact-search {
+  position: absolute;
+  right: 0;
+  top: 25px;
+}
+
+.el-form.contact-search .el-input--large .el-input__wrapper {
+  box-shadow: none;
+}
+
+.el-form.contact-search .el-form-item {
+  margin: 0;
+}
+
+
+/* /contact */
+
+/* access_setting */
+.access_select {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.select_box_wrap {
+  display: flex;
+  flex-wrap: wrap;
+  width: 80%;
+  color: #606266;
+  margin: 20px 0;
+  justify-content: center;
+}
+
+.select_h3 {
+  width: 200px;
+  line-height: 64px;
+  font-weight: 800;
+  color: #000;
+}
+
+.select_box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 800px;
+  border: #DCDFE6 1px solid;
+  padding: 15px 30px;
+  border-radius: 8px;
+}
+
+.select_box .el-select {
+  margin-right: 40px;
+}
+
+.access_button_wrap {
+  display: flex;
+  margin: 20px auto;
+  justify-content: center;
+}
+
+.access_button {
+  margin: 10px 20px;
+}
+
+.access_button .el-button,
+.access_button a {
+  padding: 0 17px;
+}
+
+.access_button_exit {
+  width: 90px;
+  height: 40px;
+  background-color: #C45656;
+  border-radius: 5px;
+  text-align: center;
+}
+
+
+.access_button_exit a {
+  display: block;
+  font-weight: 600;
+  color: #fff;
+  justify-content: center;
+  line-height: 40px;
+  text-align-last: justify;
+}
+
+.access_button_exit:hover {
+  background-color: #e67171;
+  color: #fff;
+}
+
+
+.access_button_save .el-button {
+  width: 90px;
+  height: 40px;
+  background-color: #0276ab;
+  border: none;
+  color: #fff;
+}
+
+.access_button_save .el-button:hover {
+  background-color: #319dcf;
+  color: #fff;
+}
+
+.access_button_save .el-button:active {
+  background-color: #319dcf;
+  color: #fff;
+}
+
+.access_button_save .el-button:focus {
+  background-color: #319dcf;
+  color: #fff;
+}
+
+.access_button .el-button>span {
+  font-weight: 600;
+  display: unset;
+  width: 70px;
+  text-align-last: justify;
+}
+
+/* /access_setting */
+
+/* maintenance_main */
+
+.maintenance_h3 {
+  text-align: center;
+  color: #000;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 30px 0 15px;
+}
+
+.maintenance_tool_wrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.maintenance_search {
+  width: 280px;
+}
+
+.maintenance_add.el-button {
+  width: 90px;
+  background-color: #0276ab;
+  border: none;
+  font-weight: 600;
+  color: #fff;
+  margin-left: 20px;
+}
+
+.maintenance_add.el-button:hover {
+  background-color: #319dcf;
+  color: #fff;
+}
+
+.maintenance_add.el-button:focus {
+  background-color: #319dcf;
+  color: #fff;
+}
+
+.button_edit.el-button+.el-button {
+  margin: unset;
+  color: #0276ab;
+}
+
+.button_edit.el-button+.el-button:hover {
+  color: #0276ab;
+}
+
+.button_delete i.el-icon svg {
+  color: #000;
+}
+
+.button_edit i.el-icon svg {
+  color: #0276ab;
+}
+
+/* /maintenance_main */
+
+@media (max-width:985px) {
+  .el-header p {
+    width: auto;
+  }
+
+  .el-form.contact-search {
+    position: unset;
+    align-self: center;
+    flex: 1;
+    max-width: 250px;
+  }
+}
+
+@media (max-width:512px) {
+  .el-form.contact-search {
+    margin: 0 auto;
+  }
+
+  .tableForm {
+    margin: 10px;
+  }
+}

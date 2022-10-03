@@ -1,0 +1,205 @@
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { Search, Edit, Delete } from '@element-plus/icons-vue'
+
+
+
+
+const input3 = ref('')
+
+const item = {
+  number: '',
+  conditionCode: '',
+  conditionInstruction: '',
+}
+
+const tableHeader = ref([
+        {
+          prop: "resultCode",
+          label: "送審結果代碼",
+          editable: false,
+          type: "input"
+        }, {
+          prop: "resultCaption",
+          label: "送審結果說明",
+          editable: false,
+          type: "input"
+        },
+        ])
+
+const tableData = ref([
+      {
+        resultCode: "A",
+        resultCaption: "『A』接受",
+      }, {
+        resultCode: "B",
+        resultCaption: "『B』接受，但需將依審查意見修正後之內容併下一階段成果文件提送",
+      }, {
+        resultCode: "C",
+        resultCaption: "『C』修正後再接受(請重新提送修正後之文件)",
+      }, {
+        resultCode: "D",
+        resultCaption: "『D』退件",
+      }, {
+        resultCode: "E",
+        resultCaption: "『E』存查參辦",
+      }, {
+        resultCode: "F",
+        resultCaption: "『F』同意備查",
+      }, {
+        resultCode: "G",
+        resultCaption: "『G』釐清檢討後提送修正文件續審",
+      }, {
+        resultCode: "M1",
+        resultCaption: "『M1』存查參辦",
+      }, {
+        resultCode: "M2",
+        resultCaption: "『M2』意見回覆，如附",
+      }, {
+        resultCode: "M3",
+        resultCaption: "『M3』無意見",
+      }, {
+        resultCode: "N1",
+        resultCaption: "『1』准予備查",
+      }, {
+        resultCode: "N2",
+        resultCaption: "『2』部分改善後重送，其餘准予備查",
+      }, {
+        resultCode: "N3",
+        resultCaption: "『3』不同意備查，全部改善後重送",
+      }, {
+        resultCode: "N4",
+        resultCaption: "『4』免審查",
+      }, 
+])
+
+
+const deleteRow = (index: number) => {
+  tableData.value.splice(index, 1)
+}
+
+const onAddItem = () => {  
+  item.editable = true;
+  tableData.value.push(item)
+}
+
+
+</script>
+<template>
+    <el-container>
+      <el-header>
+        <a href="../../index.html">
+          <h1>TARF2技術文件線上簽核系統</h1>
+        </a>
+        <h3>資料維護作業</h3>
+        <p>蘇家淇(11548)</p>
+      </el-header>
+      <el-main>
+        <el-row class="index_row">
+          <a href="../individual_words/index.html">
+            <el-button class="index_button" round>個人使用詞彙</el-button>
+          </a>
+          <a href="../item_codes/index.html">
+            <el-button class="index_button" round>送審項目代碼</el-button>
+          </a>
+          <a href="../resualt_codes/index.html">
+            <el-button class="index_button" round>送審結果代碼</el-button>
+          </a>
+          <a href="../condition_codes/index.html">
+            <el-button class="index_button" round>案件狀態代碼</el-button>
+          </a>
+          <a href="../com_using_right/index.html">
+            <el-button class="index_button" round>廠商使用權限</el-button>
+          </a>
+        </el-row>
+
+    <div class="maintenance_h3">技術文件【送審結果】代碼維護</div>
+
+    <div class="maintenance_tool_wrap">
+        <div class="maintenance_search">
+    <el-input
+      v-model="input3"
+      placeholder="搜尋"
+      class="input-with-select"      
+      :suffix-icon="Search"
+    >
+    </el-input>
+  </div>
+
+  <el-button class="maintenance_add" @click="onAddItem">新增結果</el-button>
+</div>
+
+        <el-table 
+            :data="tableData" 
+            border 
+            stripe 
+            style="width: 100%;" 
+            :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">
+            <el-table-column type="index" label="序號" width="70" min-width="50"/>
+    <el-table-column 
+        :prop="item.prop"
+        :label="item.label"
+        v-for="(item, index) in tableHeader"
+        :key="item.prop"
+        >
+        <template #default="scope">
+          <div
+            v-show="item.editable || scope.row.editable"
+            class="editable-row"
+          >
+            <template v-if="item.type === 'input'">
+              <el-input
+                size="small"
+                v-model="scope.row[item.prop]"
+                :placeholder="`請輸入${item.label}`"
+                @change="handleEdit(scope.$index, scope.row)"
+              />
+            </template>
+          </div>
+          <div
+            v-show="!item.editable && !scope.row.editable"
+            class="editable-row"
+          >
+            <span class="editable-row-span">{{ scope.row[item.prop] }}</span>
+          </div>
+        </template>
+    </el-table-column>
+    <el-table-column label="" width="70" min-width="50">
+      <template #default="scope">
+          <el-button
+            link
+            size="small"
+            @click="deleteRow(scope.$index)"
+            class="button_delete"
+            :icon="Delete"
+            >
+          </el-button>
+        </template>
+    </el-table-column>
+    <el-table-column label="" width="70" min-width="50">
+      <template #default="scope">
+        <el-button
+            link
+            size="small" 
+            v-show="!scope.row.editable" 
+            @click="scope.row.editable = true"
+            class="button_edit"
+            :icon="Edit"
+            >
+        </el-button>
+        <el-button
+            link
+            size="small"
+            v-show="scope.row.editable"
+            @click="scope.row.editable = false"
+            :icon="Edit"
+            >
+        </el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+    <!-- <table_words /> -->
+      </el-main>
+    </el-container>
+</template>
+
