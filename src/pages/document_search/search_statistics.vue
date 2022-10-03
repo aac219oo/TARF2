@@ -169,7 +169,168 @@ const tableData1 = [
 ]
 
 const tableData2 = [
-  {}
+  {
+    years: '101',
+    jan: '-',
+    feb: '-',
+    mar: '-',
+    apr: '-',
+    may: '-',
+    jun: '-',
+    jul: '-',
+    aug: '-',
+    sep: '-',
+    oct: '-',
+    nov: '-',
+    dec: '-',
+  }, {
+    years: '102',
+    jan: '-',
+    feb: '-',
+    mar: '-',
+    apr: '-',
+    may: '-',
+    jun: '-',
+    jul: '-',
+    aug: '-',
+    sep: '-',
+    oct: '-',
+    nov: '-',
+    dec: '-',
+  }, {
+    years: '103',
+    jan: '-',
+    feb: '-',
+    mar: '-',
+    apr: '-',
+    may: '-',
+    jun: '-',
+    jul: '-',
+    aug: '-',
+    sep: '-',
+    oct: '-',
+    nov: '-',
+    dec: '-',
+  }, {
+    years: '104',
+    jan: '-',
+    feb: '-',
+    mar: '-',
+    apr: '1',
+    may: '1',
+    jun: '-',
+    jul: '-',
+    aug: '-',
+    sep: '-',
+    oct: '-',
+    nov: '-',
+    dec: '-',
+    tatle: '2',
+  }, {
+    years: '105',
+    jan: '-',
+    feb: '-',
+    mar: '-',
+    apr: '1',
+    may: '-',
+    jun: '-',
+    jul: '-',
+    aug: '-',
+    sep: '-',
+    oct: '-',
+    nov: '-',
+    dec: '-',
+    tatle: '1',
+  }, {
+    years: '106',
+    jan: '-',
+    feb: '-',
+    mar: '-',
+    apr: '-',
+    may: '-',
+    jun: '-',
+    jul: '-',
+    aug: '-',
+    sep: '-',
+    oct: '-',
+    nov: '-',
+    dec: '-',
+  }, {
+    years: '107',
+    jan: '1',
+    feb: '-',
+    mar: '-',
+    apr: '-',
+    may: '-',
+    jun: '-',
+    jul: '1',
+    aug: '1',
+    sep: '-',
+    oct: '-',
+    nov: '-',
+    dec: '-',
+    tatle: '3',
+  }, {
+    years: '108',
+    jan: '-',
+    feb: '-',
+    mar: '-',
+    apr: '-',
+    may: '-',
+    jun: '-',
+    jul: '3',
+    aug: '14',
+    sep: '45',
+    oct: '16',
+    nov: '10',
+    dec: '9',
+    tatle: '97',
+  }, {
+    years: '109',
+    jan: '11',
+    feb: '17',
+    mar: '51',
+    apr: '58',
+    may: '65',
+    jun: '64',
+    jul: '54',
+    aug: '39',
+    sep: '44',
+    oct: '35',
+    nov: '28',
+    dec: '29',
+    tatle: '495',
+  }, {
+    years: '110',
+    jan: '22',
+    feb: '19',
+    mar: '21',
+    apr: '11',
+    may: '13',
+    jun: '15',
+    jul: '13',
+    aug: '18',
+    sep: '23',
+    oct: '18',
+    nov: '18',
+    dec: '16',
+    tatle: '207',
+  }, {
+    years: '111',
+    jan: '19',
+    feb: '13',
+    mar: '17',
+    apr: '10',
+    may: '10',
+    jun: '12',
+    jul: '10',
+    aug: '-',
+    sep: '-',
+    oct: '-',
+    nov: '-',
+    dec: '-',
+    tatle: '91',
+  },
 ]
 const tableData3 = [
   {
@@ -353,6 +514,10 @@ const tableData4 = [
     ]
   },
 ]
+
+// msg
+
+const item = "總計：229,253筆　　　111年06月合計：2,249筆 　　　本月(111/07)合計：685筆"
 </script>
 <template>
 <el-config-provider :locale="locale">
@@ -365,10 +530,144 @@ const tableData4 = [
         <h3>審查案件統計</h3>
         <p>蘇家淇(11548)</p>
       </el-header>
+
+<!-- main start -->
+
       <el-main>
         <el-row>
           <el-tabs :tab-position="tabPosition" style="height: auto; width: 100%;" class="demo-tabs">
     <el-tab-pane label="各標送審文件統計">
+      <div class="search-top">        
+      <el-form :inline="true" :model="formInline" class="demo-form-inline" label-position="top">
+    <div class="container_left">
+    <div class="input_position">
+    <el-form-item class="datepicker" label="統計月份">
+      <el-date-picker
+        v-model="value"
+        type="daterange"
+        unlink-panels
+        range-separator="~"
+        start-placeholder="請選擇日期"
+        end-placeholder="請選擇日期"
+        :size="size"
+      />
+    </el-form-item>
+          <el-form-item class="button-items">
+            <div class="button-items-search">
+            <el-button @click="onSubmit"><el-icon><Search /></el-icon></el-button>
+            </div>
+            <div class="button-items-export">
+            <el-button>
+              <a href="../detail_info/index.html">
+            <img src="../../assets/Box-arrow-up-right.svg" style="width: 1.5rem; height: 1.5rem;" alt="">
+            </a>
+            </el-button>
+            </div>
+          </el-form-item>
+    </div>
+    <div class="msg_position">
+    <div class="title_msg"><h4>訊息</h4></div>
+  <el-carousel indicator-position="none" height="50px" direction="vertical" :autoplay="false">
+    <el-carousel-item v-for="item in 4" :key="item">
+      <h3 text="2xl" justify="center">{{ item }}</h3>
+    </el-carousel-item>
+  </el-carousel>
+  </div>
+    </div>
+  </el-form>
+  
+  </div>
+  <div class="title_main"><h4>各標送審文件統計</h4></div>
+  <el-table
+  class="tableForm"
+  :data="tableData1"
+  border
+  stripe
+  show-summary
+  :summary-method="getSummaries"
+  style="width: 100%"
+  :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">
+  <el-table-column prop="labelNumber" label="標別" width="100"/>
+  <el-table-column prop="lineType" label="線別" width="100">
+    <el-table-column prop="TuchengDingpu" label="土城頂埔段"/>
+    <el-table-column prop="airport" label="機場線" />
+    <el-table-column prop="Wanda" label="萬大線" />
+    <el-table-column prop="Songshan" label="松山線" />
+    <el-table-column prop="TaichungGreen" label="台中綠線" />
+    <el-table-column prop="Xinzhuang" label="新莊線" />
+    <el-table-column prop="ring" label="環狀縣" />
+    <el-table-column prop="Xinyi" label="信義線" />
+    </el-table-column>
+  </el-table>
+    </el-tab-pane>
+    <el-tab-pane label="單位審查案件數量統計">
+      <div class="search-top">
+      <el-form :inline="true" :model="formInline" class="demo-form-inline" label-position="top">
+    <div class="container_left">
+    <div class="input_position">
+    <el-form-item class="datepicker" label="統計月份">
+      <el-date-picker
+        v-model="value"
+        type="daterange"
+        unlink-panels
+        range-separator="~"
+        start-placeholder="請選擇日期"
+        end-placeholder="請選擇日期"
+        :size="size"
+      />
+    </el-form-item>
+          <el-form-item class="button-items">
+            <div class="button-items-search">
+            <el-button @click="onSubmit"><el-icon><Search /></el-icon></el-button>
+            </div>
+            <div class="button-items-export">
+            <el-button>
+              <a href="../detail_info/index.html">
+            <img src="../../assets/Box-arrow-up-right.svg" style="width: 1.5rem; height: 1.5rem;" alt="">
+            </a>
+            </el-button>
+            </div>
+          </el-form-item>
+    </div>
+    <div class="msg_position">  
+    <div class="title_msg"><h4>訊息</h4></div>  
+  <el-carousel indicator-position="none" height="50px" direction="vertical" :autoplay="false">
+    <el-carousel-item v-for="item in 4" :key="item">
+      <h3 text="2xl" justify="center">{{ item }}</h3>
+    </el-carousel-item>
+  </el-carousel>
+  </div>
+    </div>
+  </el-form>
+  </div>
+
+  <div class="title_main"><h4>技術處第二課　歷年審查案件數量統計</h4></div>
+  <el-table  
+  class="tableForm"
+  :data="tableData2" 
+  border 
+  stripe 
+  show-summary 
+  :summary-method="getSummaries" 
+  style="width: 100%"
+  :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">
+    <el-table-column prop="years" label="年份" width="100"/>
+    <el-table-column prop="jan" label="1月"/>
+    <el-table-column prop="feb" label="2月" />
+    <el-table-column prop="mar" label="3月" />
+    <el-table-column prop="apr" label="4月" />
+    <el-table-column prop="may" label="5月" />
+    <el-table-column prop="jun" label="6月" />
+    <el-table-column prop="jul" label="7月" />
+    <el-table-column prop="aug" label="8月" />
+    <el-table-column prop="sep" label="9月" />
+    <el-table-column prop="oct" label="10月" />
+    <el-table-column prop="nov" label="11月" />
+    <el-table-column prop="dec" label="12月" />
+    <el-table-column prop="tatle" label="合計" />
+  </el-table>
+  </el-tab-pane>
+    <el-tab-pane label="審查案件辦理情形統計">
       <div class="search-top">        
       <el-form :inline="true" :model="formInline" class="demo-form-inline" label-position="top">
     <div class="container_left">
@@ -407,131 +706,6 @@ const tableData4 = [
   </div>
     </div>
   </el-form>
-  
-  </div>
-  <div class="title_main"><h4>各標送審文件統計</h4></div>
-  <el-table 
-  class="tableForm"
-  :data="tableData1" 
-  border 
-  stripe
-  show-summary 
-  :summary-method="getSummaries" 
-  style="width: 100%"
-  :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">
-    <el-table-column prop="labelNumber" label="標號" width="100"/>
-    <el-table-column prop="TuchengDingpu" label="土城頂埔段"/>
-    <el-table-column prop="airport" label="機場線" />
-    <el-table-column prop="Wanda" label="萬大線" />
-    <el-table-column prop="Songshan" label="松山線" />
-    <el-table-column prop="TaichungGreen" label="台中綠線" />
-    <el-table-column prop="Xinzhuang" label="新莊線" />
-    <el-table-column prop="ring" label="環狀縣" />
-    <el-table-column prop="Xinyi" label="信義線" />
-  </el-table>
-    </el-tab-pane>
-    <el-tab-pane label="單位審查案件數量統計">
-      
-      <div class="search-top">        
-      <el-form :inline="true" :model="formInline" class="demo-form-inline" label-position="top">
-    <div class="container_left">
-    <div class="input_position">
-    <el-form-item class="datepicker" label="統計月份">
-      <el-date-picker
-        v-model="value"
-        type="daterange"
-        unlink-panels
-        range-separator="~"
-        start-placeholder="請選擇日期"
-        end-placeholder="請選擇日期"
-        :size="size"
-      />
-    </el-form-item>
-    <el-form-item label="統計類別選擇">
-      <el-select v-model="formInline.region" :size="size" placeholder=" ">
-        <el-option label="Zone one" value="shanghai" />
-        <el-option label="Zone two" value="beijing" />
-      </el-select>
-    </el-form-item>
-    </div>
-    <div class="msg_position">  
-    <div class="title_msg"><h4>訊息</h4></div>  
-  <el-carousel indicator-position="none" height="50px" direction="vertical" :autoplay="false">
-    <el-carousel-item v-for="item in 4" :key="item">
-      <h3 text="2xl" justify="center">{{ item }}</h3>
-    </el-carousel-item>
-  </el-carousel>
-  </div>
-    </div>
-    <div class="button_position">
-    <el-form-item> 
-      <el-button type="primary" @click="onSubmit">查詢</el-button>
-      <el-button type="primary" @click="onSubmit">匯出結果</el-button>
-    </el-form-item>
-    </div>    
-  </el-form>
-  </div>
-
-  <div class="title_main"><h4>單位審查案件數量統計</h4></div>
-  <el-table  
-  class="tableForm"
-  :data="tableData1" 
-  border 
-  stripe 
-  show-summary 
-  :summary-method="getSummaries" 
-  style="width: 100%"
-  :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">
-    <el-table-column prop="labelNumber" label="標號" width="100"/>
-    <el-table-column prop="TuchengDingpu" label="土城頂埔段"/>
-    <el-table-column prop="airport" label="機場線" />
-    <el-table-column prop="Wanda" label="萬大線" />
-    <el-table-column prop="Songshan" label="松山線" />
-    <el-table-column prop="TaichungGreen" label="台中綠線" />
-    <el-table-column prop="Xinzhuang" label="新莊線" />
-    <el-table-column prop="ring" label="環狀縣" />
-    <el-table-column prop="Xinyi" label="信義線" />
-  </el-table>
-  </el-tab-pane>
-    <el-tab-pane label="審查案件辦理情形統計">
-      <div class="search-top">        
-      <el-form :inline="true" :model="formInline" class="demo-form-inline" label-position="top">
-    <div class="container_left">
-    <div class="input_position">
-    <el-form-item class="datepicker" label="統計月份">
-      <el-date-picker
-        v-model="value"
-        type="daterange"
-        unlink-panels
-        range-separator="~"
-        start-placeholder="請選擇日期"
-        end-placeholder="請選擇日期"
-        :size="size"
-      />
-    </el-form-item>
-    <el-form-item label="統計類別選擇">
-      <el-select v-model="formInline.region" :size="size" placeholder=" ">
-        <el-option label="Zone one" value="shanghai" />
-        <el-option label="Zone two" value="beijing" />
-      </el-select>
-    </el-form-item>
-    </div>
-    <div class="msg_position">  
-    <div class="title_msg"><h4>訊息</h4></div>  
-  <el-carousel indicator-position="none" height="50px" direction="vertical" :autoplay="false">
-    <el-carousel-item v-for="item in 4" :key="item">
-      <h3 text="2xl" justify="center">{{ item }}</h3>
-    </el-carousel-item>
-  </el-carousel>
-  </div>
-    </div>
-    <div class="button_position">
-    <el-form-item> 
-      <el-button type="primary" @click="onSubmit">查詢</el-button>
-      <el-button type="primary" @click="onSubmit">匯出結果</el-button>
-    </el-form-item>
-    </div>    
-  </el-form>
   </div>
   <div class="title_main"><h4>審查案件辦理情形統計</h4></div>
   <el-table  
@@ -544,7 +718,7 @@ const tableData4 = [
   :summary-method="getSummaries" 
   style="width: 100%"
   :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">
-    <el-table-column prop="labelNumber" label="單位" width="200"/>
+    <el-table-column prop="labelNumber" label="單位" width="180"/>
     <el-table-column prop="TuchengDingpu" label="案件總數(1)"/>
     <el-table-column prop="airport" label="如期結案(2)" />
     <el-table-column prop="Wanda" label="逾期結案(3)" />
@@ -575,28 +749,26 @@ const tableData4 = [
         :size="size"
       />
     </el-form-item>
-    <el-form-item label="統計類別選擇">
-      <el-select v-model="formInline.region" :size="size" placeholder=" ">
-        <el-option label="Zone one" value="shanghai" />
-        <el-option label="Zone two" value="beijing" />
-      </el-select>
-    </el-form-item>
+          <el-form-item class="button-items">
+            <div class="button-items-search">
+            <el-button @click="onSubmit"><el-icon><Search /></el-icon></el-button>
+            </div>
+            <div class="button-items-export">
+            <el-button>
+              <a href="../detail_info/index.html">
+            <img src="../../assets/Box-arrow-up-right.svg" style="width: 1.5rem; height: 1.5rem;" alt="">
+            </a>
+            </el-button>
+            </div>
+          </el-form-item>
     </div>
-    <div class="msg_position">  
-    <div class="title_msg"><h4>訊息</h4></div>  
-  <el-carousel indicator-position="none" height="50px" direction="vertical" :autoplay="false">
-    <el-carousel-item v-for="item in 4" :key="item">
-      <h3 text="2xl" justify="center">{{ item }}</h3>
-    </el-carousel-item>
-  </el-carousel>
+    <div class="msg_position active">  
+    <div class="msg_title"><h4>訊息</h4></div>  
+    <div class="msg_content">
+      <h3>{{ item }}</h3>
+    </div>
   </div>
     </div>
-    <div class="button_position">
-    <el-form-item> 
-      <el-button type="primary" @click="onSubmit">查詢</el-button>
-      <el-button type="primary" @click="onSubmit">匯出結果</el-button>
-    </el-form-item>
-    </div>    
   </el-form>
   </div>
   <div class="title_main"><h4>主辦單位審查文件數量統計</h4></div>
@@ -610,7 +782,7 @@ const tableData4 = [
   :summary-method="getSummaries" 
   style="width: 100%"
   :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">
-    <el-table-column prop="labelNumber" label="單位名稱" min-width="100"/>
+    <el-table-column prop="labelNumber" label="單位名稱" min-width="120"/>
     <el-table-column prop="TuchengDingpu" label="全部數量"/>
     <el-table-column prop="airport" label="111年6月數量" />
     <el-table-column prop="Wanda" label="本月數量" />
@@ -621,24 +793,5 @@ const tableData4 = [
       </el-main>
     </el-container>
 </template>
-
-
-<style scoped>
-.el-carousel__item h3 {
-  color: #475669;
-  opacity: 0.75;
-  line-height: 200px;
-  margin: 0;
-  text-align: center;
-}
-
-.el-carousel__item:nth-child(2n) {
-  background-color: #fff;
-}
-
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #fff;
-}
-</style>
 
 

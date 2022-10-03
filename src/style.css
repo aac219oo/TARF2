@@ -47,7 +47,7 @@ a {
   color: #000;
 }
 
-.title_msg h4 {
+.msg_title h4 {
   font-size: 1rem;
   font-weight: bolder;
   margin-bottom: 0.5rem;
@@ -73,6 +73,10 @@ a {
 .el-select {
   max-width: 240px;
   min-width: 240px;
+}
+
+.el-table [class*=el-table__row--level] .el-table__expand-icon {
+  display: inline-table !important;
 }
 
 /* /初始化 */
@@ -119,6 +123,7 @@ a {
 
 .el-main {
   max-width: 1360px;
+  min-width: 1360px;
   margin: 0 auto;
 }
 
@@ -207,6 +212,10 @@ i.el-icon svg {
   justify-content: space-between;
 }
 
+.el-form--label-top .el-form-item.searchTitle {
+  width: 240px
+}
+
 .el-form--label-top .el-form-item.button-items {
   display: flex;
   width: 240px;
@@ -266,7 +275,7 @@ i.el-icon svg {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 label.el-radio {
@@ -313,18 +322,24 @@ label .el-radio__input .el-radio__inner {
 .el-form--inline.el-form--label-top .el-form-item {
   display: flex;
   margin-right: 0;
-  width: 50%;
+  width: 80%;
   margin: 0 auto;
 }
 
 .el-form--inline.el-form--label-top .el-form-item.datepicker {
-  margin-right: 36px;
+  margin-left: 0;
 }
 
 .search-top {
   background-color: #ECF5FF;
   padding: 1.5rem;
   border-radius: 20px;
+}
+
+.el-form--inline.el-form--label-top .el-form-item.button-items {
+  display: flex;
+  width: 240px;
+  align-items: flex-end;
 }
 
 div.el-tabs__item {
@@ -355,11 +370,33 @@ div.el-tabs__item {
 }
 
 .msg_position {
+  display: none;
   width: 100%;
+  margin-top: 10px;
 }
+
 
 .msg_position .el-carousel--vertical {
   border-left: 20px solid #0276ab;
+}
+
+.msg_content {
+  display: flex;
+  background-color: #fff;
+  height: 50px;
+  align-items: center;
+}
+
+.msg_content::before {
+  content: '';
+  display: block;
+  width: 25px;
+  height: inherit;
+  background-color: #0276ab;
+}
+
+.msg_content h3 {
+  padding-left: 10px;
 }
 
 .button_position {
@@ -601,6 +638,12 @@ div.el-tabs__item {
 }
 
 /* /maintenance_main */
+
+/* JS後綴 */
+
+.active {
+  display: block;
+}
 
 @media (max-width:985px) {
   .el-header p {
