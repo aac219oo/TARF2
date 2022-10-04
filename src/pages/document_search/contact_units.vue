@@ -1,61 +1,58 @@
-<script setup>
+<script lang="ts" setup>
 import { ref } from 'vue'
 import { Search } from '@element-plus/icons-vue'
 
+//navbar
+const activeIndex = ref('1')
+const handleSelect = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath)
+}
+
+
+// table
 const input1 = ref('')
 const tableInfo = [
         {
-    number: '1',
     unit: '綜規處',
     name: '李心平',
     phonenumber: '02-25215550-8130',
         },{
-    number: '2',
     unit: '土建處',
     name: '徐興華',
     phonenumber: '02-25215550-8255',
         },{
-    number: '3',
     unit: '機設處',
     name: '廖乃寬',
     phonenumber: '02-25215550-8319',
         },{
-    number: '4',
     unit: '工管處',
     name: '李昭瑢',
     phonenumber: '02-25215550-8449',
         },{
-    number: '5',
     unit: '技術處',
     name: '林麗卿',
     phonenumber: '02-25215550-8022',
         },{
-    number: '6',
     unit: '秘書室',
     name: '林俐妘',
     phonenumber: '02-25215550-8269',
         },{
-    number: '7',
     unit: '會計室',
     name: '葉桂英',
     phonenumber: '02-25215550-262',
         },{
-    number: '8',
     unit: '開發處',
     name: '詹麗燕',
     phonenumber: '02-25215550-23',
         },{
-    number: '9',
     unit: '一區工程處土一所',
     name: '黃秋香',
     phonenumber: '02-25215550-18',
         },{
-    number: '10',
     unit: '一區工程處土二所',
     name: '張瑛敏',
     phonenumber: '02-25215550-19',
         },{
-    number: '11',
     unit: '一區工程處土三所',
     name: '張美惠',
     phonenumber: '02-25215550-13',
@@ -73,14 +70,16 @@ const tableInfo = [
         <p>蘇家淇(11548)</p>
       </el-header>
       <el-main>
-        <el-row class="index_row">
-          <a href="./index.html">
-            <el-button class="index_button" round>捷運局各單位窗口資訊</el-button>
-          </a>
-          <a href="../contact_com/index.html">
-            <el-button class="index_button" round>各標號廠商窗口資訊</el-button>
-          </a>
-        </el-row>      
+        <el-menu
+    :default-active="activeIndex"
+    class="el-menu-demo index_row"
+    mode="horizontal"
+    @select="handleSelect"
+  >
+    <el-menu-item index="1"><a href="../contact_units/index.html">捷運局各單位窗口資訊</a></el-menu-item>
+    <el-menu-item index="2"><a href="../contact_com/index.html">各標號廠商窗口資訊</a></el-menu-item>
+  </el-menu>
+
         <el-row>
           <div class="title_main contact-title"><h4>捷運局各單位窗口資訊</h4></div>
           <el-form class="contact-search">
@@ -96,11 +95,7 @@ const tableInfo = [
   </el-form>
   
   <el-table class="tableForm" :data="tableInfo" stripe border :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">    
-    <el-table-column sortable label="序號" width="90">
-      <template #default="{ row }">
-        {{row.number}}
-      </template>
-    </el-table-column>
+    <el-table-column type="index" label="序號" width="90"/>
     <el-table-column sortable label="單位">
       <template #default="{ row }">
         {{row.unit}}

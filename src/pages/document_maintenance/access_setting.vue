@@ -6,8 +6,13 @@ import zhTw from 'element-plus/dist/locale/zh-tw.mjs'
 const language = ref('zh-tw')
 const locale = computed(() => (language.value === 'zh-tw' ? zhTw : en))
 
+// navbar
+const activeIndex = ref('1')
+const handleSelect = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath)
+}
 
-
+// 選項
 const valueContact = ref<string[]>([])
 const optionsContact = [
   {
@@ -44,6 +49,8 @@ const valueDate = ref('')
 
 
 </script>
+
+
 <template>
     <el-config-provider :locale="locale"></el-config-provider>
         <el-container>
@@ -55,6 +62,19 @@ const valueDate = ref('')
                 <p>蘇家淇(11548)</p>
             </el-header>
             <el-main>
+          <el-menu
+    :default-active="activeIndex"
+    class="el-menu-demo index_row"
+    mode="horizontal"
+    @select="handleSelect"
+  >
+    <el-menu-item index="1"><a href="../access_setting/index.html">權限設定</a></el-menu-item>
+    <el-menu-item index="2"><a href="../individual_words/index.html">個人使用詞彙</a></el-menu-item>
+    <el-menu-item index="3"><a href="../item_codes/index.html">送審項目代碼</a></el-menu-item>
+    <el-menu-item index="4"><a href="../resualt_codes/index.html">送審結果代碼</a></el-menu-item>
+    <el-menu-item index="5"><a href="../condition_codes/index.html">案件狀態代碼</a></el-menu-item>
+    <el-menu-item index="6"><a href="../com_using_right/index.html">廠商使用權限</a></el-menu-item>
+  </el-menu>
                 <div class="access_select">
                     <div class="select_box_wrap">
                         <div class="select_h3">兼任其他單位聯絡窗口</div>

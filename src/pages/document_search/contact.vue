@@ -11,16 +11,16 @@
         <p>蘇家淇(11548)</p>
       </el-header>
       <el-main>
-        <el-row class="index_row">
-          <a href="../contact_units/index.html">
-            <el-button class="index_button" round>捷運局各單位窗口資訊</el-button>
-          </a>
-          <a href="../contact_com/index.html">
-            <el-button class="index_button" round>各標號廠商窗口資訊</el-button>
-          </a>
-        </el-row>
+        <el-menu
+    :default-active="activeIndex"
+    class="el-menu-demo index_row"
+    mode="horizontal"
+    @select="handleSelect"
+  >
+    <el-menu-item><a href="../contact_units/index.html">捷運局各單位窗口資訊</a></el-menu-item>
+    <el-menu-item><a href="../contact_com/index.html">各標號廠商窗口資訊</a></el-menu-item>
+  </el-menu>
       </el-main>
     </el-container>
 </template>
-
 

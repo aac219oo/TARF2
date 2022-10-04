@@ -473,6 +473,11 @@ div.el-tabs__item {
 /* /contact */
 
 /* access_setting */
+.el-menu--horizontal>.el-menu-item a {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
 .access_select {
   display: flex;
   flex-direction: column;

@@ -2,7 +2,11 @@
 import { ref } from 'vue'
 import { Search, Edit, Delete } from '@element-plus/icons-vue'
 
-
+// navbar
+const activeIndex = ref('1')
+const handleSelect = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath)
+}
 
 
 const input3 = ref('')
@@ -95,23 +99,19 @@ const onAddItem = () => {
         <p>蘇家淇(11548)</p>
       </el-header>
       <el-main>
-        <el-row class="index_row">
-          <a href="../individual_words/index.html">
-            <el-button class="index_button" round>個人使用詞彙</el-button>
-          </a>
-          <a href="../item_codes/index.html">
-            <el-button class="index_button" round>送審項目代碼</el-button>
-          </a>
-          <a href="../resualt_codes/index.html">
-            <el-button class="index_button" round>送審結果代碼</el-button>
-          </a>
-          <a href="../condition_codes/index.html">
-            <el-button class="index_button" round>案件狀態代碼</el-button>
-          </a>
-          <a href="../com_using_right/index.html">
-            <el-button class="index_button" round>廠商使用權限</el-button>
-          </a>
-        </el-row>
+          <el-menu
+    :default-active="activeIndex"
+    class="el-menu-demo index_row"
+    mode="horizontal"
+    @select="handleSelect"
+  >
+    <el-menu-item index="4"><a href="../access_setting/index.html">權限設定</a></el-menu-item>
+    <el-menu-item index="5"><a href="../individual_words/index.html">個人使用詞彙</a></el-menu-item>
+    <el-menu-item index="6"><a href="../item_codes/index.html">送審項目代碼</a></el-menu-item>
+    <el-menu-item index="1"><a href="../resualt_codes/index.html">送審結果代碼</a></el-menu-item>
+    <el-menu-item index="2"><a href="../condition_codes/index.html">案件狀態代碼</a></el-menu-item>
+    <el-menu-item index="3"><a href="../com_using_right/index.html">廠商使用權限</a></el-menu-item>
+  </el-menu>
 
     <div class="maintenance_h3">技術文件【送審結果】代碼維護</div>
 

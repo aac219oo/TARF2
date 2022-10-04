@@ -10,7 +10,6 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 }
 const tableData1 = [
   {
-    number: '1',
     unit: '綜 規 處',
     condition: '結案',
     opinion: '檢視',
@@ -18,7 +17,6 @@ const tableData1 = [
     date: '111年5月1日 08:30',
   },
   {
-    number: '2',
     unit: '工 管 處',
     condition: '結案',
     opinion: '檢視',
@@ -26,7 +24,6 @@ const tableData1 = [
     date: '111年5月1日 08:30',
   },
   {
-    number: '3',
     unit: '一區工程處土 六 所',
     condition: '結案',
     opinion: '檢視',
@@ -34,14 +31,12 @@ const tableData1 = [
     date: '111年5月1日 08:30',
   },
   {
-    number: '4',
     unit: '一區工程處土 木 科',
     condition: '結案',
     opinion: '檢視',
     result: '『F』同意備查',
     date: '111年5月1日 08:30',
   },{
-    number: '5',
     unit: '一區工程處水電環控科',
     condition: '結案',
     opinion: '檢視',
@@ -52,7 +47,6 @@ const tableData1 = [
 
 const tableData2 = [
   {
-    number: '1',
     unit: '土 建 處/黃作元(線上簽核方式送審)',
     condition: '結案',
     opinion: '檢視',
@@ -60,7 +54,6 @@ const tableData2 = [
     date: '111年5月1日 08:30',
   },
   {
-    number: '2',
     unit: '土 建 處/朱慶村(線上簽核方式送審)',
     condition: '結案',
     opinion: '檢視',
@@ -68,7 +61,6 @@ const tableData2 = [
     date: '111年5月1日 08:30',
   },
   {
-    number: '3',
     unit: '土 建 處/高雪莉(線上簽核方式送審)',
     condition: '結案',
     opinion: '檢視',
@@ -76,7 +68,6 @@ const tableData2 = [
     date: '111年5月1日 08:30',
   },
   {
-    number: '4',
     unit: '一區工程處水電環控科',
     condition: '結案',
     opinion: '檢視',
@@ -194,7 +185,7 @@ const tableData2 = [
     <el-tab-pane label="分/會審單位" name="fourth">分/會審單位
       <el-divider border-style="double" />
       <el-table :data="tableData1" stripe border :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}" style="width: 100%">
-    <el-table-column prop="number" label="序號" :min-width="40" />
+    <el-table-column type="index" label="序號" :min-width="40" />
     <el-table-column prop="unit" label="分/會審單位" :min-width="150" />
     <el-table-column prop="condition" label="流程狀態" />
     <el-table-column prop="opinion" label="審查意見" />
@@ -205,7 +196,7 @@ const tableData2 = [
     <el-tab-pane label="協審同仁" name="fifth">協審同仁
       <el-divider border-style="double" />
       <el-table :data="tableData2" stripe border :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}" style="width: 100%">
-    <el-table-column prop="number" label="序號" :min-width="40" />
+    <el-table-column type="index" label="序號" :min-width="40" />
     <el-table-column prop="unit" label="分/會審單位" :min-width="150" />
     <el-table-column prop="condition" label="流程狀態" />
     <el-table-column prop="opinion" label="審查意見" />
