@@ -100,7 +100,7 @@ const tableInfo = [
   </el-form>
           
   
-  <el-table class="tableForm" :data="tableInfo" stripe border :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">    
+  <el-table class="tableForm tableContactCom" :data="tableInfo" stripe border :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">    
     <el-table-column type="index" label="序號" width="90"/>
     <el-table-column sortable label="標號">
       <template #default="{ row }">

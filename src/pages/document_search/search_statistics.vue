@@ -536,6 +536,9 @@ const item = "總計：229,253筆　　　111年06月合計：2,249筆 　　　
       <el-main>
         <el-row>
           <el-tabs :tab-position="tabPosition" style="height: auto; width: 100%;" class="demo-tabs">
+
+<!-- 各標送審文件統計 -->
+
     <el-tab-pane label="各標送審文件統計">
       <div class="search-top">        
       <el-form :inline="true" :model="formInline" class="demo-form-inline" label-position="top">
@@ -600,6 +603,9 @@ const item = "總計：229,253筆　　　111年06月合計：2,249筆 　　　
     </el-table-column>
   </el-table>
     </el-tab-pane>
+
+<!-- 單位審查案件數量統計 -->
+
     <el-tab-pane label="單位審查案件數量統計">
       <div class="search-top">
       <el-form :inline="true" :model="formInline" class="demo-form-inline" label-position="top">
@@ -667,6 +673,9 @@ const item = "總計：229,253筆　　　111年06月合計：2,249筆 　　　
     <el-table-column prop="tatle" label="合計" />
   </el-table>
   </el-tab-pane>
+
+<!-- 審查案件辦理情形統計 -->
+
     <el-tab-pane label="審查案件辦理情形統計">
       <div class="search-top">        
       <el-form :inline="true" :model="formInline" class="demo-form-inline" label-position="top">
@@ -709,7 +718,7 @@ const item = "總計：229,253筆　　　111年06月合計：2,249筆 　　　
   </div>
   <div class="title_main"><h4>審查案件辦理情形統計</h4></div>
   <el-table  
-  class="tableForm"
+  class="tableForm tableSearchCondition"
   :data="tableData3" 
   row-key="id"
   border 
@@ -733,6 +742,9 @@ const item = "總計：229,253筆　　　111年06月合計：2,249筆 　　　
 <p class="illustrate">逾期比例(7) = (逾期結案(3) + 逾期未結案(6)) / 案件總數(1)</p>
 
   </el-tab-pane>
+
+<!-- 主辦單位審查文件數量統計 -->
+
     <el-tab-pane label="主辦單位審查文件數量統計">
       <div class="search-top">        
       <el-form :inline="true" :model="formInline" class="demo-form-inline" label-position="top">

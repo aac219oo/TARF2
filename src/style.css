@@ -440,6 +440,11 @@ div.el-tabs__item {
   padding: 10px 0;
 }
 
+.el-table td.el-table__cell.el-table_3_column_25 div,
+.el-table td.el-table__cell.el-table_4_column_33 div {
+  justify-content: start;
+}
+
 
 
 /* /search_statistics */
@@ -469,6 +474,13 @@ div.el-tabs__item {
   margin: 0;
 }
 
+.el-table.tableContactUnits td.el-table__cell.el-table_1_column_2 div {
+  justify-content: start;
+}
+
+.el-table.tableContactCom td.el-table__cell.el-table_1_column_3 div {
+  justify-content: start;
+}
 
 /* /contact */
 
@@ -584,6 +596,15 @@ div.el-tabs__item {
   text-align-last: justify;
 }
 
+.el-table th.el-table__cell.el-table_1_column_2 {
+  width: 100px;
+}
+
+.el-table.tableComUsing td.el-table__cell.el-table_1_column_4 div {
+  justify-content: start;
+}
+
+
 /* /access_setting */
 
 /* maintenance_main */
@@ -644,7 +665,7 @@ div.el-tabs__item {
 
 /* /maintenance_main */
 
-/* JS後綴 */
+/* JS效果後綴 */
 
 .active {
   display: block;

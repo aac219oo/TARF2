@@ -15,47 +15,47 @@ const tableInfo = [
         {
     unit: '綜規處',
     name: '李心平',
-    phonenumber: '02-25215550-8130',
+    phoneNumber: '02-25215550-8130',
         },{
     unit: '土建處',
     name: '徐興華',
-    phonenumber: '02-25215550-8255',
+    phoneNumber: '02-25215550-8255',
         },{
     unit: '機設處',
     name: '廖乃寬',
-    phonenumber: '02-25215550-8319',
+    phoneNumber: '02-25215550-8319',
         },{
     unit: '工管處',
     name: '李昭瑢',
-    phonenumber: '02-25215550-8449',
+    phoneNumber: '02-25215550-8449',
         },{
     unit: '技術處',
     name: '林麗卿',
-    phonenumber: '02-25215550-8022',
+    phoneNumber: '02-25215550-8022',
         },{
     unit: '秘書室',
     name: '林俐妘',
-    phonenumber: '02-25215550-8269',
+    phoneNumber: '02-25215550-8269',
         },{
     unit: '會計室',
     name: '葉桂英',
-    phonenumber: '02-25215550-262',
+    phoneNumber: '02-25215550-262',
         },{
     unit: '開發處',
     name: '詹麗燕',
-    phonenumber: '02-25215550-23',
+    phoneNumber: '02-25215550-23',
         },{
     unit: '一區工程處土一所',
     name: '黃秋香',
-    phonenumber: '02-25215550-18',
+    phoneNumber: '02-25215550-18',
         },{
     unit: '一區工程處土二所',
     name: '張瑛敏',
-    phonenumber: '02-25215550-19',
+    phoneNumber: '02-25215550-19',
         },{
     unit: '一區工程處土三所',
     name: '張美惠',
-    phonenumber: '02-25215550-13',
+    phoneNumber: '02-25215550-13',
         },
 ]
 
@@ -94,23 +94,11 @@ const tableInfo = [
     </el-form-item>
   </el-form>
   
-  <el-table class="tableForm" :data="tableInfo" stripe border :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">    
+  <el-table class="tableForm tableContactUnits" :data="tableInfo" stripe border :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">    
     <el-table-column type="index" label="序號" width="90"/>
-    <el-table-column sortable label="單位">
-      <template #default="{ row }">
-        {{row.unit}}
-      </template>
-    </el-table-column>
-    <el-table-column sortable label="姓名">
-      <template #default="{ row }">
-        {{row.name}}
-      </template>
-    </el-table-column>
-    <el-table-column sortable label="電話">
-      <template #default="{ row }">
-        {{row.phonenumber}}
-      </template>
-    </el-table-column>
+    <el-table-column prop="unit" sortable label="單位" class="unitAlign"/>
+    <el-table-column prop="name" sortable label="姓名"/>
+    <el-table-column prop="phoneNumber" sortable label="電話"/>
   </el-table>
         </el-row>
       </el-main>

@@ -217,6 +217,7 @@ const onAddItem = () => {
 
         <el-table 
             :data="tableData" 
+            class="tableComUsing"
             border 
             stripe 
             style="width: 100%;" 
@@ -227,6 +228,7 @@ const onAddItem = () => {
         :label="item.label"
         v-for="(item, index) in tableHeader"
         :key="item.prop"
+        class="tableColumnCom"
         >
         <template #default="scope">
           <div
