@@ -155,7 +155,8 @@ import {
   Printer,
   Search
 } from '@element-plus/icons-vue'
-import zhTw from 'element-plus/dist/locale/zh-tw.mjs'
+import zhTw from 'element-plus/dist/locale/zh-tw'
+import en from 'element-plus/es/locale/lang/en'
 
 const language = ref('zh-tw')
 const locale = computed(() => (language.value === 'zh-tw' ? zhTw : en))
