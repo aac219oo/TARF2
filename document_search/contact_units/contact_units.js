@@ -1,7 +1,7 @@
-import { createApp } from 'vue'
+import { createApp } from "vue";
 // CSS樣式
-import '../../src/style.css'
+import "../../src/style.css";
 
-import ContactUnits from '../../src/pages/document_search/contact_units.vue'
+import ContactUnits from "../../src/pages/document_search/contact_units.vue";
 
-createApp(ContactUnits).mount('#contact_units')
+createApp(ContactUnits).mount("#contact_units");
