@@ -29,10 +29,13 @@ const tableHeader = ref([
 
 const tableData = ref([
       {
-        wordsName: "",
+        wordsName: "test",
       },
 ])
 
+const handleEdit = (row) => {
+  row.editable = true;
+}
 
 const deleteRow = (index: number) => {
   tableData.value.splice(index, 1)
@@ -82,7 +85,7 @@ const onAddItem = () => {
     </el-input>
   </div>
 
-  <el-button class="maintenance_add" @click="onAddItem">新增詞彙</el-button>
+  
 </div>
         <el-table 
             :data="tableData" 
@@ -90,12 +93,13 @@ const onAddItem = () => {
             stripe 
             style="width: 100%;" 
             :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">
-            <el-table-column type="index" label="序號" width="70" min-width="50"/>
+            <el-table-column type="index" label="序號" width="70" min-width="50" :resizable="false"/>
     <el-table-column 
         :prop="item.prop"
         :label="item.label"
         v-for="(item, index) in tableHeader"
         :key="item.prop"
+        :resizable="false"
         >
         <template #default="scope">
           <div
@@ -119,28 +123,34 @@ const onAddItem = () => {
           </div>
         </template>
     </el-table-column>
-    <el-table-column label="" width="70" min-width="50">
+    <el-table-column width="120px" align="right" :resizable="false">
+      <template #header>
+        <el-button class="maintenance_plus" @click="onAddItem"><img src="../../assets/icon07.png" style="width: 26px; vertical-align: bottom" alt=""></el-button>
+      </template>
       <template #default="scope">
-          <el-button
-            link
-            size="small"
-            @click="deleteRow(scope.$index)"
-            class="button_delete"
-            :icon="Delete"
-            >
+        <el-popconfirm
+        width="170px"
+        title="確定要刪除嗎?"
+        confirm-button-text="是"
+        cancel-button-text="否"
+        confirm-button-type="danger"
+        cancel-button-type="primary"
+        @confirm="deleteRow(scope.$index)"
+        >
+    <template #reference>
+      <el-button>
+            <img src="../../assets/icon06.png" style="width: 24px; vertical-align: bottom" alt="">
           </el-button>
-        </template>
-    </el-table-column>
-    <el-table-column label="" width="70" min-width="50">
-      <template #default="scope">
+    </template>
+  </el-popconfirm>
         <el-button
             link
             size="small" 
             v-show="!scope.row.editable" 
             @click="scope.row.editable = true"
             class="button_edit"
-            :icon="Edit"
             >
+            <img src="../../assets/icon04.png" style="width: 24px; vertical-align: bottom" alt="">
         </el-button>
         <el-button
             link
@@ -148,8 +158,8 @@ const onAddItem = () => {
             v-show="scope.row.editable"
             @click="scope.row.editable = false"
             class="button_edit"
-            :icon="Edit"
             >
+            <img src="../../assets/icon05.png" style="width: 24px; vertical-align: bottom" alt="">
         </el-button>
       </template>
     </el-table-column>

@@ -20,7 +20,7 @@
         <div class="searchSelectTop">
           <div class="searchDate">
           <div class="labelRadio">
-            <span class="label">送審日期</span>
+            <span class="label">送審日期*</span>
             <el-radio-group v-model="form.date3">
               <el-radio label="三日" value="三日"/>
               <el-radio label="一周" value="一周"/>
@@ -54,7 +54,7 @@
               <el-option label="project4" value="project4" />
             </el-select>
           </el-form-item>
-          <el-form-item label="標 號">
+          <el-form-item label="標號">
             <el-select v-model="form.labelNumber" placeholder="請選擇標號" :size="size">
               <el-option label="CF620" value="CF620" />
               <el-option label="CF621" value="CF621" />
@@ -94,18 +94,18 @@
               <el-option label="閱" value="閱" />
             </el-select>
           </el-form-item>
-          <el-form-item label="主旨" class="searchTitle">
+          <el-form-item label="關鍵字" class="searchTitle">
             <el-input v-model="form.title" placeholder="(主旨，多組關鍵字請用空白分隔)" :size="size" />
           </el-form-item>
           <el-form-item class="button-items">
             <div class="button-items-search">
-            <el-button @click="onSubmit"><el-icon><Search /></el-icon></el-button>
+            <el-button @click="onSubmit">
+              <img src="../../assets/icon01.png" style="width: 26px; vertical-align: bottom;" alt="">
+            </el-button>
             </div>
             <div class="button-items-export">
             <el-button>
-              <a href="../detail_info/index.html">
-            <img src="../../assets/Box-arrow-up-right.svg" style="width: 1.5rem; height: 1.5rem;" alt="">
-            </a>
+            <img src="../../assets/icon02.png" style="width: 26px; vertical-align: bottom" alt="">
             </el-button>
             </div>
           </el-form-item>
@@ -118,17 +118,22 @@
   <el-row class="tableForm">
         <el-col>
       <el-table
+      border
       :data="tables.slice((currentPage-1)*pageSize,currentPage*pageSize)" 
       :stripe="true"
       :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">
-          <el-table-column type="index" label="序號" width="70"/>
-          <el-table-column label="案號" prop="e_number" sortable :min-width="40"></el-table-column>
-          <el-table-column label="標號" prop="labelNumber" sortable align="center" :min-width="40"></el-table-column>
-          <el-table-column label="主旨" prop="title" sortable></el-table-column>
-          <el-table-column label="申請日期" prop="apply_date" sortable align="center" :min-width="50"></el-table-column>
-          <el-table-column label="案件承辦人" prop="agency" sortable :min-width="60"></el-table-column>
-          <el-table-column label="狀態" prop="condition" sortable :min-width="40"></el-table-column>   
-          <el-table-column label="狀態日期" prop="condition_date" sortable align="center" :min-width="50"></el-table-column> 
+          <el-table-column type="index" label="序號" width="57" :resizable="false"/>
+          <el-table-column label="案號" prop="e_number" sortable :min-width="25" :resizable="false"></el-table-column>
+          <el-table-column label="標號" prop="labelNumber" sortable align="center" :min-width="20" :resizable="false"></el-table-column>
+          <el-table-column label="主旨" prop="title" sortable :resizable="false"></el-table-column>
+          <el-table-column label="申請日期" prop="apply_date" sortable align="center" :min-width="21" :resizable="false"></el-table-column>
+          <el-table-column label="案件承辦人" prop="agency" sortable :min-width="25" :resizable="false"></el-table-column>
+          <el-table-column label="狀態" prop="condition" sortable :min-width="20" :resizable="false"></el-table-column>
+          <el-table-column label="狀態日期" prop="condition_date" sortable align="center" :min-width="21" :resizable="false"></el-table-column>
+          <el-table-column :min-width="15" :resizable="false">
+            <a href="../detail_info/index.html"><img src="../../assets/icon02.png" style="width: 25px; vertical-align: bottom" alt=""></a>
+            <el-button type="print"><img src="../../assets/icon03.png" style="width: 25px; vertical-align: bottom" alt=""></el-button>
+            </el-table-column>
         </el-table>
         </el-col>
         <el-col>
@@ -153,14 +158,15 @@ import { computed, reactive, ref } from 'vue'
 import {
   ElementPlus,
   Printer,
-  Search
+  Search,
+  Edit,
 } from '@element-plus/icons-vue'
 import zhTw from 'element-plus/dist/locale/zh-tw'
 import en from 'element-plus/es/locale/lang/en'
 
 const language = ref('zh-tw')
 const locale = computed(() => (language.value === 'zh-tw' ? zhTw : en))
-const size = ref('large')
+const size = ref('default')
 const currentPage = ref(1)
 const pageSize = ref(5)
 const handleSizeChange = (val: number) => {

@@ -6,11 +6,10 @@
   box-sizing: border-box;
   font-family: "Noto Sans TC", sans-serif;
   letter-spacing: 2px;
-  font-size: 1rem;
 }
 
 :root {
-  font-size: 16px;
+  font-size: 14px;
   line-height: 24px;
   font-weight: 400;
   color-scheme: light dark;
@@ -36,6 +35,7 @@ h6 {
 a {
   text-decoration: none;
   display: flex;
+  color: inherit;
 }
 
 ::placeholder {
@@ -43,7 +43,7 @@ a {
 }
 
 .el-form-item .el-form-item__label {
-  font-size: 1rem;
+  /* font-size: 1rem; */
   color: #000;
 }
 
@@ -89,6 +89,7 @@ a {
   display: flex;
   flex-direction: row;
   width: 100%;
+  min-width: 1360px;
   --el-header-height: 75px !important;
   color: #fff;
   justify-content: space-between;
@@ -116,7 +117,7 @@ a {
 .el-header p {
   font-size: 1rem;
   font-weight: normal;
-  width: 356px;
+  width: 314px;
   text-align: end;
 }
 
@@ -142,6 +143,8 @@ i.el-icon svg {
   height: 24px;
 }
 
+/*  */
+
 /* index */
 
 .el-main .index_row {
@@ -155,6 +158,7 @@ i.el-icon svg {
   margin: 1rem;
   font-size: 1rem;
   font-weight: bold;
+  width: 176px;
 }
 
 .el-main .el-button.index_button:hover {
@@ -202,6 +206,10 @@ i.el-icon svg {
   width: max-content;
 }
 
+.searchDate .el-input__wrapper {
+  width: 240px;
+}
+
 .decoration {
   width: 30px;
   text-align: center;
@@ -234,13 +242,17 @@ i.el-icon svg {
 .el-form-item.button-items .el-form-item__content {
   flex-wrap: nowrap;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: start;
+  /* margin-left: 20px; */
 }
 
 
-.el-form-item.button-items .el-form-item__content .button-items-search,
+.el-form-item.button-items .el-form-item__content .button-items-search {
+  margin-right: 10px;
+}
+
 .el-form-item.button-items .el-form-item__content .button-items-export {
-  margin: 0 15px;
+  margin-left: 10px;
 }
 
 .el-form-item.button-items .el-form-item__content .button-items-search .el-button,
@@ -276,6 +288,10 @@ i.el-icon svg {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+}
+
+#search_event .el-table td.el-table_1_column_9.el-table__cell div {
+  justify-content: space-between;
 }
 
 label.el-radio {
@@ -322,8 +338,9 @@ label .el-radio__input .el-radio__inner {
 .el-form--inline.el-form--label-top .el-form-item {
   display: flex;
   margin-right: 0;
-  width: 80%;
-  margin: 0 auto;
+  width: 50%;
+  /* margin-right: auto;
+  margin-left: 0; */
 }
 
 .el-form--inline.el-form--label-top .el-form-item.datepicker {
@@ -336,9 +353,13 @@ label .el-radio__input .el-radio__inner {
   border-radius: 20px;
 }
 
+#search_statistics .el-form-item.button-items .el-form-item__content {
+  margin-left: 20px;
+}
+
 .el-form--inline.el-form--label-top .el-form-item.button-items {
   display: flex;
-  width: 240px;
+  /* width: 240px; */
   align-items: flex-end;
 }
 
@@ -440,12 +461,18 @@ div.el-tabs__item {
   padding: 10px 0;
 }
 
+.el-table__row--level-1 td>div {
+  text-indent: 2rem;
+}
+
 .el-table td.el-table__cell.el-table_3_column_25 div,
 .el-table td.el-table__cell.el-table_4_column_33 div {
   justify-content: start;
 }
 
-
+#search_statistics .el-table tr td:nth-of-type(1) div {
+  justify-content: flex-start;
+}
 
 /* /search_statistics */
 
@@ -517,15 +544,14 @@ div.el-tabs__item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 800px;
   border: #DCDFE6 1px solid;
   padding: 15px 30px;
   border-radius: 8px;
 }
 
-.select_box .el-select {
+/* .select_box .el-select {
   margin-right: 40px;
-}
+} */
 
 .access_button_wrap {
   display: flex;
@@ -625,6 +651,23 @@ div.el-tabs__item {
 
 .maintenance_search {
   width: 280px;
+}
+
+.el-table td.el-table__cell div {
+  justify-content: space-around;
+}
+
+.maintenance_plus.el-button {
+  background-color: transparent;
+  border: none;
+}
+
+.maintenance_plus.el-button:hover {
+  background-color: transparent;
+}
+
+.maintenance_plus.el-button:focus {
+  background-color: transparent;
 }
 
 .maintenance_add.el-button {

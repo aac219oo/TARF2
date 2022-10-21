@@ -185,23 +185,23 @@ const tableData2 = [
     <el-tab-pane label="分/會審單位" name="fourth">分/會審單位
       <el-divider border-style="double" />
       <el-table :data="tableData1" stripe border :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}" style="width: 100%">
-    <el-table-column type="index" label="序號" :min-width="40" />
-    <el-table-column prop="unit" label="分/會審單位" :min-width="150" />
-    <el-table-column prop="condition" label="流程狀態" />
-    <el-table-column prop="opinion" label="審查意見" />
-    <el-table-column prop="result" label="審驗結果" />
-    <el-table-column prop="date" label="簽核時間" />
+    <el-table-column type="index" label="序號" :min-width="40" :resizable="false" />
+    <el-table-column prop="unit" label="分/會審單位" :min-width="150" :resizable="false" />
+    <el-table-column prop="condition" label="流程狀態" :resizable="false" />
+    <el-table-column prop="opinion" label="審查意見" :resizable="false" />
+    <el-table-column prop="result" label="審驗結果" :resizable="false" />
+    <el-table-column prop="date" label="簽核時間" :resizable="false" />
   </el-table>
     </el-tab-pane>
     <el-tab-pane label="協審同仁" name="fifth">協審同仁
       <el-divider border-style="double" />
       <el-table :data="tableData2" stripe border :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}" style="width: 100%">
-    <el-table-column type="index" label="序號" :min-width="40" />
-    <el-table-column prop="unit" label="分/會審單位" :min-width="150" />
-    <el-table-column prop="condition" label="流程狀態" />
-    <el-table-column prop="opinion" label="審查意見" />
-    <el-table-column prop="result" label="審驗結果" />
-    <el-table-column prop="date" label="簽核時間" />
+    <el-table-column type="index" label="序號" :min-width="40" :resizable="false" />
+    <el-table-column prop="unit" label="分/會審單位" :min-width="150" :resizable="false" />
+    <el-table-column prop="condition" label="流程狀態" :resizable="false" />
+    <el-table-column prop="opinion" label="審查意見" :resizable="false" />
+    <el-table-column prop="result" label="審驗結果" :resizable="false" />
+    <el-table-column prop="date" label="簽核時間" :resizable="false" />
   </el-table>
     </el-tab-pane>
     <el-tab-pane label="答覆意見" name="sixth">答覆意見</el-tab-pane>

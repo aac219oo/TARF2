@@ -116,13 +116,6 @@ const valueDate = ref('')
                                     :value="item.valueSetting"
                                     />
                             </el-select>
-                            <el-date-picker
-                                v-model="valueDate"
-                                type="daterange"
-                                range-separator="至"
-                                start-placeholder="請選擇日期"
-                                end-placeholder="請選擇日期"
-                            />
                         </div>
                     </div>
                 </div>

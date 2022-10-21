@@ -61,7 +61,7 @@ const formInline = reactive({
   region: '',
 })
 
-const size = ref('large')
+const size = ref('default')
 
 const onSubmit = () => {
   console.log('submit!')
@@ -558,12 +558,12 @@ const item = "總計：229,253筆　　　111年06月合計：2,249筆 　　　
     </el-form-item>
           <el-form-item class="button-items">
             <div class="button-items-search">
-            <el-button @click="onSubmit"><el-icon><Search /></el-icon></el-button>
+            <el-button @click="onSubmit"><img src="../../assets/icon01.png" style="width: 26px; vertical-align: bottom" alt=""></el-button>
             </div>
             <div class="button-items-export">
             <el-button>
               <a href="../detail_info/index.html">
-            <img src="../../assets/Box-arrow-up-right.svg" style="width: 1.5rem; height: 1.5rem;" alt="">
+            <img src="../../assets/icon02.png" style="width: 26px; vertical-align: bottom" alt="">
             </a>
             </el-button>
             </div>
@@ -591,17 +591,27 @@ const item = "總計：229,253筆　　　111年06月合計：2,249筆 　　　
   :summary-method="getSummaries"
   style="width: 100%"
   :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">
-  <el-table-column prop="labelNumber" label="標別" width="100"/>
-  <el-table-column prop="lineType" label="線別" width="100">
-    <el-table-column prop="TuchengDingpu" label="土城頂埔段"/>
-    <el-table-column prop="airport" label="機場線" />
-    <el-table-column prop="Wanda" label="萬大線" />
-    <el-table-column prop="Songshan" label="松山線" />
-    <el-table-column prop="TaichungGreen" label="台中綠線" />
-    <el-table-column prop="Xinzhuang" label="新莊線" />
-    <el-table-column prop="ring" label="環狀縣" />
-    <el-table-column prop="Xinyi" label="信義線" />
-    </el-table-column>
+  <el-table-column prop="labelNumber" label="&ensp;&ensp;線別&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;標別" width="150" :resizable="false"/>
+    <!-- <el-table-column prop="TuchengDingpu" label="土城頂埔段" :resizable="false"/>
+    <el-table-column prop="airport" label="機場線" :resizable="false"/>
+    <el-table-column prop="Wanda" label="萬大線" :resizable="false"/>
+    <el-table-column prop="Songshan" label="松山線" :resizable="false"/>
+    <el-table-column prop="TaichungGreen" label="台中綠線" :resizable="false"/>
+    <el-table-column prop="Xinzhuang" label="新莊線" :resizable="false"/>
+    <el-table-column prop="ring" label="環狀縣" :resizable="false"/>
+    <el-table-column prop="Xinyi" label="信義線" :resizable="false"/> -->
+    <el-table-column prop="jan" label="1月" :resizable="false" />
+    <el-table-column prop="feb" label="2月" :resizable="false" />
+    <el-table-column prop="mar" label="3月" :resizable="false" />
+    <el-table-column prop="apr" label="4月" :resizable="false" />
+    <el-table-column prop="may" label="5月" :resizable="false" />
+    <el-table-column prop="jun" label="6月" :resizable="false" />
+    <el-table-column prop="jul" label="7月" :resizable="false" />
+    <el-table-column prop="aug" label="8月" :resizable="false" />
+    <el-table-column prop="sep" label="9月" :resizable="false" />
+    <el-table-column prop="oct" label="10月" :resizable="false" />
+    <el-table-column prop="nov" label="11月" :resizable="false" />
+    <el-table-column prop="dec" label="12月" :resizable="false" />
   </el-table>
     </el-tab-pane>
 
@@ -625,12 +635,12 @@ const item = "總計：229,253筆　　　111年06月合計：2,249筆 　　　
     </el-form-item>
           <el-form-item class="button-items">
             <div class="button-items-search">
-            <el-button @click="onSubmit"><el-icon><Search /></el-icon></el-button>
+            <el-button @click="onSubmit"><img src="../../assets/icon01.png" style="width: 26px; vertical-align: bottom" alt=""></el-button>
             </div>
             <div class="button-items-export">
             <el-button>
               <a href="../detail_info/index.html">
-            <img src="../../assets/Box-arrow-up-right.svg" style="width: 1.5rem; height: 1.5rem;" alt="">
+            <img src="../../assets/icon02.png" style="width: 26px; vertical-align: bottom" alt="">
             </a>
             </el-button>
             </div>
@@ -658,20 +668,20 @@ const item = "總計：229,253筆　　　111年06月合計：2,249筆 　　　
   :summary-method="getSummaries" 
   style="width: 100%"
   :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">
-    <el-table-column prop="years" label="年份" width="100"/>
-    <el-table-column prop="jan" label="1月"/>
-    <el-table-column prop="feb" label="2月" />
-    <el-table-column prop="mar" label="3月" />
-    <el-table-column prop="apr" label="4月" />
-    <el-table-column prop="may" label="5月" />
-    <el-table-column prop="jun" label="6月" />
-    <el-table-column prop="jul" label="7月" />
-    <el-table-column prop="aug" label="8月" />
-    <el-table-column prop="sep" label="9月" />
-    <el-table-column prop="oct" label="10月" />
-    <el-table-column prop="nov" label="11月" />
-    <el-table-column prop="dec" label="12月" />
-    <el-table-column prop="tatle" label="合計" />
+    <el-table-column prop="years" label="年份" width="100" :resizable="false" />
+    <el-table-column prop="jan" label="1月" :resizable="false" />
+    <el-table-column prop="feb" label="2月" :resizable="false" />
+    <el-table-column prop="mar" label="3月" :resizable="false" />
+    <el-table-column prop="apr" label="4月" :resizable="false" />
+    <el-table-column prop="may" label="5月" :resizable="false" />
+    <el-table-column prop="jun" label="6月" :resizable="false" />
+    <el-table-column prop="jul" label="7月" :resizable="false" />
+    <el-table-column prop="aug" label="8月" :resizable="false" />
+    <el-table-column prop="sep" label="9月" :resizable="false" />
+    <el-table-column prop="oct" label="10月" :resizable="false" />
+    <el-table-column prop="nov" label="11月" :resizable="false" />
+    <el-table-column prop="dec" label="12月" :resizable="false" />
+    <el-table-column prop="tatle" label="合計" :resizable="false" />
   </el-table>
   </el-tab-pane>
 
@@ -695,12 +705,12 @@ const item = "總計：229,253筆　　　111年06月合計：2,249筆 　　　
     </el-form-item>
           <el-form-item class="button-items">
             <div class="button-items-search">
-            <el-button @click="onSubmit"><el-icon><Search /></el-icon></el-button>
+            <el-button @click="onSubmit"><img src="../../assets/icon01.png" style="width: 26px; vertical-align: bottom" alt=""></el-button>
             </div>
             <div class="button-items-export">
             <el-button>
               <a href="../detail_info/index.html">
-            <img src="../../assets/Box-arrow-up-right.svg" style="width: 1.5rem; height: 1.5rem;" alt="">
+            <img src="../../assets/icon02.png" style="width: 26px; vertical-align: bottom" alt="">
             </a>
             </el-button>
             </div>
@@ -728,14 +738,14 @@ const item = "總計：229,253筆　　　111年06月合計：2,249筆 　　　
   :summary-method="getSummaries" 
   style="width: 100%"
   :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">
-    <el-table-column prop="labelNumber" label="單位" width="180"/>
-    <el-table-column prop="TuchengDingpu" label="案件總數(1)"/>
-    <el-table-column prop="airport" label="如期結案(2)" />
-    <el-table-column prop="Wanda" label="逾期結案(3)" />
-    <el-table-column prop="Songshan" label="未結案(4)" />
-    <el-table-column prop="TaichungGreen" label="如期未結案(5)" />
-    <el-table-column prop="Xinzhuang" label="逾期未結案(6)" />
-    <el-table-column prop="ring" label="逾期比例(7)" />
+    <el-table-column prop="labelNumber" label="單位" width="180" :resizable="false" />
+    <el-table-column prop="TuchengDingpu" label="案件總數(1)" :resizable="false" />
+    <el-table-column prop="airport" label="如期結案(2)" :resizable="false" />
+    <el-table-column prop="Wanda" label="逾期結案(3)" :resizable="false" />
+    <el-table-column prop="Songshan" label="未結案(4)" :resizable="false" />
+    <el-table-column prop="TaichungGreen" label="如期未結案(5)" :resizable="false" />
+    <el-table-column prop="Xinzhuang" label="逾期未結案(6)" :resizable="false" />
+    <el-table-column prop="ring" label="逾期比例(7)" :resizable="false" />
   </el-table>
 
 <p class="illustrate" style="margin-top: 10px;">案件總數(1) = 如期結案(2) + 逾期結案(3) + 未結案(4)</p>
@@ -764,12 +774,12 @@ const item = "總計：229,253筆　　　111年06月合計：2,249筆 　　　
     </el-form-item>
           <el-form-item class="button-items">
             <div class="button-items-search">
-            <el-button @click="onSubmit"><el-icon><Search /></el-icon></el-button>
+            <el-button @click="onSubmit"><img src="../../assets/icon01.png" style="width: 26px; vertical-align: bottom" alt=""></el-button>
             </div>
             <div class="button-items-export">
             <el-button>
               <a href="../detail_info/index.html">
-            <img src="../../assets/Box-arrow-up-right.svg" style="width: 1.5rem; height: 1.5rem;" alt="">
+            <img src="../../assets/icon02.png" style="width: 26px; vertical-align: bottom" alt="">
             </a>
             </el-button>
             </div>
@@ -795,10 +805,10 @@ const item = "總計：229,253筆　　　111年06月合計：2,249筆 　　　
   :summary-method="getSummaries" 
   style="width: 100%"
   :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">
-    <el-table-column prop="labelNumber" label="單位名稱" min-width="120"/>
-    <el-table-column prop="TuchengDingpu" label="全部數量"/>
-    <el-table-column prop="airport" label="111年6月數量" />
-    <el-table-column prop="Wanda" label="本月數量" />
+    <el-table-column prop="labelNumber" label="單位名稱" min-width="120" :resizable="false" />
+    <el-table-column prop="TuchengDingpu" label="全部數量" :resizable="false" />
+    <el-table-column prop="airport" label="111年6月數量" :resizable="false" />
+    <el-table-column prop="Wanda" label="本月數量" :resizable="false" />
   </el-table>
   </el-tab-pane>
   </el-tabs>

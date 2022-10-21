@@ -164,6 +164,8 @@ const tableData = ref([
       },
 ])
 
+// 註銷開關
+const deleteOn = ref(true)
 
 const deleteRow = (index: number) => {
   tableData.value.splice(index, 1)
@@ -222,13 +224,14 @@ const onAddItem = () => {
             stripe 
             style="width: 100%;" 
             :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">
-            <el-table-column type="index" label="序號" width="70" min-width="50"/>
+            <el-table-column type="index" label="序號" width="70" min-width="50" :resizable="false"/>
     <el-table-column 
         :prop="item.prop"
         :label="item.label"
         v-for="(item, index) in tableHeader"
         :key="item.prop"
         class="tableColumnCom"
+        :resizable="false"
         >
         <template #default="scope">
           <div
@@ -252,19 +255,20 @@ const onAddItem = () => {
           </div>
         </template>
     </el-table-column>
-    <el-table-column label="註銷" width="100" min-width="50">
+    <el-table-column label="註銷" width="100" min-width="50" :resizable="false">
       <template #default="scope">
-          <el-button
+          <!-- <el-button
             link
             size="small"
             @click="deleteRow(scope.$index)"
             class="button_delete"
             :icon="Delete"
             >
-          </el-button>
+          </el-button> -->
+          <el-switch v-model="deleteOn" />
         </template>
     </el-table-column>
-    <el-table-column label="標號維護" width="100" min-width="50">
+    <el-table-column label="標號維護" width="100" min-width="50" :resizable="false">
       <template #default="scope">
         <el-button
             link
@@ -272,16 +276,16 @@ const onAddItem = () => {
             v-show="!scope.row.editable" 
             @click="scope.row.editable = true"
             class="button_edit"
-            :icon="Edit"
             >
+            <img src="../../assets/icon04.png" style="width: 24px; vertical-align: bottom" alt="">
         </el-button>
         <el-button
             link
             size="small"
             v-show="scope.row.editable"
             @click="scope.row.editable = false"
-            :icon="Edit"
             >
+            <img src="../../assets/icon04.png" style="width: 24px; vertical-align: bottom" alt="">
         </el-button>
       </template>
     </el-table-column>

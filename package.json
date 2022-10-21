@@ -9,26 +9,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@element-plus/eslint-config": "^0.0.20220913",
     "@element-plus/icons": "^0.0.11",
-    "@element-plus/icons-vue": "^2.0.9",
+    "@element-plus/icons-vue": "^2.0.10",
     "axios": "^0.27.2",
-    "element-plus": "^2.2.16",
+    "element-plus": "^2.2.18",
     "unplugin-element-plus": "^0.4.1",
-    "vue": "^3.2.39",
-    "vue-router": "^4.1.5"
+    "vue": "^3.2.41",
+    "vue-router": "^4.1.5",
+    "webpack": "^5.74.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^3.1.0",
-    "@vue/eslint-config-prettier": "^7.0.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^8.23.1",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-vue": "^9.4.0",
-    "prettier": "^2.7.1",
+    "@vitejs/plugin-vue": "^3.1.2",
     "unplugin-auto-import": "^0.11.2",
-    "unplugin-vue-components": "^0.22.7",
-    "vite": "^3.1.0"
+    "unplugin-vue-components": "^0.22.8",
+    "vite": "^3.1.8"
   }
 }
