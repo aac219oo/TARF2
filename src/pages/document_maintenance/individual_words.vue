@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref , computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search, Edit, Delete } from '@element-plus/icons-vue'
 
@@ -9,14 +9,21 @@ const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
 
-
-const input3 = ref('')
-
+// const callback = '<%=Session["TEST_SESSION"].ToString()%>' 回傳API的值
 
 
-const item = {
-  wordsName: '',
+interface User {
+  wordsName: string
 }
+
+const search = ref('')
+const filterTableData = computed(() =>
+  tableData.filter(
+    (data) =>
+      !search.value ||
+      data.wordsName.toLowerCase().includes(search.value.toLowerCase())
+  )
+)
 
 const tableHeader = ref([
         {
@@ -27,24 +34,40 @@ const tableHeader = ref([
         }
         ])
 
-const tableData = ref([
+const tableData: User[] =[
       {
-        wordsName: "test",
+        wordsName: "test0",
       },
-])
+      {
+        wordsName: "test1",
+      },
+      {
+        wordsName: "test2",
+      },
+      {
+        wordsName: "test3",
+      },
+]
+
+const item = {
+  wordsName: '',
+}
+
+const onAddItem = (item) => {
+  item.editable = true;
+  filterTableData.value.push({
+    wordsName: '',
+  })
+}
 
 const handleEdit = (row) => {
   row.editable = true;
 }
 
 const deleteRow = (index: number) => {
-  tableData.value.splice(index, 1)
+  filterTableData.value.splice(index, 1)
 }
 
-const onAddItem = () => {
-  item.editable = true;
-  tableData.value.push(item)
-}
 
 
 </script>
@@ -77,7 +100,7 @@ const onAddItem = () => {
     <div class="maintenance_tool_wrap">
         <div class="maintenance_search">
     <el-input
-      v-model="input3"
+      v-model="search"
       placeholder="搜尋"
       class="input-with-select"      
       :suffix-icon="Search"
@@ -88,7 +111,7 @@ const onAddItem = () => {
   
 </div>
         <el-table 
-            :data="tableData" 
+            :data="filterTableData" 
             border 
             stripe 
             style="width: 100%;" 
@@ -111,7 +134,7 @@ const onAddItem = () => {
                 size="small"
                 v-model="scope.row[item.prop]"
                 :placeholder="`請輸入${item.label}`"
-                @change="handleEdit(scope.$index, scope.row)"
+                @change="handleEdit(scope.$index)"
               />
             </template>
           </div>

@@ -13,7 +13,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
 const input1 = ref('')
 
 // axios
-const url = 'http://tarf.grp.com.tw/api/Test/GetDeptChargQuery';
+const url = 'http://tarf.grp.com.tw/api/Test/GetOtherChargQuery';
 
 const data = reactive({
     newsdata:'',
@@ -34,62 +34,6 @@ onMounted(() => {
     })
 });
 
-
-// // table
-
-// const tableInfo = [
-//         {
-//     address: 'CF614A',
-//     unit: '皇昌營造股份有限公司',
-//     name: '龐靖恩',
-//     phonenumber: '2218-3918#508',
-//         },{
-//     address: 'CF614A',
-//     unit: '中興工程顧問股份有限公司',
-//     name: '施淑芬',
-//     phonenumber: '2218-3918#508',
-//         },{
-//     address: 'CF614B',
-//     unit: '中華工程股份有限公司',
-//     name: '許秀鳳',
-//     phonenumber: '2218-3918#508',
-//         },{
-//     address: 'CF614C',
-//     unit: '遠揚營造工程股份有限公司',
-//     name: '朱之豪',
-//     phonenumber: '2218-3918#508',
-//         },{
-//     address: 'CF614C',
-//     unit: '亞新工程顧問股份有限公司',
-//     name: '陳建仲',
-//     phonenumber: '2218-3918#508',
-//         },{
-//     address: 'CF614D',
-//     unit: '春原營造股份有限公司',
-//     name: '陳瑋鈞',
-//     phonenumber: '2218-3918#508',
-//         },{
-//     address: 'CF614D',
-//     unit: '亞新工程顧問股份有限公司',
-//     name: '龐靖恩',
-//     phonenumber: '2218-3918#508',
-//         },{
-//     address: 'CF614D',
-//     unit: '泰興工程顧問股份有限公司',
-//     name: '施又綾',
-//     phonenumber: '2218-3918#508',
-//         },{
-//     address: 'CF614A',
-//     unit: '皇昌營造股份有限公司',
-//     name: '龐靖恩',
-//     phonenumber: '2218-3918#508',
-//         },{ 
-//     address: 'CF614C',
-//     unit: '皇昌營造股份有限公司',
-//     name: '龐靖恩',
-//     phonenumber: '2218-3918#508',
-//         },
-// ]
 
 </script>
 <template>
@@ -119,7 +63,7 @@ onMounted(() => {
       <el-input
       v-model="input1"
       class="w-50 m-2"
-      size="large"
+      size="default"
       placeholder="搜尋"
       :suffix-icon="Search"
     />
@@ -129,10 +73,10 @@ onMounted(() => {
   
   <el-table class="tableForm tableContactCom" :data="data.newsdata" stripe border :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">    
     <el-table-column type="index" label="序號" width="90" :resizable="false"/>
-    <el-table-column prop="empL_SERI" sortable label="標號" :resizable="false"/>
-    <el-table-column prop="depT_NAME" sortable label="單位" :resizable="false"/>
-    <el-table-column prop="empL_NAME" sortable label="姓名" :resizable="false"/>
-    <el-table-column prop="ofF_TEL" sortable label="電話" :resizable="false"/>
+    <el-table-column prop="proJ_ID" sortable label="標號" :resizable="false"/>
+    <el-table-column prop="useR_ID" sortable label="單位" :resizable="false"/>
+    <el-table-column prop="depT_NAME" sortable label="姓名" :resizable="false"/>
+    <el-table-column prop="useR_NAME" sortable label="電話" :resizable="false"/>
   </el-table>
         </el-row>
       </el-main>

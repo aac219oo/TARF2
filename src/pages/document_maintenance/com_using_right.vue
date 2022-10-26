@@ -171,6 +171,7 @@ const deleteRow = (index: number) => {
   tableData.value.splice(index, 1)
 }
 
+
 const onAddItem = () => {  
   item.editable = true;
   tableData.value.push(item)
