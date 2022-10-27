@@ -73,19 +73,22 @@ const tableData = ref([
       }
 ])
 
-const handleEdit = () => {
-  
+const handleEdit = (row) => {
+	row.editable = true;
 }
 
 const deleteRow = (index: number) => {
   tableData.value.splice(index, 1)
 }
 
-const onAddItem = () => {  
-  item.editable = true;
-  tableData.value.push(item)
+const onAddItem = (index) => {
+	const item = {
+    conditionCode: "",
+    conditionInstruction: "",
+		editable: true,
+	};
+	tableData.value.splice(index, 0, item)
 }
-
 
 </script>
 <template>
@@ -105,7 +108,7 @@ const onAddItem = () => {
     @select="handleSelect"
   >
     <el-menu-item index="3"><a href="../access_setting/index.html">權限設定</a></el-menu-item>
-    <el-menu-item index="4"><a href="../individual_words/index.html">個人使用詞彙</a></el-menu-item>
+    <!-- <el-menu-item index="4"><a href="../individual_words/index.html">個人使用詞彙</a></el-menu-item> -->
     <el-menu-item index="5"><a href="../item_codes/index.html">送審項目代碼</a></el-menu-item>
     <el-menu-item index="6"><a href="../resualt_codes/index.html">送審結果代碼</a></el-menu-item>
     <el-menu-item index="1"><a href="../condition_codes/index.html">案件狀態代碼</a></el-menu-item>
@@ -151,7 +154,7 @@ const onAddItem = () => {
                 size="small"
                 v-model="scope.row[item.prop]"
                 :placeholder="`請輸入${item.label}`"
-                @change="handleEdit(scope.$index, scope.row)"
+                @change="handleEdit(scope.$index)"
               />
             </template>
           </div>

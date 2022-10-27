@@ -11,18 +11,22 @@ const handleSelect = (key: string, keyPath: string[]) => {
 
 // const callback = '<%=Session["TEST_SESSION"].ToString()%>' 回傳API的值
 
-interface User {
-	wordsName: string
-}
+// interface User {
+// 	wordsName: string
+// }
 
 const search = ref('')
-const filterTableData = computed(() =>
-	tableData.filter(
-		(data) =>
-			!search.value ||
-			data.wordsName.toLowerCase().includes(search.value.toLowerCase())
-	)
-)
+// const filterTableData = computed(() =>
+// 	tableData.filter(
+// 		(data) =>
+// 			!search.value ||
+// 			data.wordsName.toLowerCase().includes(search.value.toLowerCase())
+// 	)
+// )
+
+// const tableDateArray = { ...filterTableData }
+
+// console.log(tableDateArray)
 
 const tableHeader = ref([
 	{
@@ -34,18 +38,9 @@ const tableHeader = ref([
 ]);
 
 
-const tableData = reactive<User[]>([
+const tableData = ref([
 			{
-				wordsName: "test0",
-			},
-			{
-				wordsName: "test1",
-			},
-			{
-				wordsName: "test2",
-			},
-			{
-				wordsName: "test3",
+				wordsName: "test",
 			},
 ])
 
@@ -55,15 +50,15 @@ const onAddItem = (index) => {
 		wordsName: "",
 		editable: true,
 	};
-	filterTableData.value.splice(index, 0, item)
+	tableData.value.splice(index, 0, item)
 }
 
 const handleEdit = (row) => {
 	row.editable = true;
 };
 
-const deleteRow = (index: number, row) => {
-	row.value.splice(index, 1);
+const deleteRow = (index: number) => {
+	tableData.value.splice(index, 1);
 };
 
 </script>
@@ -83,15 +78,20 @@ const deleteRow = (index: number, row) => {
 				mode="horizontal"
 				@select="handleSelect"
 			>
-				<el-menu-item index="6"
+				<!-- <el-menu-item index="6"
 					><a href="../access_setting/index.html">權限設定</a></el-menu-item
-				>
+				> -->
 				<el-menu-item index="1"
 					><a href="../individual_words/index.html"
 						>個人使用詞彙</a
 					></el-menu-item
 				>
 				<el-menu-item index="2"
+					><a href="../access_setting/index.html"
+						>系統資料維護</a
+					></el-menu-item
+				>
+				<!-- <el-menu-item index="2"
 					><a href="../item_codes/index.html">送審項目代碼</a></el-menu-item
 				>
 				<el-menu-item index="3"
@@ -106,7 +106,7 @@ const deleteRow = (index: number, row) => {
 					><a href="../com_using_right/index.html"
 						>廠商使用權限</a
 					></el-menu-item
-				>
+				> -->
 			</el-menu>
 
 			<div class="maintenance_h3">技術文件【個人使用詞彙】維護</div>
@@ -123,7 +123,7 @@ const deleteRow = (index: number, row) => {
 				</div>
 			</div>
 			<el-table
-				:data="filterTableData"
+				:data="tableData"
 				border
 				stripe
 				style="width: 100%"
@@ -227,7 +227,6 @@ const deleteRow = (index: number, row) => {
 					</template>
 				</el-table-column>
 			</el-table>
-			<!-- <table_words /> -->
 		</el-main>
 	</el-container>
 </template>

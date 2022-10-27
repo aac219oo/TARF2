@@ -4,7 +4,7 @@ import type { TableColumnCtx } from 'element-plus/es/components/table/src/table-
 import zhTw from 'element-plus/dist/locale/zh-tw.mjs'
 
 const language = ref('zh-tw')
-const locale = computed(() => (language.value === 'zh-tw' ? zhTw : en))
+const locale = computed(() => (language.value === 'zh-tw'))
 
 // navbar
 const activeIndex = ref('1')
@@ -69,7 +69,7 @@ const valueDate = ref('')
     @select="handleSelect"
   >
     <el-menu-item index="1"><a href="../access_setting/index.html">權限設定</a></el-menu-item>
-    <el-menu-item index="2"><a href="../individual_words/index.html">個人使用詞彙</a></el-menu-item>
+    <!-- <el-menu-item index="2"><a href="../individual_words/index.html">個人使用詞彙</a></el-menu-item> -->
     <el-menu-item index="3"><a href="../item_codes/index.html">送審項目代碼</a></el-menu-item>
     <el-menu-item index="4"><a href="../resualt_codes/index.html">送審結果代碼</a></el-menu-item>
     <el-menu-item index="5"><a href="../condition_codes/index.html">案件狀態代碼</a></el-menu-item>

@@ -1,163 +1,199 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { Search, Edit, Delete } from '@element-plus/icons-vue'
 
+const search = ref('')
 // navbar
 const activeIndex = ref('1')
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
+// dialogAddItem
+const dialogFormVisible = ref(false)
+const openLabeling = ref(false)
+const formLabelWidth = '100px'
 
+// labeling選項
+const form = reactive({
+  userName: '',
+  name: '',
+  com_Name: '',  
+  UniformNumbers: '',
+  labeling: '',
+})
 
-const input3 = ref('')
+const formLabeling = reactive({
+  labeling: '',
+})
 
-const item = {
-  userName: '' ,
-  name: '' ,
-  units: '' ,
-  accessCondition: '' ,
-  accessType: '' ,
+const labeling = ref<string[]>([])
+const optionsLabeling = [
+  {
+    labeling: 'CF620',
+    label: 'CF620',
+  },
+  {
+    labeling: 'CF624G',
+    label: 'CF624G',
+  },
+  {
+    labeling: 'CF680C',
+    label: 'CF680C',
+  },
+]
 
-}
+// labelingMain選項
+const labelingMain = ref<string[]>([])
+const optionsLabelingMain = [
+  {
+    labelingMain: 'CF620',
+    label: 'CF620',
+  },
+  {
+    labelingMain: 'CF624G',
+    label: 'CF624G',
+  },
+  {
+    labelingMain: 'CF680C',
+    label: 'CF680C',
+  },
+]
+
+// const item = {
+//   userName: '' ,
+//   name: '' ,
+//   com_Name: '' ,
+//   accessCondition: '' ,
+//   accessType: '' ,
+// }
 
 const tableHeader = ref([
         {
           prop: "userName",
           label: "帳號",
           editable: false,
-          type: "input"
         }, {
           prop: "name",
           label: "姓名",
           editable: false,
-          type: "input"
         }, {
-          prop: "units",
-          label: "單位",
+          prop: "com_Name",
+          label: "公司名稱",
           editable: false,
-          type: "input"
         }, {
           prop: "accessCondition",
           label: "權限狀態",
           editable: false,
-          type: "input"
         }, {
           prop: "accessType",
           label: "權限種類",
           editable: false,
-          type: "input"
-        }, 
-        // {
-        //   prop: "labeling",
-        //   label: "標號",
-        //   editable: false,
-        //   type: "input"
-        // },
+        }
         ])
 
 const tableData = ref([
       {
         userName: "D0002612",
         name: "楊明耀",
-        units: "正堯工程顧問股份有限公司",
+        com_Name: "正堯工程顧問股份有限公司",
         accessCondition: "有效",
         accessType: "審查權限",
         labeling: '',
       }, {
         userName: "D0002611",
         name: "黃健翔",
-        units: "中興工程顧問股份有限公司",
+        com_Name: "中興工程顧問股份有限公司",
         accessCondition: "有效",
         accessType: "審查權限",
         labeling: '',
       }, {
         userName: "D0002610",
         name: "林彥良",
-        units: "中興工程顧問股份有限公司",
+        com_Name: "中興工程顧問股份有限公司",
         accessCondition: "有效",
         accessType: "審查權限",
         labeling: '',
       }, {
         userName: "D0002609",
         name: "李宗桓",
-        units: "中興工程顧問股份有限公司",
+        com_Name: "中興工程顧問股份有限公司",
         accessCondition: "有效",
         accessType: "審查權限",
         labeling: '',
       }, {
         userName: "D0002608",
         name: "李玢琦",
-        units: "股份有限公司",
+        com_Name: "股份有限公司",
         accessCondition: "有效",
         accessType: "審查權限",
         labeling: '',
       }, {
         userName: "D0002607",
         name: "劉兆宸",
-        units: "股份有限公司",
+        com_Name: "股份有限公司",
         accessCondition: "有效",
         accessType: "審查權限",
         labeling: '',
       }, {
         userName: "D0002606",
         name: "趙坤銘",
-        units: "千惠園藝社",
+        com_Name: "千惠園藝社",
         accessCondition: "有效",
         accessType: "審查權限",
         labeling: '',
       }, {
         userName: "D0002604",
         name: "陳南宏",
-        units: "綠野國際建築師事務所",
+        com_Name: "綠野國際建築師事務所",
         accessCondition: "有效",
         accessType: "審查權限",
         labeling: '',
       }, {
         userName: "D0002603",
         name: "吳政育",
-        units: "綠野國際建築師事務所",
+        com_Name: "綠野國際建築師事務所",
         accessCondition: "有效",
         accessType: "審查權限",
         labeling: '',
       }, {
         userName: "D0002602",
         name: "顏家宏",
-        units: "綠野國際建築師事務所",
+        com_Name: "綠野國際建築師事務所",
         accessCondition: "有效",
         accessType: "審查權限",
         labeling: '',
       }, {
         userName: "D0002601",
         name: "羅叡遠",
-        units: "綠野國際建築師事務所",
+        com_Name: "綠野國際建築師事務所",
         accessCondition: "有效",
         accessType: "審查權限",
         labeling: '',
       }, {
         userName: "D0002600",
         name: "張佳文",
-        units: "大陸工程股份有限公司",
+        com_Name: "大陸工程股份有限公司",
         accessCondition: "有效",
         accessType: "審查權限",
         labeling: '',
       }, {
         userName: "D0002599",
         name: "蔡惠婷",
-        units: "法商阿爾斯通運輸股份有限公司",
+        com_Name: "法商阿爾斯通運輸股份有限公司",
         accessCondition: "有效",
         accessType: "審查權限",
         labeling: '',
       }, {
         userName: "D0002598",
         name: "林浩輝",
-        units: "台北市停車管理工程處",
+        com_Name: "台北市停車管理工程處",
         accessCondition: "有效",
         accessType: "審查權限",
         labeling: '',
       }, {
         userName: "D0002596",
         name: "趙祥廷",
-        units: "千惠園藝社",
+        com_Name: "千惠園藝社",
         accessCondition: "有效",
         accessType: "審查權限",
         labeling: '',
@@ -165,18 +201,7 @@ const tableData = ref([
 ])
 
 // 註銷開關
-const deleteOn = ref(true)
-
-const deleteRow = (index: number) => {
-  tableData.value.splice(index, 1)
-}
-
-
-const onAddItem = () => {  
-  item.editable = true;
-  tableData.value.push(item)
-}
-
+// const deleteOn = ref(true)
 
 </script>
 <template>
@@ -196,7 +221,7 @@ const onAddItem = () => {
     @select="handleSelect"
   >
     <el-menu-item index="2"><a href="../access_setting/index.html">權限設定</a></el-menu-item>
-    <el-menu-item index="3"><a href="../individual_words/index.html">個人使用詞彙</a></el-menu-item>
+    <!-- <el-menu-item index="3"><a href="../individual_words/index.html">個人使用詞彙</a></el-menu-item> -->
     <el-menu-item index="4"><a href="../item_codes/index.html">送審項目代碼</a></el-menu-item>
     <el-menu-item index="5"><a href="../resualt_codes/index.html">送審結果代碼</a></el-menu-item>
     <el-menu-item index="6"><a href="../condition_codes/index.html">案件狀態代碼</a></el-menu-item>
@@ -207,15 +232,69 @@ const onAddItem = () => {
     <div class="maintenance_tool_wrap">
         <div class="maintenance_search">
     <el-input
-      v-model="input3"
+      v-model="search"
       placeholder="搜尋"
-      class="input-with-select"      
+      class="input-with-select"
       :suffix-icon="Search"
     >
     </el-input>
   </div>
 
-  <el-button class="maintenance_add" @click="onAddItem">新增帳號</el-button>
+  <!-- dialogAddItem -->
+  <template class="maintenance_add_wrap">
+    <el-button class="maintenance_add" @click="dialogFormVisible = true">
+    新增帳號
+  </el-button>
+  <el-dialog v-model="dialogFormVisible" title="新增帳號">
+    <el-form :model="form">
+      <el-form-item label="帳號" :label-width="formLabelWidth">
+        <el-input v-model="form.userName" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="姓名" :label-width="formLabelWidth">
+        <el-input v-model="form.name" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="公司名稱" :label-width="formLabelWidth">
+        <el-input v-model="form.com_Name" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="統一編號" :label-width="formLabelWidth">
+        <el-input v-model="form.UniformNumbers" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="標號" :label-width="formLabelWidth">
+        <el-select
+            v-model="labeling"
+            multiple
+            filterable
+            allow-create
+            default-first-option
+            :reserve-keyword="false"
+            placeholder="請選擇"
+            >
+            <el-option
+                v-for="item in optionsLabeling"
+                :key="item.labeling"
+                :label="item.label"
+                :value="item.labeling"
+                />
+        </el-select>
+      </el-form-item>
+      <!-- <el-form-item label="Zones" :label-width="formLabelWidth">
+        <el-select v-model="form.region" placeholder="Please select a zone">
+          <el-option label="Zone No.1" value="shanghai" />
+          <el-option label="Zone No.2" value="beijing" />
+        </el-select>
+      </el-form-item> -->
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">
+          Confirm
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
+</template>
+  <!-- <el-button class="maintenance_add" @click="onAddItem">新增帳號</el-button> -->
 </div>
 
         <el-table 
@@ -234,7 +313,7 @@ const onAddItem = () => {
         class="tableColumnCom"
         :resizable="false"
         >
-        <template #default="scope">
+        <!-- <template #default="scope">
           <div
             v-show="item.editable || scope.row.editable"
             class="editable-row"
@@ -254,23 +333,46 @@ const onAddItem = () => {
           >
             <span class="editable-row-span">{{ scope.row[item.prop] }}</span>
           </div>
-        </template>
+        </template> -->
     </el-table-column>
     <el-table-column label="註銷" width="100" min-width="50" :resizable="false">
       <template #default="scope">
-          <!-- <el-button
-            link
-            size="small"
-            @click="deleteRow(scope.$index)"
-            class="button_delete"
-            :icon="Delete"
-            >
-          </el-button> -->
-          <el-switch v-model="deleteOn" />
+          <el-switch v-model="scope.row.deleteOn" />
         </template>
     </el-table-column>
     <el-table-column label="標號維護" width="100" min-width="50" :resizable="false">
-      <template #default="scope">
+      <template #default>
+        <el-button
+            link
+            @click="openLabeling = true"
+            class="button_edit"
+            >
+            <img src="../../assets/icon04.png" style="width: 24px; vertical-align: bottom" alt="">
+        </el-button>
+  <el-dialog v-model="openLabeling" title="標號維護">
+    <el-form :model="formLabeling">
+      <el-form-item label="Zones" :label-width="formLabelWidth">
+        <el-select v-model="labelingMain" placeholder="Please select a zone">
+                                <el-option
+                                    v-for="item in optionsLabelingMain"
+                                    :key="item.labelingMain"
+                                    :label="item.label"
+                                    :value="item.labelingMain"
+                                    />
+        </el-select>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">
+          Confirm
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
+      </template>
+      <!-- <template #default="scope">
         <el-button
             link
             size="small" 
@@ -288,7 +390,7 @@ const onAddItem = () => {
             >
             <img src="../../assets/icon04.png" style="width: 24px; vertical-align: bottom" alt="">
         </el-button>
-      </template>
+      </template> -->
     </el-table-column>
   </el-table>
       </el-main>

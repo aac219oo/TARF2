@@ -670,13 +670,17 @@ div.el-tabs__item {
   background-color: transparent;
 }
 
+.maintenance_add_wrap {
+  display: block;
+  margin-left: 20px;
+}
+
 .maintenance_add.el-button {
   width: 90px;
   background-color: #0276ab;
   border: none;
   font-weight: 600;
   color: #fff;
-  margin-left: 20px;
 }
 
 .maintenance_add.el-button:hover {
@@ -687,6 +691,10 @@ div.el-tabs__item {
 .maintenance_add.el-button:focus {
   background-color: #319dcf;
   color: #fff;
+}
+
+.maintenance_labeling {
+  display: block;
 }
 
 .button_edit.el-button+.el-button {
@@ -704,6 +712,14 @@ div.el-tabs__item {
 
 .button_edit i.el-icon svg {
   color: #0276ab;
+}
+
+.el-table td.el-table__cell .el-overlay {
+  --el-overlay-color-lighter: rgba(255, 255, 255, 0.04);
+}
+
+.el-table td.el-table__cell .el-dialog {
+  --el-box-shadow: 0px 12px 32px 4px rgba(255, 255, 255, 0.04), 0px 8px 20px rgba(255, 255, 255, 0.08);
 }
 
 /* /maintenance_main */
