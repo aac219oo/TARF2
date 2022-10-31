@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { ref , reactive , onMounted , watch , computed } from 'vue'
-import { Search } from '@element-plus/icons-vue'
-import axios from 'axios';
+import { ref, reactive, onMounted, watch, computed } from "vue";
+import { Search } from "@element-plus/icons-vue";
+import axios from "axios";
+// import { setTimeout } from "timers/promises";
 
 //navbar
 const activeIndex = ref("1");
@@ -9,38 +10,27 @@ const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
 
-// interface User {
-//   date: string
-//   name: string
-//   address: string
-// }
-
 // filter
-const search = ref('')
-
-// const tabledata = reactive({
-//   newsdata: '',
-//   filterTableData: computed(() =>
-//   xxData.filter(
-//     (data) =>
-//       !search.value ||
-//       data.name.toLowerCase().includes(search.value.toLowerCase())
-//   )
-// )
-// })
+const search = ref("");
+// loading
+const loading = ref(true);
+onMounted(() => {
+  setTimeout(() => (loading.value = false), 1000);
+});
 
 // const callback = '<%=Session["TEST_SESSION"].ToString()%>' 回傳API的值
 
 const tabledata = reactive({
-    newsdata:'',
-})
+  newsdata: "",
+});
 
 // axios
 const url = "http://tarf.grp.com.tw/api/Test/GetDeptChargQuery";
 
 onMounted(() => {
-  axios.get(url)
-    .then(res => {
+  axios
+    .get(url)
+    .then((res) => {
       console.log(res.data);
       tabledata.newsdata = res.data;
     })
@@ -52,8 +42,6 @@ onMounted(() => {
       // always executed
     });
 });
-
-
 </script>
 <template>
   <el-container>
@@ -83,28 +71,46 @@ onMounted(() => {
         >
       </el-menu>
 
-        <el-row>
-          <div class="title_main contact-title"><h4>捷運局各單位窗口資訊</h4></div>
-          <el-form class="contact-search">
-    <el-form-item>
-      <el-input
-      v-model="search"
-      class="w-50 m-2"
-      size="default"
-      placeholder="搜尋"
-      :suffix-icon="Search"
-    />
-    </el-form-item>
-  </el-form>
-  
-  <el-table class="tableForm tableContactUnits" :data="tabledata.newsdata" stripe border :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">    
-    <el-table-column type="index" label="序號" width="90"/>
-    <el-table-column prop="depT_NAME" sortable label="單位" class="unitAlign"/>
-    <el-table-column prop="empL_NAME" sortable label="姓名"/>
-    <el-table-column prop="ofF_TEL" sortable label="電話"/>
-  </el-table>
-        </el-row>
-      </el-main>
-            <p>{{tabledata.newsdata}}</p>
-    </el-container>
+      <el-row>
+        <div class="title_main contact-title">
+          <h4>捷運局各單位窗口資訊</h4>
+        </div>
+        <el-form class="contact-search">
+          <el-form-item>
+            <el-input
+              v-model="search"
+              class="w-50 m-2"
+              size="default"
+              placeholder="搜尋"
+              :suffix-icon="Search"
+            />
+          </el-form-item>
+        </el-form>
+
+        <el-table
+          class="tableForm tableContactUnits"
+          v-loading="loading"
+          :data="tabledata.newsdata"
+          stripe
+          border
+          :header-cell-style="{
+            background: '#ebf4f9',
+            color: '#000',
+            textAlign: 'center',
+          }"
+        >
+          <el-table-column type="index" label="序號" width="90" />
+          <el-table-column
+            prop="depT_NAME"
+            sortable
+            label="單位"
+            class="unitAlign"
+          />
+          <el-table-column prop="empL_NAME" sortable label="姓名" />
+          <el-table-column prop="ofF_TEL" sortable label="電話" />
+        </el-table>
+      </el-row>
+    </el-main>
+    <!-- <p>{{ tabledata.newsdata }}</p> -->
+  </el-container>
 </template>
