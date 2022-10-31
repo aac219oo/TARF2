@@ -1,4 +1,4 @@
-/* 初始化 */
+/* html樣式 */
 
 * {
   padding: 0;
@@ -75,14 +75,13 @@ a {
   min-width: 240px;
 }
 
+.el-table {
+  margin: 0 auto;
+}
+
 .el-table [class*=el-table__row--level] .el-table__expand-icon {
   display: inline-table !important;
 }
-
-/* /初始化 */
-
-
-/* html樣式 */
 
 .el-header {
   background-color: #0276ab;
@@ -121,7 +120,6 @@ a {
   text-align: end;
 }
 
-
 .el-main {
   max-width: 1360px;
   min-width: 1360px;
@@ -143,7 +141,7 @@ i.el-icon svg {
   height: 24px;
 }
 
-/*  */
+/* /html樣式 */
 
 /* index */
 
@@ -626,11 +624,6 @@ div.el-tabs__item {
   width: 100px;
 }
 
-.el-table.tableComUsing td.el-table__cell.el-table_1_column_4 div {
-  justify-content: start;
-}
-
-
 /* /access_setting */
 
 /* maintenance_main */
@@ -653,8 +646,16 @@ div.el-tabs__item {
   width: 280px;
 }
 
+
 .el-table td.el-table__cell div {
   justify-content: space-around;
+}
+
+#condition_codes td.el-table_1_column_3 .cell,
+#item_codes td.el-table_1_column_3 .cell,
+#resualt_codes td.el-table_1_column_3 .cell,
+#com_using_right td.el-table_1_column_4 .cell {
+  justify-content: flex-start;
 }
 
 .maintenance_plus.el-button {
@@ -698,7 +699,7 @@ div.el-tabs__item {
 }
 
 .button_edit.el-button+.el-button {
-  margin: unset;
+  /* margin: unset; */
   color: #0276ab;
 }
 
@@ -714,15 +715,27 @@ div.el-tabs__item {
   color: #0276ab;
 }
 
-.el-table td.el-table__cell .el-overlay {
-  --el-overlay-color-lighter: rgba(255, 255, 255, 0.04);
+.el-overlay {
+  --el-overlay-color-lighter: rgba(0, 0, 0, 0);
 }
 
-.el-table td.el-table__cell .el-dialog {
-  --el-box-shadow: 0px 12px 32px 4px rgba(255, 255, 255, 0.04), 0px 8px 20px rgba(255, 255, 255, 0.08);
+.el-dialog {
+  --el-dialog-bg-color: #ECF5FF !important;
+  --el-box-shadow: 0px 12px 32px 4px rgba(0, 0, 0, 0.1), 0px 8px 20px rgba(0, 0, 0, 0.14);
+  width: 390px !important;
+  border-radius: 8px !important;
 }
+
+.el-dialog .el-form-item__label {
+  justify-content: flex-start;
+}
+
 
 /* /maintenance_main */
+
+/* individual_word */
+
+/* /individual_word */
 
 /* JS效果後綴 */
 
@@ -730,7 +743,7 @@ div.el-tabs__item {
   display: block;
 }
 
-@media (max-width:985px) {
+/* @media (max-width:985px) {
   .el-header p {
     width: auto;
   }
@@ -751,4 +764,4 @@ div.el-tabs__item {
   .tableForm {
     margin: 10px;
   }
-}
+} */

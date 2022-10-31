@@ -122,7 +122,7 @@
       :data="tables.slice((currentPage-1)*pageSize,currentPage*pageSize)" 
       :stripe="true"
       :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">
-          <el-table-column type="index" label="序號" width="57" :resizable="false"/>
+          <el-table-column type="index" :index="indexMethoud" label="序號" width="57" :resizable="false"/>
           <el-table-column label="案號" prop="e_number" sortable :min-width="25" :resizable="false"></el-table-column>
           <el-table-column label="標號" prop="labelNumber" sortable align="center" :min-width="20" :resizable="false"></el-table-column>
           <el-table-column label="主旨" prop="title" sortable :resizable="false"></el-table-column>
@@ -163,6 +163,7 @@ import {
 } from '@element-plus/icons-vue'
 import zhTw from 'element-plus/dist/locale/zh-tw'
 import en from 'element-plus/es/locale/lang/en'
+import { paginationEmits } from 'element-plus';
 
 const language = ref('zh-tw')
 const locale = computed(() => (language.value === 'zh-tw' ? zhTw : en))
@@ -174,6 +175,9 @@ const handleSizeChange = (val: number) => {
 }
 const handleCurrentChange = (val: number) => {
   console.log(`current page: ${val}`)
+}
+const indexMethoud = (index: number) => {
+  return (currentPage.value - 1) * pageSize.value + index + 1;
 }
 // do not use same name with ref
 const form = reactive({  
@@ -597,3 +601,24 @@ const tables = [{
         },
 ]
 </script>
+<!-- <script lang="ts">
+export default {
+  pagination: {
+    pageSizes: [10, 15, 20, 25],
+    total: 0,
+    pageSize: 10,
+    currentPage: 1
+    },
+    methods: {
+      indexMethod(index) {
+        const handleSizeChange = (val: number) => {
+        console.log(`${val} items per page`);
+      }
+      const handleCurrentChange = (val: number) => {
+        console.log(`current page: ${val}`);
+        }      
+        (this.pagination.currentPage - 1) * this.pagination.pageSize + index + 1
+    }
+  }
+}
+</script> -->

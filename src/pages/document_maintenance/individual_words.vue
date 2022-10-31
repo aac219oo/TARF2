@@ -126,7 +126,7 @@ const deleteRow = (index: number) => {
 				:data="tableData"
 				border
 				stripe
-				style="width: 100%"
+				style="width: 100%; max-width: 800px;"
 				:header-cell-style="{
 					background: '#ebf4f9',
 					color: '#000',

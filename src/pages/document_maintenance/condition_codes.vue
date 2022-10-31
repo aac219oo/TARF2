@@ -134,9 +134,9 @@ const onAddItem = (index) => {
             :data="tableData" 
             border 
             stripe 
-            style="width: 100%;" 
+            style="width: 100%; max-width: 600px;" 
             :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">
-            <el-table-column type="index" label="序號" width="70" min-width="50" :resizable="false"/>
+            <el-table-column type="index" label="序號" width="57" :resizable="false"/>
     <el-table-column 
         :prop="item.prop"
         :label="item.label"

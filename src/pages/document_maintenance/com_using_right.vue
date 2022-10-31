@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import { Search, Edit, Delete } from '@element-plus/icons-vue'
+import { reactive, ref, } from 'vue'
+import { Search, } from '@element-plus/icons-vue'
+// import { ElMessage, ElMessageBox } from 'element-plus'
 
 const search = ref('')
 // navbar
@@ -10,8 +11,12 @@ const handleSelect = (key: string, keyPath: string[]) => {
 }
 // dialogAddItem
 const dialogFormVisible = ref(false)
-const openLabeling = ref(false)
+// const openLabeling = ref(false)
 const formLabelWidth = '100px'
+
+const cancel = () => {
+  dialogFormVisible.value = false
+}
 
 // labeling選項
 const form = reactive({
@@ -22,11 +27,12 @@ const form = reactive({
   labeling: '',
 })
 
-const formLabeling = reactive({
-  labeling: '',
-})
+// const formLabeling = reactive({
+//   labeling: '',
+// })
 
 const labeling = ref<string[]>([])
+const lableling01 = ref<string[]>(['CF620', 'CF680C'])
 const optionsLabeling = [
   {
     labeling: 'CF620',
@@ -42,22 +48,37 @@ const optionsLabeling = [
   },
 ]
 
+
+// const handleClose = (done: () => void) => {
+//   ElMessageBox.confirm('確定取消儲存?',
+//     {
+//       confirmButtonText: '是',
+//       cancelButtonText: '否',
+//     })
+//     .then(() => {
+//       done()
+//     })
+//     .catch(() => {
+//       // catch error
+//     })
+// }
+
 // labelingMain選項
-const labelingMain = ref<string[]>([])
-const optionsLabelingMain = [
-  {
-    labelingMain: 'CF620',
-    label: 'CF620',
-  },
-  {
-    labelingMain: 'CF624G',
-    label: 'CF624G',
-  },
-  {
-    labelingMain: 'CF680C',
-    label: 'CF680C',
-  },
-]
+// const labelingMain = ref<string[]>([])
+// const optionsLabelingMain = [
+//   {
+//     labelingMain: 'CF620',
+//     label: 'CF620',
+//   },
+//   {
+//     labelingMain: 'CF624G',
+//     label: 'CF624G',
+//   },
+//   {
+//     labelingMain: 'CF680C',
+//     label: 'CF680C',
+//   },
+// ]
 
 // const item = {
 //   userName: '' ,
@@ -67,6 +88,7 @@ const optionsLabelingMain = [
 //   accessType: '' ,
 // }
 
+// table
 const tableHeader = ref([
         {
           prop: "userName",
@@ -245,23 +267,30 @@ const tableData = ref([
     <el-button class="maintenance_add" @click="dialogFormVisible = true">
     新增帳號
   </el-button>
-  <el-dialog v-model="dialogFormVisible" title="新增帳號">
+  <el-dialog v-model="dialogFormVisible"
+    center
+    align-center
+    :close-on-click-modal="false"
+    @close="cancel"
+    :before-close="cancel"
+    title="新增帳號"
+    >
     <el-form :model="form">
       <el-form-item label="帳號" :label-width="formLabelWidth">
-        <el-input v-model="form.userName" autocomplete="off" />
+        <el-input v-model="form.userName" autocomplete="off" placeholder="請輸入" />
       </el-form-item>
       <el-form-item label="姓名" :label-width="formLabelWidth">
-        <el-input v-model="form.name" autocomplete="off" />
+        <el-input v-model="form.name" autocomplete="off" placeholder="請輸入" />
       </el-form-item>
       <el-form-item label="公司名稱" :label-width="formLabelWidth">
-        <el-input v-model="form.com_Name" autocomplete="off" />
+        <el-input v-model="form.com_Name" autocomplete="off" placeholder="請輸入" />
       </el-form-item>
       <el-form-item label="統一編號" :label-width="formLabelWidth">
-        <el-input v-model="form.UniformNumbers" autocomplete="off" />
+        <el-input v-model="form.UniformNumbers" autocomplete="off" placeholder="請輸入" />
       </el-form-item>
       <el-form-item label="標號" :label-width="formLabelWidth">
         <el-select
-            v-model="labeling"
+            v-model="form.labeling"
             multiple
             filterable
             allow-create
@@ -277,24 +306,17 @@ const tableData = ref([
                 />
         </el-select>
       </el-form-item>
-      <!-- <el-form-item label="Zones" :label-width="formLabelWidth">
-        <el-select v-model="form.region" placeholder="Please select a zone">
-          <el-option label="Zone No.1" value="shanghai" />
-          <el-option label="Zone No.2" value="beijing" />
-        </el-select>
-      </el-form-item> -->
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button @click="cancel">取消</el-button>
         <el-button type="primary" @click="dialogFormVisible = false">
-          Confirm
+          儲存
         </el-button>
       </span>
     </template>
   </el-dialog>
 </template>
-  <!-- <el-button class="maintenance_add" @click="onAddItem">新增帳號</el-button> -->
 </div>
 
         <el-table 
@@ -304,7 +326,7 @@ const tableData = ref([
             stripe 
             style="width: 100%;" 
             :header-cell-style="{ background: '#ebf4f9', color: '#000', textAlign: 'center'}">
-            <el-table-column type="index" label="序號" width="70" min-width="50" :resizable="false"/>
+            <el-table-column type="index" label="序號" width="57" :resizable="false"/>
     <el-table-column 
         :prop="item.prop"
         :label="item.label"
@@ -313,84 +335,49 @@ const tableData = ref([
         class="tableColumnCom"
         :resizable="false"
         >
-        <!-- <template #default="scope">
-          <div
-            v-show="item.editable || scope.row.editable"
-            class="editable-row"
-          >
-            <template v-if="item.type === 'input'">
-              <el-input
-                size="small"
-                v-model="scope.row[item.prop]"
-                :placeholder="`請輸入${item.label}`"
-                @change="handleEdit(scope.$index, scope.row)"
-              />
-            </template>
-          </div>
-          <div
-            v-show="!item.editable && !scope.row.editable"
-            class="editable-row"
-          >
-            <span class="editable-row-span">{{ scope.row[item.prop] }}</span>
-          </div>
-        </template> -->
     </el-table-column>
-    <el-table-column label="註銷" width="100" min-width="50" :resizable="false">
+    <el-table-column label="註銷" width="57" :resizable="false">
       <template #default="scope">
           <el-switch v-model="scope.row.deleteOn" />
         </template>
     </el-table-column>
-    <el-table-column label="標號維護" width="100" min-width="50" :resizable="false">
-      <template #default>
+    <el-table-column label="標號維護" width="89" :resizable="false">
+      <template #default="scope">
         <el-button
             link
-            @click="openLabeling = true"
+            @click="scope.row.openLabeling = true"
             class="button_edit"
             >
             <img src="../../assets/icon04.png" style="width: 24px; vertical-align: bottom" alt="">
         </el-button>
-  <el-dialog v-model="openLabeling" title="標號維護">
-    <el-form :model="formLabeling">
-      <el-form-item label="Zones" :label-width="formLabelWidth">
-        <el-select v-model="labelingMain" placeholder="Please select a zone">
-                                <el-option
-                                    v-for="item in optionsLabelingMain"
-                                    :key="item.labelingMain"
-                                    :label="item.label"
-                                    :value="item.labelingMain"
-                                    />
-        </el-select>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">
-          Confirm
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
+        <el-dialog v-model="scope.row.openLabeling" append-to-body="true" center align-center :close-on-click-modal="false" title="標號維護">
+          <el-form :model="scope.row.formLabeling">
+            <el-form-item label="標號" :label-width="formLabelWidth">
+              <el-select v-model="lableling01"
+                  multiple
+                  filterable
+                  allow-create
+                  default-first-option
+                  :reserve-keyword="false" placeholder=" ">
+                <el-option
+                  v-for="item in optionsLabeling"
+                  :key="item.labeling"
+                  :label="item.label"
+                  :value="item.labeling"
+                  />
+              </el-select>
+            </el-form-item>
+          </el-form>
+          <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="scope.row.openLabeling = false">取消</el-button>
+              <el-button type="primary" @click="scope.row.openLabeling = false">
+                儲存
+              </el-button>
+            </span>
+          </template>
+        </el-dialog>
       </template>
-      <!-- <template #default="scope">
-        <el-button
-            link
-            size="small" 
-            v-show="!scope.row.editable" 
-            @click="scope.row.editable = true"
-            class="button_edit"
-            >
-            <img src="../../assets/icon04.png" style="width: 24px; vertical-align: bottom" alt="">
-        </el-button>
-        <el-button
-            link
-            size="small"
-            v-show="scope.row.editable"
-            @click="scope.row.editable = false"
-            >
-            <img src="../../assets/icon04.png" style="width: 24px; vertical-align: bottom" alt="">
-        </el-button>
-      </template> -->
     </el-table-column>
   </el-table>
       </el-main>
