@@ -103,7 +103,7 @@ const tableData2 = [
                 <template #label>案件編號:</template>
                 CF620-SIG-TD-YC-OCS-CD-GR-0018-A
               </el-descriptions-item>
-              <el-descriptions-item>
+              <el-descriptions-item label-align="right">
                 <template #label>審驗結果:</template>
                 『1』准予備查
               </el-descriptions-item>
@@ -164,7 +164,7 @@ const tableData2 = [
 
             <h3>辦理日期</h3>
             <el-divider border-style="double" />
-            <el-descriptions title="" :column="3" border>
+            <el-descriptions title="" :column="2" border>
               <el-descriptions-item label-align="right">
                 <template #label> 申請日期:</template>
                 111.07.01

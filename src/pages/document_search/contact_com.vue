@@ -2,6 +2,10 @@
 import { ref, reactive, onMounted, computed } from "vue";
 import { Search, SetUp } from "@element-plus/icons-vue";
 import axios from "axios";
+// import type {
+//   FormInstance,
+//   TableV2CustomizedHeaderSlotParam,
+// } from "element-plus";
 
 // navbar
 const activeIndex = ref("1");
@@ -9,13 +13,22 @@ const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
 
-// filter
-const search = ref("");
+// search
+const searchProJ_ID = ref("");
+const searchUseR_ID = ref("");
+const searchDepT_NAME = ref("");
+const submitProJ_ID = (valid) => {
+  if (valid) {
+    console.log("submit!");
+  } else {
+    console.log("error");
+  }
+};
 
 // loading
 const loading = ref(true);
 onMounted(() => {
-  setTimeout(() => (loading.value = false), 1000);
+  setTimeout(() => (loading.value = false), 2000);
 });
 
 // axios
@@ -71,7 +84,7 @@ onMounted(() => {
 
       <el-row>
         <div class="title_main contact-title"><h4>各標號廠商窗口資訊</h4></div>
-        <el-form class="contact-search">
+        <!-- <el-form class="contact-search">
           <el-form-item>
             <el-input
               v-model="search"
@@ -81,7 +94,7 @@ onMounted(() => {
               :suffix-icon="Search"
             />
           </el-form-item>
-        </el-form>
+        </el-form> -->
 
         <el-table
           class="tableForm tableContactCom"
@@ -98,27 +111,60 @@ onMounted(() => {
           <el-table-column
             type="index"
             label="序號"
-            width="90"
+            width="57"
             :resizable="false"
           />
-          <el-table-column
+          <el-table-column prop="proJ_ID" sortable :resizable="false">
+            <template #header>
+              <div class="label">標號</div>
+              <el-input
+                v-model="searchProJ_ID"
+                size="small"
+                placeholder="搜尋標號"
+                @keyup.enter="submitProJ_ID"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column prop="useR_ID" sortable :resizable="false">
+            <template #header>
+              <div class="label">單位</div>
+              <el-input
+                v-model="searchUseR_ID"
+                size="small"
+                placeholder="搜尋單位"
+                @keyup.enter="submitProJ_ID"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column prop="depT_NAME" sortable :resizable="false">
+            <template #header>
+              <div class="label">姓名</div>
+              <el-input
+                v-model="searchDepT_NAME"
+                size="small"
+                placeholder="搜尋姓名"
+                @keyup.enter="submitProJ_ID"
+              />
+            </template>
+          </el-table-column>
+          <!-- <el-table-column
             prop="proJ_ID"
             sortable
             label="標號"
             :resizable="false"
-          />
-          <el-table-column
+          /> -->
+          <!-- <el-table-column
             prop="useR_ID"
             sortable
             label="單位"
             :resizable="false"
-          />
-          <el-table-column
+          /> -->
+          <!-- <el-table-column
             prop="depT_NAME"
             sortable
             label="姓名"
             :resizable="false"
-          />
+          /> -->
           <el-table-column
             prop="useR_NAME"
             sortable

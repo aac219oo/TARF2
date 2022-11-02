@@ -15,7 +15,7 @@ const search = ref("");
 // loading
 const loading = ref(true);
 onMounted(() => {
-  setTimeout(() => (loading.value = false), 1000);
+  setTimeout(() => (loading.value = false), 2000);
 });
 
 // const callback = '<%=Session["TEST_SESSION"].ToString()%>' 回傳API的值

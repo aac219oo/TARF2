@@ -179,6 +179,7 @@ i.el-icon svg {
 }
 
 .label {
+  white-space: nowrap;
   font-weight: 600;
   vertical-align: top;
 }
@@ -491,6 +492,14 @@ div.el-tabs__item {
   margin-bottom: 30px;
 }
 
+#detail_info .el-descriptions .el-descriptions__label {
+  width: 155px;
+}
+
+#detail_info .el-descriptions .el-descriptions__content {
+  width: 500px;
+}
+
 #detail_info .el-table {
   margin-bottom: 30px;
 }
@@ -526,6 +535,12 @@ div.el-tabs__item {
 
 #contact_units .el-table {
   width: 650px;
+}
+
+#contact_com .el-table thead .cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .el-table.tableContactUnits td.el-table__cell.el-table_1_column_2 div {
@@ -666,7 +681,18 @@ div.el-tabs__item {
 .maintenance_tool_wrap {
   display: flex;
   justify-content: flex-end;
+  margin: 0 auto;
   margin-bottom: 10px;
+}
+
+#item_codes .maintenance_tool_wrap,
+#resualt_codes .maintenance_tool_wrap {
+  max-width: 650px;
+}
+
+#condition_codes .maintenance_tool_wrap,
+#individual_words .maintenance_tool_wrap {
+  max-width: 600px;
 }
 
 .maintenance_search {
