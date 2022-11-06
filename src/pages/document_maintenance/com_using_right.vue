@@ -1,3 +1,296 @@
+<template>
+  <el-container>
+    <el-header>
+      <a href="../../index.html">
+        <h1>TARF2技術文件線上簽核系統</h1>
+      </a>
+      <h3>資料維護作業</h3>
+      <p>蘇家淇(11548)</p>
+    </el-header>
+    <el-main>
+      <el-menu
+        :default-active="activeIndex"
+        class="el-menu-demo index_row"
+        mode="horizontal"
+        @select="handleSelect"
+      >
+        <!-- <el-menu-item index="2"
+          ><a href="../access_setting/index.html">權限設定</a></el-menu-item
+        > -->
+        <!-- <el-menu-item index="3"><a href="../individual_words/index.html">個人使用詞彙</a></el-menu-item> -->
+        <el-menu-item index="4"
+          ><a href="../item_codes/index.html">送審項目代碼</a></el-menu-item
+        >
+        <el-menu-item index="5"
+          ><a href="../resualt_codes/index.html">送審結果代碼</a></el-menu-item
+        >
+        <el-menu-item index="6"
+          ><a href="../condition_codes/index.html"
+            >案件狀態代碼</a
+          ></el-menu-item
+        >
+        <el-menu-item index="1"
+          ><a href="../com_using_right/index.html"
+            >廠商使用權限</a
+          ></el-menu-item
+        >
+      </el-menu>
+      <div class="maintenance_h3">廠商使用權限維護</div>
+
+      <div class="maintenance_tool_wrap">
+        <div class="maintenance_search">
+          <el-input
+            v-model="search"
+            placeholder="搜尋"
+            class="input-with-select"
+            :suffix-icon="Search"
+          >
+          </el-input>
+        </div>
+
+        <!-- dialogAddItem -->
+        <template class="maintenance_add_wrap">
+          <el-button class="maintenance_add" @click="dialogFormVisible = true">
+            新增帳號
+          </el-button>
+          <el-dialog
+            v-model="dialogFormVisible"
+            center
+            align-center
+            :close-on-click-modal="false"
+            @close="cancel"
+            :before-close="cancel"
+            title="新增帳號"
+            :destroy-on-close="true"
+          >
+            <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules">
+              <el-form-item
+                label="帳號"
+                :label-width="formLabelWidth"
+                prop="userName"
+              >
+                <el-input
+                  v-model="ruleForm.userName"
+                  @keyup.enter="submitForm(ruleFormRef)"
+                  placeholder="請輸入"
+                  clearable
+                />
+              </el-form-item>
+              <el-form-item
+                label="姓名"
+                :label-width="formLabelWidth"
+                prop="name"
+              >
+                <el-input
+                  v-model="ruleForm.name"
+                  @keyup.enter="submitForm(ruleFormRef)"
+                  placeholder="請輸入"
+                  clearable
+                />
+              </el-form-item>
+              <el-form-item
+                label="公司名稱"
+                :label-width="formLabelWidth"
+                prop="com_Name"
+              >
+                <el-input
+                  v-model="ruleForm.com_Name"
+                  @keyup.enter="submitForm(ruleFormRef)"
+                  placeholder="請輸入"
+                  clearable
+                />
+              </el-form-item>
+              <el-form-item
+                label="權限種類"
+                :label-width="formLabelWidth"
+                prop="accessType"
+              >
+                <el-select
+                  v-model="ruleForm.accessType"
+                  multiple
+                  filterable
+                  allow-create
+                  default-first-option
+                  :reserve-keyword="false"
+                  placeholder="請選擇"
+                >
+                  <el-option
+                    v-for="item in optionsAccessType"
+                    :key="item.accessType"
+                    :label="item.label"
+                    :value="item.accessType"
+                  />
+                </el-select>
+              </el-form-item>
+              <el-form-item
+                label="統一編號"
+                :label-width="formLabelWidth"
+                prop="UniformNumbers"
+              >
+                <el-input
+                  v-model="ruleForm.UniformNumbers"
+                  @keyup.enter="submitForm(ruleFormRef)"
+                  placeholder="請輸入"
+                  clearable
+                />
+              </el-form-item>
+              <el-form-item
+                label="標號"
+                :label-width="formLabelWidth"
+                prop="labeling"
+              >
+                <el-select
+                  v-model="ruleForm.labeling"
+                  multiple
+                  filterable
+                  allow-create
+                  default-first-option
+                  :reserve-keyword="false"
+                  placeholder="請選擇"
+                >
+                  <el-option
+                    v-for="item in optionsLabeling"
+                    :key="item.labeling"
+                    :label="item.label"
+                    :value="item.labeling"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-form>
+            <template #footer>
+              <span class="dialog-footer">
+                <el-button @click="cancel">取消</el-button>
+                <el-button
+                  native-type="submit"
+                  type="primary"
+                  @click="submitForm(ruleFormRef)"
+                >
+                  儲存
+                </el-button>
+              </span>
+            </template>
+          </el-dialog>
+        </template>
+      </div>
+
+      <el-table
+        :data="tableData"
+        class="tableComUsing"
+        border
+        stripe
+        style="width: 100%"
+        :header-cell-style="{
+          background: '#ebf4f9',
+          color: '#000',
+          textAlign: 'center',
+        }"
+      >
+        <el-table-column
+          type="index"
+          label="序號"
+          width="57"
+          :resizable="false"
+        />
+        <el-table-column
+          label="帳號"
+          prop="userName"
+          sortable
+          width="160px"
+          :resizable="false"
+        />
+        <el-table-column
+          label="姓名"
+          prop="name"
+          width="130px"
+          sortable
+          :resizable="false"
+        />
+        <el-table-column
+          label="公司名稱"
+          prop="com_Name"
+          sortable
+          :resizable="false"
+        />
+        <el-table-column
+          label="權限狀態"
+          prop="accessCondition"
+          sortable
+          width="130px"
+          :resizable="false"
+        />
+        <el-table-column
+          label="權限種類"
+          prop="accessType"
+          sortable
+          width="130px"
+          :resizable="false"
+        />
+        <el-table-column label="註銷" width="89" :resizable="false">
+          <template #default="scope">
+            <el-switch v-model="scope.row.deleteOn" />
+          </template>
+        </el-table-column>
+        <el-table-column label="標號維護" width="89" :resizable="false">
+          <template #default="scope">
+            <el-button
+              link
+              @click="scope.row.openLabeling = true"
+              class="button_edit"
+            >
+              <img
+                src="../../assets/icon04.png"
+                style="width: 24px; vertical-align: bottom"
+                alt=""
+              />
+            </el-button>
+            <el-dialog
+              v-model="scope.row.openLabeling"
+              append-to-body="true"
+              center
+              align-center
+              :close-on-click-modal="false"
+              title="標號維護"
+            >
+              <el-form :model="scope.row.formLabeling">
+                <el-form-item label="標號" :label-width="formLabelWidth">
+                  <el-select
+                    v-model="lableling01"
+                    multiple
+                    filterable
+                    allow-create
+                    default-first-option
+                    :reserve-keyword="false"
+                    placeholder=" "
+                  >
+                    <el-option
+                      v-for="item in optionsLabeling"
+                      :key="item.labeling"
+                      :label="item.label"
+                      :value="item.labeling"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-form>
+              <template #footer>
+                <span class="dialog-footer">
+                  <el-button @click="scope.row.openLabeling = false"
+                    >取消</el-button
+                  >
+                  <el-button
+                    type="primary"
+                    @click="scope.row.openLabeling = false"
+                  >
+                    儲存
+                  </el-button>
+                </span>
+              </template>
+            </el-dialog>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-main>
+  </el-container>
+</template>
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
@@ -26,6 +319,7 @@ const ruleForm = reactive({
   userName: "",
   name: "",
   com_Name: "",
+  accessType: "",
   UniformNumbers: "",
   labeling: "",
 });
@@ -45,6 +339,13 @@ const rules = reactive<FormRules>({
     {
       required: true,
       message: "請輸入公司名稱",
+      trigger: "blur",
+    },
+  ],
+  accessType: [
+    {
+      required: true,
+      message: "請選擇權限種類",
       trigger: "blur",
     },
   ],
@@ -98,6 +399,21 @@ const optionsLabeling = [
   {
     labeling: "CF680C",
     label: "CF680C",
+  },
+];
+
+const optionsAccessType = [
+  {
+    accessType: "審查權限1",
+    label: "審查權限1",
+  },
+  {
+    accessType: "審查權限2",
+    label: "審查權限2",
+  },
+  {
+    accessType: "審查權限3",
+    label: "審查權限3",
   },
 ];
 
@@ -295,273 +611,3 @@ const tableData = [
 // 註銷開關
 // const deleteOn = ref(true)
 </script>
-<template>
-  <el-container>
-    <el-header>
-      <a href="../../index.html">
-        <h1>TARF2技術文件線上簽核系統</h1>
-      </a>
-      <h3>資料維護作業</h3>
-      <p>蘇家淇(11548)</p>
-    </el-header>
-    <el-main>
-      <el-menu
-        :default-active="activeIndex"
-        class="el-menu-demo index_row"
-        mode="horizontal"
-        @select="handleSelect"
-      >
-        <el-menu-item index="2"
-          ><a href="../access_setting/index.html">權限設定</a></el-menu-item
-        >
-        <!-- <el-menu-item index="3"><a href="../individual_words/index.html">個人使用詞彙</a></el-menu-item> -->
-        <el-menu-item index="4"
-          ><a href="../item_codes/index.html">送審項目代碼</a></el-menu-item
-        >
-        <el-menu-item index="5"
-          ><a href="../resualt_codes/index.html">送審結果代碼</a></el-menu-item
-        >
-        <el-menu-item index="6"
-          ><a href="../condition_codes/index.html"
-            >案件狀態代碼</a
-          ></el-menu-item
-        >
-        <el-menu-item index="1"
-          ><a href="../com_using_right/index.html"
-            >廠商使用權限</a
-          ></el-menu-item
-        >
-      </el-menu>
-      <div class="maintenance_h3">廠商使用權限維護</div>
-
-      <div class="maintenance_tool_wrap">
-        <div class="maintenance_search">
-          <el-input
-            v-model="search"
-            placeholder="搜尋"
-            class="input-with-select"
-            :suffix-icon="Search"
-          >
-          </el-input>
-        </div>
-
-        <!-- dialogAddItem -->
-        <template class="maintenance_add_wrap">
-          <el-button class="maintenance_add" @click="dialogFormVisible = true">
-            新增帳號
-          </el-button>
-          <el-dialog
-            v-model="dialogFormVisible"
-            center
-            align-center
-            :close-on-click-modal="false"
-            @close="cancel"
-            :before-close="cancel"
-            title="新增帳號"
-          >
-            <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules">
-              <el-form-item
-                label="帳號"
-                :label-width="formLabelWidth"
-                prop="userName"
-              >
-                <el-input
-                  v-model="ruleForm.userName"
-                  @keyup.enter="submitForm(ruleFormRef)"
-                  placeholder="請輸入"
-                  clearable
-                />
-              </el-form-item>
-              <el-form-item
-                label="姓名"
-                :label-width="formLabelWidth"
-                prop="name"
-              >
-                <el-input
-                  v-model="ruleForm.name"
-                  @keyup.enter="submitForm(ruleFormRef)"
-                  placeholder="請輸入"
-                  clearable
-                />
-              </el-form-item>
-              <el-form-item
-                label="公司名稱"
-                :label-width="formLabelWidth"
-                prop="com_Name"
-              >
-                <el-input
-                  v-model="ruleForm.com_Name"
-                  @keyup.enter="submitForm(ruleFormRef)"
-                  placeholder="請輸入"
-                  clearable
-                />
-              </el-form-item>
-              <el-form-item
-                label="統一編號"
-                :label-width="formLabelWidth"
-                prop="UniformNumbers"
-              >
-                <el-input
-                  v-model="ruleForm.UniformNumbers"
-                  @keyup.enter="submitForm(ruleFormRef)"
-                  placeholder="請輸入"
-                  clearable
-                />
-              </el-form-item>
-              <el-form-item
-                label="標號"
-                :label-width="formLabelWidth"
-                prop="labeling"
-              >
-                <el-select
-                  v-model="ruleForm.labeling"
-                  multiple
-                  filterable
-                  allow-create
-                  default-first-option
-                  :reserve-keyword="false"
-                  placeholder="請選擇"
-                >
-                  <el-option
-                    v-for="item in optionsLabeling"
-                    :key="item.labeling"
-                    :label="item.label"
-                    :value="item.labeling"
-                  />
-                </el-select>
-              </el-form-item>
-            </el-form>
-            <template #footer>
-              <span class="dialog-footer">
-                <el-button @click="cancel">取消</el-button>
-                <el-button
-                  native-type="submit"
-                  type="primary"
-                  @click="submitForm(ruleFormRef)"
-                >
-                  儲存
-                </el-button>
-              </span>
-            </template>
-          </el-dialog>
-        </template>
-      </div>
-
-      <el-table
-        :data="tableData"
-        class="tableComUsing"
-        border
-        stripe
-        style="width: 100%"
-        :header-cell-style="{
-          background: '#ebf4f9',
-          color: '#000',
-          textAlign: 'center',
-        }"
-      >
-        <el-table-column
-          type="index"
-          label="序號"
-          width="57"
-          :resizable="false"
-        />
-        <el-table-column
-          label="帳號"
-          prop="userName"
-          sortable
-          width="160px"
-          :resizable="false"
-        />
-        <el-table-column
-          label="姓名"
-          prop="name"
-          width="130px"
-          sortable
-          :resizable="false"
-        />
-        <el-table-column
-          label="公司名稱"
-          prop="com_Name"
-          sortable
-          :resizable="false"
-        />
-        <el-table-column
-          label="權限狀態"
-          prop="accessCondition"
-          sortable
-          width="130px"
-          :resizable="false"
-        />
-        <el-table-column
-          label="權限種類"
-          prop="accessType"
-          sortable
-          width="130px"
-          :resizable="false"
-        />
-        <el-table-column label="註銷" width="89" :resizable="false">
-          <template #default="scope">
-            <el-switch v-model="scope.row.deleteOn" />
-          </template>
-        </el-table-column>
-        <el-table-column label="標號維護" width="89" :resizable="false">
-          <template #default="scope">
-            <el-button
-              link
-              @click="scope.row.openLabeling = true"
-              class="button_edit"
-            >
-              <img
-                src="../../assets/icon04.png"
-                style="width: 24px; vertical-align: bottom"
-                alt=""
-              />
-            </el-button>
-            <el-dialog
-              v-model="scope.row.openLabeling"
-              append-to-body="true"
-              center
-              align-center
-              :close-on-click-modal="false"
-              title="標號維護"
-            >
-              <el-form :model="scope.row.formLabeling">
-                <el-form-item label="標號" :label-width="formLabelWidth">
-                  <el-select
-                    v-model="lableling01"
-                    multiple
-                    filterable
-                    allow-create
-                    default-first-option
-                    :reserve-keyword="false"
-                    placeholder=" "
-                  >
-                    <el-option
-                      v-for="item in optionsLabeling"
-                      :key="item.labeling"
-                      :label="item.label"
-                      :value="item.labeling"
-                    />
-                  </el-select>
-                </el-form-item>
-              </el-form>
-              <template #footer>
-                <span class="dialog-footer">
-                  <el-button @click="scope.row.openLabeling = false"
-                    >取消</el-button
-                  >
-                  <el-button
-                    type="primary"
-                    @click="scope.row.openLabeling = false"
-                  >
-                    儲存
-                  </el-button>
-                </span>
-              </template>
-            </el-dialog>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-main>
-  </el-container>
-</template>

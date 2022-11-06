@@ -1,82 +1,3 @@
-<script lang="ts" setup>
-import { ref } from "vue";
-import type { TabsPaneContext } from "element-plus";
-
-const activeName = ref("first");
-
-const handleClick = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event);
-};
-const tableData1 = [
-  {
-    unit: "綜 規 處",
-    condition: "結案",
-    opinion: "檢視",
-    result: "『A』接受",
-    date: "111年5月1日 08:30",
-  },
-  {
-    unit: "工 管 處",
-    condition: "結案",
-    opinion: "檢視",
-    result: "『A』接受",
-    date: "111年5月1日 08:30",
-  },
-  {
-    unit: "一區工程處土 六 所",
-    condition: "結案",
-    opinion: "檢視",
-    result: "『F』同意備查",
-    date: "111年5月1日 08:30",
-  },
-  {
-    unit: "一區工程處土 木 科",
-    condition: "結案",
-    opinion: "檢視",
-    result: "『F』同意備查",
-    date: "111年5月1日 08:30",
-  },
-  {
-    unit: "一區工程處水電環控科",
-    condition: "結案",
-    opinion: "檢視",
-    result: "『F』同意備查",
-    date: "111年5月1日 08:30",
-  },
-];
-
-const tableData2 = [
-  {
-    unit: "土 建 處/黃作元(線上簽核方式送審)",
-    condition: "結案",
-    opinion: "檢視",
-    result: "『A』接受",
-    date: "111年5月1日 08:30",
-  },
-  {
-    unit: "土 建 處/朱慶村(線上簽核方式送審)",
-    condition: "結案",
-    opinion: "檢視",
-    result: "『F』同意備查",
-    date: "111年5月1日 08:30",
-  },
-  {
-    unit: "土 建 處/高雪莉(線上簽核方式送審)",
-    condition: "結案",
-    opinion: "檢視",
-    result: "『A』接受",
-    date: "111年5月1日 08:30",
-  },
-  {
-    unit: "一區工程處水電環控科",
-    condition: "結案",
-    opinion: "檢視",
-    result: "『F』同意備查",
-    date: "111年5月1日 08:30",
-  },
-];
-</script>
-
 <template>
   <div class="common-layout">
     <el-container>
@@ -397,10 +318,116 @@ const tableData2 = [
           <el-tab-pane label="答覆意見" name="third">
             <h3>答覆意見</h3>
             <el-divider border-style="double" />
+            <el-table
+              :data="tableData3"
+              stripe
+              border
+              :header-cell-style="{
+                background: '#ebf4f9',
+                color: '#000',
+                textAlign: 'center',
+              }"
+              style="width: 100%"
+            >
+              <el-table-column
+                label="圖說/章節/頁次"
+                :min-width="30"
+                :resizable="false"
+              />
+              <el-table-column
+                prop="suggestion"
+                label="審查意見"
+                :min-width="150"
+                :resizable="false"
+              />
+              <el-table-column
+                prop="response"
+                label="答覆內容"
+                :resizable="false"
+              />
+            </el-table>
             <h3>送審檔案</h3>
             <el-divider border-style="double" />
+            <el-table
+              :data="tableData4"
+              stripe
+              border
+              :header-cell-style="{
+                background: '#ebf4f9',
+                color: '#000',
+                textAlign: 'center',
+              }"
+              style="width: 100%"
+            >
+              <el-table-column
+                type="index"
+                label="序號"
+                :min-width="16"
+                :resizable="false"
+              />
+              <el-table-column
+                prop="fileName"
+                label="檔案名稱"
+                :min-width="100"
+                :resizable="false"
+              />
+              <el-table-column
+                prop="fileExplain"
+                label="檔案說明"
+                :resizable="false"
+              />
+              <el-table-column
+                prop="uploadTime"
+                label="上傳時間"
+                :resizable="false"
+              />
+              <el-table-column :resizable="false">
+                <template #default>
+                  <a href="http://">查閱</a>
+                </template>
+              </el-table-column>
+            </el-table>
             <h3>附件檔案</h3>
             <el-divider border-style="double" />
+            <el-table
+              :data="tableData5"
+              stripe
+              border
+              :header-cell-style="{
+                background: '#ebf4f9',
+                color: '#000',
+                textAlign: 'center',
+              }"
+              style="width: 100%"
+            >
+              <el-table-column
+                type="index"
+                label="序號"
+                :min-width="16"
+                :resizable="false"
+              />
+              <el-table-column
+                prop="fileName"
+                label="檔案名稱"
+                :min-width="100"
+                :resizable="false"
+              />
+              <el-table-column
+                prop="fileExplain"
+                label="檔案說明"
+                :resizable="false"
+              />
+              <el-table-column
+                prop="uploadTime"
+                label="上傳時間"
+                :resizable="false"
+              />
+              <el-table-column :resizable="false">
+                <template #default>
+                  <a href="http://">查閱</a>
+                </template>
+              </el-table-column>
+            </el-table>
           </el-tab-pane>
           <!-- <el-tab-pane label="計價項目" name="seventh">計價項目</el-tab-pane>
           <el-tab-pane label="關聯案件" name="eighth">關聯案件</el-tab-pane>
@@ -419,3 +446,102 @@ const tableData2 = [
   font-weight: 600;
 }
 </style>
+<script lang="ts" setup>
+import { ref } from "vue";
+import type { TabsPaneContext } from "element-plus";
+
+const activeName = ref("first");
+
+const handleClick = (tab: TabsPaneContext, event: Event) => {
+  console.log(tab, event);
+};
+const tableData1 = [
+  {
+    unit: "綜 規 處",
+    condition: "結案",
+    opinion: "檢視",
+    result: "『A』接受",
+    date: "111年5月1日 08:30",
+  },
+  {
+    unit: "工 管 處",
+    condition: "結案",
+    opinion: "檢視",
+    result: "『A』接受",
+    date: "111年5月1日 08:30",
+  },
+  {
+    unit: "一區工程處土 六 所",
+    condition: "結案",
+    opinion: "檢視",
+    result: "『F』同意備查",
+    date: "111年5月1日 08:30",
+  },
+  {
+    unit: "一區工程處土 木 科",
+    condition: "結案",
+    opinion: "檢視",
+    result: "『F』同意備查",
+    date: "111年5月1日 08:30",
+  },
+  {
+    unit: "一區工程處水電環控科",
+    condition: "結案",
+    opinion: "檢視",
+    result: "『F』同意備查",
+    date: "111年5月1日 08:30",
+  },
+];
+
+const tableData2 = [
+  {
+    unit: "土 建 處/黃作元(線上簽核方式送審)",
+    condition: "結案",
+    opinion: "檢視",
+    result: "『A』接受",
+    date: "111年5月1日 08:30",
+  },
+  {
+    unit: "土 建 處/朱慶村(線上簽核方式送審)",
+    condition: "結案",
+    opinion: "檢視",
+    result: "『F』同意備查",
+    date: "111年5月1日 08:30",
+  },
+  {
+    unit: "土 建 處/高雪莉(線上簽核方式送審)",
+    condition: "結案",
+    opinion: "檢視",
+    result: "『A』接受",
+    date: "111年5月1日 08:30",
+  },
+  {
+    unit: "一區工程處水電環控科",
+    condition: "結案",
+    opinion: "檢視",
+    result: "『F』同意備查",
+    date: "111年5月1日 08:30",
+  },
+];
+
+const tableData3 = [
+  {
+    suggestion: "無意見(二區工程處材試所)",
+    response: "N/A",
+  },
+];
+const tableData4 = [
+  {
+    fileName: "0505E-11_Rev.0.docx",
+    fileExplain: "0505E-11_Rev.0_WORD",
+    uploadTime: "111年10月17日13時34分18秒",
+  },
+];
+const tableData5 = [
+  {
+    fileName: "APN11-201_221018-122637-1dc.pdf",
+    fileExplain: "工審單(二區工程處)",
+    uploadTime: "111年10月18日12時43分31秒",
+  },
+];
+</script>

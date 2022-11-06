@@ -1,65 +1,3 @@
-<script lang="ts" setup>
-import { ref, computed, reactive } from "vue";
-import { ElMessage, ElMessageBox } from "element-plus";
-import { Search, Edit, Delete, User } from "@element-plus/icons-vue";
-
-// navbar
-const activeIndex = ref("1");
-const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
-
-// const callback = '<%=Session["TEST_SESSION"].ToString()%>' 回傳API的值
-
-// interface User {
-// 	wordsName: string
-// }
-
-const search = ref("");
-// const filterTableData = computed(() =>
-// 	tableData.filter(
-// 		(data) =>
-// 			!search.value ||
-// 			data.wordsName.toLowerCase().includes(search.value.toLowerCase())
-// 	)
-// )
-
-// const tableDateArray = { ...filterTableData }
-
-// console.log(tableDateArray)
-
-const tableHeader = ref([
-  {
-    prop: "wordsName",
-    label: "詞彙名稱",
-    editable: false,
-    type: "input",
-  },
-]);
-
-const tableData = ref([
-  {
-    wordsName: "test",
-  },
-]);
-
-const onAddItem = (index) => {
-  const item = {
-    wordsName: "",
-    editable: true,
-  };
-  tableData.value.splice(index, 0, item);
-};
-
-const handleEdit = (row) => {
-  row.editable = true;
-};
-
-const deleteRow = (index: number) => {
-  tableData.value.splice(index, 1);
-  console.log("delete");
-};
-</script>
 <template>
   <el-container>
     <el-header>
@@ -67,7 +5,7 @@ const deleteRow = (index: number) => {
         <h1>TARF2技術文件線上簽核系統</h1>
       </a>
       <h3>資料維護作業</h3>
-      <p>蘇家淇(11548)</p>
+      <p>{{}}</p>
     </el-header>
     <el-main>
       <el-menu
@@ -76,16 +14,16 @@ const deleteRow = (index: number) => {
         mode="horizontal"
         @select="handleSelect"
       >
-        <!-- <el-menu-item index="6"
-					><a href="../access_setting/index.html">權限設定</a></el-menu-item
-				> -->
+        <el-menu-item index="3"
+          ><a href="../access_setting/index.html">權限設定</a></el-menu-item
+        >
         <el-menu-item index="1"
           ><a href="../individual_words/index.html"
             >個人使用詞彙</a
           ></el-menu-item
         >
         <el-menu-item index="2"
-          ><a href="../access_setting/index.html">系統資料維護</a></el-menu-item
+          ><a href="../item_codes/index.html">系統資料維護</a></el-menu-item
         >
         <!-- <el-menu-item index="2"
 					><a href="../item_codes/index.html">送審項目代碼</a></el-menu-item
@@ -114,6 +52,7 @@ const deleteRow = (index: number) => {
             placeholder="搜尋"
             class="input-with-select"
             :suffix-icon="Search"
+            v-on:keyup.enter="sendSearch()"
           >
           </el-input>
         </div>
@@ -122,7 +61,7 @@ const deleteRow = (index: number) => {
         :data="tableData"
         border
         stripe
-        style="width: 100%; max-width: 600px"
+        style="width: 100%; max-width: 800px"
         :header-cell-style="{
           background: '#ebf4f9',
           color: '#000',
@@ -226,3 +165,104 @@ const deleteRow = (index: number) => {
     </el-main>
   </el-container>
 </template>
+<script lang="ts" setup>
+import { ref, computed, reactive, onMounted } from "vue";
+import { ElMessage, ElMessageBox } from "element-plus";
+import {
+  Search,
+  Edit,
+  Delete,
+  User,
+  QuestionFilled,
+} from "@element-plus/icons-vue";
+import axios from "axios";
+
+const url = "https://127.0.0.1:7227/api/PhraseRecd/GetPhraseRecd?UserId=16195";
+
+// session
+// onMounted(() => {
+//   const user = sessionStorage.getItem("user-info");
+//   username.value = JSON.parse(user).username;
+//   user_id = JSON.parse(user).id;
+//   axios
+//     .get(url)
+//     .then((res) => {
+//       console.log(res.data);
+//       tableData.wordsName = res.data;
+//     })
+//     .catch(function (error) {
+//       // handle error
+//       console.log(error);
+//     });
+// });
+// navbar
+const activeIndex = ref("1");
+const handleSelect = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath);
+};
+
+// function GetSessionData() {
+//   const getSession = '<%=Session["TEST_SESSION"].ToString()%>';
+// } //回傳API的值
+
+// interface User {
+// 	wordsName: string
+// }
+// 傳送搜尋給後台
+const search = ref("");
+var params = new URLSearchParams();
+params.append("key", "value");
+axios({
+  method: "post",
+  url: "https://127.0.0.1:7227/api/PhraseRecd/GetPhraseRecd?UserId=16195&argPhraseDesc=測試",
+  data: params,
+}).then((res) => {});
+// enter測試
+const sendSearch = () => {
+  const queryStr = tableData.value;
+  console.log("search");
+};
+// const filterTableData = computed(() =>
+// 	tableData.filter(
+// 		(data) =>
+// 			!search.value ||
+// 			data.wordsName.toLowerCase().includes(search.value.toLowerCase())
+// 	)
+// )
+
+// const tableDateArray = { ...filterTableData }
+
+// console.log(tableDateArray)
+
+const tableData = ref([
+  {
+    wordsName: "test",
+  },
+]);
+
+const tableHeader = ref([
+  {
+    prop: "wordsName",
+    label: "詞彙名稱",
+    editable: false,
+    type: "input",
+  },
+]);
+
+const onAddItem = (index) => {
+  const item = {
+    wordsName: "",
+    editable: true,
+  };
+  tableData.value.splice(index, 0, item);
+};
+
+const handleEdit = (row) => {
+  row.editable = true;
+};
+
+const deleteRow = (index: number) => {
+  tableData.value.splice(index, 1);
+  console.log("delete");
+};
+</script>

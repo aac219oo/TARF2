@@ -14,9 +14,6 @@ const handleSelect = (key: string, keyPath: string[]) => {
 const search = ref("");
 // loading
 const loading = ref(true);
-onMounted(() => {
-  setTimeout(() => (loading.value = false), 2000);
-});
 
 // const callback = '<%=Session["TEST_SESSION"].ToString()%>' 回傳API的值
 
@@ -28,6 +25,8 @@ const tabledata = reactive({
 const url = "http://tarf.grp.com.tw/api/Test/GetDeptChargQuery";
 
 onMounted(() => {
+  loading.value = false;
+  // setTimeout(() => (loading.value = false), 2000);
   axios
     .get(url)
     .then((res) => {
