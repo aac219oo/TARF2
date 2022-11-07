@@ -22,11 +22,12 @@ const tabledata = reactive({
 });
 
 // axios
-const url = "http://tarf.grp.com.tw/api/Test/GetDeptChargQuery";
+//各單位窗口資訊查詢
+const url = "https://127.0.0.1:7227/api/ContactInfoQuery/GetDeptChargQuery";
 
 onMounted(() => {
-  loading.value = false;
-  // setTimeout(() => (loading.value = false), 2000);
+  // loading.value = false;
+  setTimeout(() => (loading.value = false), 3000);
   axios
     .get(url)
     .then((res) => {

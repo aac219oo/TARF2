@@ -52,6 +52,7 @@
 
       <el-table
         :data="tableData"
+        v-loading="loading"
         border
         stripe
         style="width: 100%; max-width: 800px"
@@ -127,30 +128,34 @@
   </el-container>
 </template>
 <script lang="ts" setup>
-import { ref } from "vue";
-import { Search, Edit, Delete } from "@element-plus/icons-vue";
+import { ref, onMounted } from "vue";
+import { Search } from "@element-plus/icons-vue";
 import axios from "axios";
 
-const url = "https://127.0.0.1:7227/api/ResultCode/GetResultBasc?ResultCode=TS";
+sessionStorage.setItem("UserId", "11695");
+const loading = ref(true);
+const tableData = ref();
 
-// const tableData = reactive({
-//   wordsName: "",
-// });
-// onMounted(() => {
-//   const user = sessionStorage.getItem("user-info");
-//   username.value = JSON.parse(user).username;
-//   user_id = JSON.parse(user).id;
-//   axios
-//     .get(url)
-//     .then((res) => {
-//       console.log(res.data);
-//       tableData.wordsName = res.data;
-//     })
-//     .catch(function (error) {
-//       // handle error
-//       console.log(error);
-//     });
-// });
+// session
+onMounted(() => {
+  const UserId = sessionStorage.getItem("UserId");
+  const url =
+    "https://127.0.0.1:7227/api/ResultCode/GetResultBasc?UserId=" + UserId;
+  loading.value = false;
+  axios
+    .get(url)
+    .then((res) => {
+      //console.log(res.data);
+      tableData.value = res.data;
+      //console.log(res.data);
+      console.log(tableData.value);
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    });
+});
+
 // navbar
 const activeIndex = ref("1");
 const handleSelect = (key: string, keyPath: string[]) => {
@@ -167,78 +172,78 @@ const item = {
 
 const tableHeader = ref([
   {
-    prop: "resultCode",
+    prop: "resulT_CODE",
     label: "送審結果代碼",
     editable: false,
     type: "input",
   },
   {
-    prop: "resultCaption",
+    prop: "resulT_NAME",
     label: "送審結果說明",
     editable: false,
     type: "input",
   },
 ]);
 
-const tableData = ref([
-  {
-    resultCode: "A",
-    resultCaption: "『A』接受",
-  },
-  {
-    resultCode: "B",
-    resultCaption:
-      "『B』接受，但需將依審查意見修正後之內容併下一階段成果文件提送",
-  },
-  {
-    resultCode: "C",
-    resultCaption: "『C』修正後再接受(請重新提送修正後之文件)",
-  },
-  {
-    resultCode: "D",
-    resultCaption: "『D』退件",
-  },
-  {
-    resultCode: "E",
-    resultCaption: "『E』存查參辦",
-  },
-  {
-    resultCode: "F",
-    resultCaption: "『F』同意備查",
-  },
-  {
-    resultCode: "G",
-    resultCaption: "『G』釐清檢討後提送修正文件續審",
-  },
-  {
-    resultCode: "M1",
-    resultCaption: "『M1』存查參辦",
-  },
-  {
-    resultCode: "M2",
-    resultCaption: "『M2』意見回覆，如附",
-  },
-  {
-    resultCode: "M3",
-    resultCaption: "『M3』無意見",
-  },
-  {
-    resultCode: "N1",
-    resultCaption: "『1』准予備查",
-  },
-  {
-    resultCode: "N2",
-    resultCaption: "『2』部分改善後重送，其餘准予備查",
-  },
-  {
-    resultCode: "N3",
-    resultCaption: "『3』不同意備查，全部改善後重送",
-  },
-  {
-    resultCode: "N4",
-    resultCaption: "『4』免審查",
-  },
-]);
+// const tableData = ref([
+//   {
+//     resultCode: "A",
+//     resultCaption: "『A』接受",
+//   },
+//   {
+//     resultCode: "B",
+//     resultCaption:
+//       "『B』接受，但需將依審查意見修正後之內容併下一階段成果文件提送",
+//   },
+//   {
+//     resultCode: "C",
+//     resultCaption: "『C』修正後再接受(請重新提送修正後之文件)",
+//   },
+//   {
+//     resultCode: "D",
+//     resultCaption: "『D』退件",
+//   },
+//   {
+//     resultCode: "E",
+//     resultCaption: "『E』存查參辦",
+//   },
+//   {
+//     resultCode: "F",
+//     resultCaption: "『F』同意備查",
+//   },
+//   {
+//     resultCode: "G",
+//     resultCaption: "『G』釐清檢討後提送修正文件續審",
+//   },
+//   {
+//     resultCode: "M1",
+//     resultCaption: "『M1』存查參辦",
+//   },
+//   {
+//     resultCode: "M2",
+//     resultCaption: "『M2』意見回覆，如附",
+//   },
+//   {
+//     resultCode: "M3",
+//     resultCaption: "『M3』無意見",
+//   },
+//   {
+//     resultCode: "N1",
+//     resultCaption: "『1』准予備查",
+//   },
+//   {
+//     resultCode: "N2",
+//     resultCaption: "『2』部分改善後重送，其餘准予備查",
+//   },
+//   {
+//     resultCode: "N3",
+//     resultCaption: "『3』不同意備查，全部改善後重送",
+//   },
+//   {
+//     resultCode: "N4",
+//     resultCaption: "『4』免審查",
+//   },
+// ]);
 
 const handleEdit = (row) => {
   row.editable = true;

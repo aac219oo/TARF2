@@ -11,26 +11,41 @@ const handleSelect = (key: string, keyPath: string[]) => {
 };
 
 // filter
-const search = ref("");
+interface User {
+  ofF_TEL: String;
+  depT_NAME: String;
+  proJ_ID: String;
+  useR_ID: String;
+  useR_NAME: String;
+}
+const search = ref(null);
+const filterTableData = computed(() =>
+  tabledata.value.filter(
+    (data) =>
+      !search.value ||
+      data.depT_NAME.toLowerCase().includes(search.value.toLowerCase())
+  )
+);
 
 // loading
 const loading = ref(true);
 
 // axios
-const url = "http://tarf.grp.com.tw/api/Test/GetOtherChargQuery";
+//各單位窗口資訊查詢
+// const url = "https//127.0.0.1:7227/api/ContactInfoQuery/GetDeptChargQuery";
+//各標號廠商窗口資訊
+const url = "https://127.0.0.1:7227/api/ContactInfoQuery/GetOtherChargQuery";
 
-const tabledata = reactive({
-  newsdata: "",
-});
+const tabledata = ref<User[]>(null);
 
 onMounted(() => {
   loading.value = false;
-  // setTimeout(() => (loading.value = false), 2000);
+  setTimeout(() => (loading.value = false), 3000);
   axios
     .get(url)
     .then((res) => {
       console.log(res.data);
-      tabledata.newsdata = res.data;
+      tabledata.value = res.data;
     })
     .catch(function (error) {
       // handle error
@@ -86,7 +101,7 @@ onMounted(() => {
         <el-table
           class="tableForm tableContactCom"
           v-loading="loading"
-          :data="tabledata.newsdata"
+          :data="tabledata"
           stripe
           border
           :header-cell-style="{
@@ -108,19 +123,19 @@ onMounted(() => {
             :resizable="false"
           />
           <el-table-column
-            prop="useR_ID"
+            prop="depT_NAME"
             sortable
             label="單位"
             :resizable="false"
           />
           <el-table-column
-            prop="depT_NAME"
+            prop="useR_NAME"
             sortable
             label="姓名"
             :resizable="false"
           />
           <el-table-column
-            prop="useR_NAME"
+            prop="ofF_TEL"
             sortable
             label="電話"
             :resizable="false"

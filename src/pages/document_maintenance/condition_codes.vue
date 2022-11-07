@@ -1,28 +1,33 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { Search, Edit, Delete } from "@element-plus/icons-vue";
 import axios from "axios";
 
-const url = "https://127.0.0.1:7227/api/StatusCode/GetStatusBasc?StatusCode=TS";
+sessionStorage.setItem("UserId", "11695");
+const loading = ref(true);
+const tableData = ref();
 
-// const tableData = reactive({
-//   wordsName: "",
-// });
-// onMounted(() => {
-//   const user = sessionStorage.getItem("user-info");
-//   username.value = JSON.parse(user).username;
-//   user_id = JSON.parse(user).id;
-//   axios
-//     .get(url)
-//     .then((res) => {
-//       console.log(res.data);
-//       tableData.wordsName = res.data;
-//     })
-//     .catch(function (error) {
-//       // handle error
-//       console.log(error);
-//     });
-// });
+// session
+onMounted(() => {
+  const UserId = sessionStorage.getItem("UserId");
+  const url =
+    "https://127.0.0.1:7227/api/StatusCode/GetStatusBasc?UserId=" + UserId;
+  // loading.value = false;
+  setTimeout(() => (loading.value = false), 1000);
+  axios
+    .get(url)
+    .then((res) => {
+      //console.log(res.data);
+      tableData.value = res.data;
+      //console.log(res.data);
+      console.log(tableData.value);
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    });
+});
+
 // navbar
 const activeIndex = ref("1");
 const handleSelect = (key: string, keyPath: string[]) => {
@@ -35,77 +40,77 @@ const item = {};
 
 const tableHeader = ref([
   {
-    prop: "conditionCode",
+    prop: "casE_STATUS",
     label: "狀態代號",
     editable: false,
     type: "input",
   },
   {
-    prop: "conditionInstruction",
+    prop: "statuS_DESC",
     label: "狀態說明",
     editable: false,
     type: "input",
   },
 ]);
 
-const tableData = ref([
-  {
-    conditionCode: "00",
-    conditionInstruction: "退件(已簽收結案)",
-  },
-  {
-    conditionCode: "01",
-    conditionInstruction: "退件(尚未簽收結案)",
-  },
-  {
-    conditionCode: "02",
-    conditionInstruction: "退回/抽回",
-  },
-  {
-    conditionCode: "03",
-    conditionInstruction: "案件登錄",
-  },
-  {
-    conditionCode: "04",
-    conditionInstruction: "廠商簽章中",
-  },
-  {
-    conditionCode: "05",
-    conditionInstruction: "廠商簽章完成",
-  },
-  {
-    conditionCode: "09",
-    conditionInstruction: "廠商送件",
-  },
-  {
-    conditionCode: "11",
-    conditionInstruction: "窗口接收",
-  },
-  {
-    conditionCode: "12",
-    conditionInstruction: "設定回覆及結案日期",
-  },
-  {
-    conditionCode: "13",
-    conditionInstruction: "窗口分案",
-  },
-  {
-    conditionCode: "14",
-    conditionInstruction: "單位窗口改分案",
-  },
-  {
-    conditionCode: "20",
-    conditionInstruction: "返回上一流程",
-  },
-  {
-    conditionCode: "30",
-    conditionInstruction: "承辦退籤",
-  },
-  {
-    conditionCode: "31",
-    conditionInstruction: "承辦中(簽收)",
-  },
-]);
+// const tableData = ref([
+//   {
+//     conditionCode: "00",
+//     conditionInstruction: "退件(已簽收結案)",
+//   },
+//   {
+//     conditionCode: "01",
+//     conditionInstruction: "退件(尚未簽收結案)",
+//   },
+//   {
+//     conditionCode: "02",
+//     conditionInstruction: "退回/抽回",
+//   },
+//   {
+//     conditionCode: "03",
+//     conditionInstruction: "案件登錄",
+//   },
+//   {
+//     conditionCode: "04",
+//     conditionInstruction: "廠商簽章中",
+//   },
+//   {
+//     conditionCode: "05",
+//     conditionInstruction: "廠商簽章完成",
+//   },
+//   {
+//     conditionCode: "09",
+//     conditionInstruction: "廠商送件",
+//   },
+//   {
+//     conditionCode: "11",
+//     conditionInstruction: "窗口接收",
+//   },
+//   {
+//     conditionCode: "12",
+//     conditionInstruction: "設定回覆及結案日期",
+//   },
+//   {
+//     conditionCode: "13",
+//     conditionInstruction: "窗口分案",
+//   },
+//   {
+//     conditionCode: "14",
+//     conditionInstruction: "單位窗口改分案",
+//   },
+//   {
+//     conditionCode: "20",
+//     conditionInstruction: "返回上一流程",
+//   },
+//   {
+//     conditionCode: "30",
+//     conditionInstruction: "承辦退籤",
+//   },
+//   {
+//     conditionCode: "31",
+//     conditionInstruction: "承辦中(簽收)",
+//   },
+// ]);
 
 const handleEdit = (row) => {
   row.editable = true;
@@ -178,6 +183,7 @@ const onAddItem = (index) => {
 
       <el-table
         :data="tableData"
+        v-loading="loading"
         border
         stripe
         style="width: 100%; max-width: 800px"

@@ -404,8 +404,8 @@ const optionsLabeling = [
 
 const optionsAccessType = [
   {
-    accessType: "審查權限1",
-    label: "審查權限1",
+    accessType: "審查權限",
+    label: "審查權限",
   },
   {
     accessType: "審查權限2",

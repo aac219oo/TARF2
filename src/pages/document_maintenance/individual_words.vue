@@ -59,6 +59,7 @@
       </div>
       <el-table
         :data="tableData"
+        v-loading="loading"
         border
         stripe
         style="width: 100%; max-width: 800px"
@@ -84,7 +85,7 @@
         >
           <template #default="scope">
             <div
-              v-show="item.editable || scope.row.editable"
+              v-if="item.editable || scope.row.editable"
               class="editable-row"
             >
               <template v-if="item.type === 'input'">
@@ -92,12 +93,12 @@
                   size="small"
                   v-model="scope.row[item.prop]"
                   :placeholder="`請輸入${item.label}`"
-                  @change="handleEdit(scope.$index)"
+                  @change="handleAdd(scope.row)"
                 />
               </template>
             </div>
             <div
-              v-show="!item.editable && !scope.row.editable"
+              v-if="!item.editable && !scope.row.editable"
               class="editable-row"
             >
               <span class="editable-row-span">{{ scope.row[item.prop] }}</span>
@@ -121,7 +122,7 @@
               cancel-button-text="否"
               confirm-button-type="danger"
               cancel-button-type="primary"
-              @confirm="deleteRow(scope.$index)"
+              @confirm="deleteRow(scope.row)"
             >
               <template #reference>
                 <el-button>
@@ -136,8 +137,8 @@
             <el-button
               link
               size="small"
-              v-show="!scope.row.editable"
-              @click="scope.row.editable = true"
+              v-if="!scope.row.editable"
+              @click="handleEdit(scope.row)"
               class="button_edit"
             >
               <img
@@ -149,8 +150,8 @@
             <el-button
               link
               size="small"
-              v-show="scope.row.editable"
-              @click="scope.row.editable = false"
+              v-if="scope.row.editable"
+              @click="handleSave(scope.row)"
               class="button_edit"
             >
               <img
@@ -163,47 +164,52 @@
         </el-table-column>
       </el-table>
     </el-main>
+    <!-- <p>
+      {{ tableData.value }}
+    </p> -->
   </el-container>
 </template>
 <script lang="ts" setup>
-import { ref, computed, reactive, onMounted } from "vue";
-import { ElMessage, ElMessageBox } from "element-plus";
-import {
-  Search,
-  Edit,
-  Delete,
-  User,
-  QuestionFilled,
-} from "@element-plus/icons-vue";
+import { ref, onMounted } from "vue";
+import { Search } from "@element-plus/icons-vue";
 import axios from "axios";
+import Item_codes from "./item_codes.vue";
 
-const url = "https://127.0.0.1:7227/api/PhraseRecd/GetPhraseRecd?UserId=16195";
+sessionStorage.setItem("UserId", "11695");
+const loading = ref(true);
+const tableData = ref();
 
 // session
-// onMounted(() => {
-//   const user = sessionStorage.getItem("user-info");
-//   username.value = JSON.parse(user).username;
-//   user_id = JSON.parse(user).id;
-//   axios
-//     .get(url)
-//     .then((res) => {
-//       console.log(res.data);
-//       tableData.wordsName = res.data;
-//     })
-//     .catch(function (error) {
-//       // handle error
-//       console.log(error);
-//     });
-// });
+onMounted(() => {
+  const UserId = sessionStorage.getItem("UserId");
+  const url =
+    "https://127.0.0.1:7227/api/PhraseRecd/GetPhraseRecd?UserId=" + UserId;
+
+  loading.value = false;
+  axios
+    .get(url)
+    .then((res) => {
+      //console.log(res.data);
+      // const statusCode = res.data[0].statusCode;
+      tableData.value = res.data;
+      //console.log(res.data);
+      console.log(tableData.value[0].statusCode);
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    });
+});
+
 // navbar
 const activeIndex = ref("1");
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
 
-// function GetSessionData() {
-//   const getSession = '<%=Session["TEST_SESSION"].ToString()%>';
-// } //回傳API的值
+function GetSessionData() {
+  const getSession = '<%=Session["TEST_SESSION"].ToString()%>';
+} //回傳API的值
 
 // interface User {
 // 	wordsName: string
@@ -213,13 +219,13 @@ const search = ref("");
 var params = new URLSearchParams();
 params.append("key", "value");
 axios({
-  method: "post",
-  url: "https://127.0.0.1:7227/api/PhraseRecd/GetPhraseRecd?UserId=16195&argPhraseDesc=測試",
+  method: "get",
+  url: "https://127.0.0.1:7227/api/PhraseRecd/GetPhraseRecd?UserId=11695&argPhraseDesc=測試",
   data: params,
 }).then((res) => {});
 // enter測試
 const sendSearch = () => {
-  const queryStr = tableData.value;
+  // const queryStr = tableData.value;
   console.log("search");
 };
 // const filterTableData = computed(() =>
@@ -234,35 +240,157 @@ const sendSearch = () => {
 
 // console.log(tableDateArray)
 
-const tableData = ref([
-  {
-    wordsName: "test",
-  },
-]);
+// const tableData = ref([
+//   {
+//     wordsName: "test",
+//   },
+// ]);
+// console.log(tableData);
 
 const tableHeader = ref([
   {
-    prop: "wordsName",
+    prop: "phrasE_DESC",
     label: "詞彙名稱",
     editable: false,
     type: "input",
   },
 ]);
 
+const addTest = ref();
+const AddorEdit = ref(true);
+const argPhraseDescDB = ref("");
+// onMounted(() => {
+//   // await nextTick();
+//   console.log(addTest.width);
+// });
+
+// const newMessage = ref("");
+// async function addToMessages() {
+//   addTest.value.push(newMessage.value);
+//   await nextTick();
+//   addTest.scrollTop = addTest.scrollHeight;
+// }
+
 const onAddItem = (index) => {
+  AddorEdit.value = true;
   const item = {
-    wordsName: "",
+    phrasE_DESC: "",
     editable: true,
   };
   tableData.value.splice(index, 0, item);
+  console.log("AddorEdit：" + AddorEdit.value);
+};
+
+const handleAdd = (row) => {
+  //row.editable = true;
+  console.log(row["phrasE_DESC"]);
+  if (AddorEdit.value) {
+    const UserId = sessionStorage.getItem("UserId");
+    const url1 =
+      "https://127.0.0.1:7227/api/PhraseRecd/SavingNew?UserId=" +
+      UserId +
+      "&argPhraseDesc=" +
+      row["phrasE_DESC"];
+    axios
+      .get(url1)
+      .then((res) => {
+        const statusCode = res.data[0].statusCode;
+        const message = res.data[0].message;
+        //console.log(res.data);
+        if (statusCode == "1002") {
+          alert(message);
+          window.location.reload();
+        } else {
+        }
+        tableData.value = res.data;
+        //console.log(res.data);
+        console.log(statusCode + "Add");
+        //console.log(tableData.value[0].statusCode);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  } else {
+    const UserId = sessionStorage.getItem("UserId");
+    const url2 =
+      "https://127.0.0.1:7227/api/PhraseRecd/SavingModify?UserId=" +
+      UserId +
+      "&argPhraseDesc=" +
+      row["phrasE_DESC"] +
+      "&argPhraseDescDB=" +
+      argPhraseDescDB.value;
+    axios
+      .get(url2)
+      .then((res) => {
+        const statusCode = res.data[0].statusCode;
+        const message = res.data[0].message;
+        //console.log(res.data);
+        if (statusCode == "1002") {
+          alert(message);
+          window.location.reload();
+        } else {
+        }
+        tableData.value = res.data;
+        //console.log(res.data);
+        console.log(statusCode + "Edit");
+        //console.log(tableData.value[0].statusCode);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  }
+};
+
+const handleSave = (row) => {
+  row.editable = false;
 };
 
 const handleEdit = (row) => {
+  AddorEdit.value = false;
   row.editable = true;
+  argPhraseDescDB.value = row["phrasE_DESC"];
+  console.log(
+    "AddorEdit：" +
+      AddorEdit.value +
+      "argPhraseDescDB：" +
+      argPhraseDescDB.value
+  );
 };
 
 const deleteRow = (index: number) => {
-  tableData.value.splice(index, 1);
-  console.log("delete");
+  //tableData.value.splice(index, 1);
+  // 儲存session
+  const UserId = sessionStorage.getItem("UserId");
+  // 抓api
+  const url1 =
+    "https://127.0.0.1:7227/api/PhraseRecd/DeletePhraseBasc?UserId=" +
+    UserId +
+    "&argPhraseDesc=" +
+    index["phrasE_DESC"];
+  axios
+    .get(url1)
+    .then((res) => {
+      const statusCode = res.data[0].statusCode;
+      const message = res.data[0].message;
+      //console.log(res.data);
+      // 錯誤訊息顯示
+      if (statusCode == "1002") {
+        alert(message);
+        window.location.reload();
+      } else {
+        alert(message);
+        tableData.value = res.data;
+      }
+      //console.log(res.data);
+      console.log(statusCode);
+
+      //console.log(tableData.value[0].statusCode);
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    });
 };
 </script>

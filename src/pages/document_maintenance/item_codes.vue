@@ -52,6 +52,7 @@
 
       <el-table
         :data="tableData"
+        v-loading="loading"
         border
         stripe
         style="width: 100%; max-width: 800px"
@@ -159,12 +160,33 @@
   </el-container>
 </template>
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { Search, Edit, Delete } from "@element-plus/icons-vue";
 import axios from "axios";
 
-const url =
-  "https://127.0.0.1:7227/api/AplyItemCode/GetAplyItemBasc?AplyItemCode=TS";
+sessionStorage.setItem("UserId", "11695");
+const loading = ref(true);
+const tableData = ref();
+
+// session
+onMounted(() => {
+  const UserId = sessionStorage.getItem("UserId");
+  const url =
+    "https://127.0.0.1:7227/api/AplyItemCode/GetAplyItemBasc?UserId=" + UserId;
+  loading.value = false;
+  axios
+    .get(url)
+    .then((res) => {
+      //console.log(res.data);
+      tableData.value = res.data;
+      //console.log(res.data);
+      console.log(tableData.value);
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    });
+});
 
 // const tableData = reactive({
 //   wordsName: "",
@@ -200,85 +222,85 @@ const search = ref("");
 
 const tableHeader = ref([
   {
-    prop: "itemCode",
+    prop: "aplY_ITEM_CODE",
     label: "項目代碼",
     editable: false,
     type: "input",
   },
   {
-    prop: "itemName",
+    prop: "aplY_ITEM_NAME",
     label: "項目名稱",
     editable: false,
     type: "input",
   },
 ]);
 
-const tableData = ref([
-  {
-    itemCode: "ACP",
-    itemName: "交流供電(機電)",
-  },
-  {
-    itemCode: "AD",
-    itemName: "竣工圖",
-  },
-  {
-    itemCode: "AFC",
-    itemName: "自動收費(機電)",
-  },
-  {
-    itemCode: "BSUM",
-    itemName: "送審文件(基設)",
-  },
-  {
-    itemCode: "C",
-    itemName: "證明書",
-  },
-  {
-    itemCode: "CL",
-    itemName: "計算書",
-  },
-  {
-    itemCode: "COM",
-    itemName: "通訊(機電)",
-  },
-  {
-    itemCode: "DCP",
-    itemName: "直流供電(機電)",
-  },
-  {
-    itemCode: "DD",
-    itemName: "設計圖",
-  },
-  {
-    itemCode: "DEP",
-    itemName: "機場設備(機電)",
-  },
-  {
-    itemCode: "DMP",
-    itemName: "設計管理計畫(機電)",
-  },
-  {
-    itemCode: "ECS",
-    itemName: "環控系統(機電)",
-  },
-  {
-    itemCode: "ELE",
-    itemName: "電梯(機電)",
-  },
-  {
-    itemCode: "EMP",
-    itemName: "其他管理計畫(機電)",
-  },
-  {
-    itemCode: "ESC",
-    itemName: "電扶梯(機電)",
-  },
-  {
-    itemCode: "EST",
-    itemName: "設備及系統測試計畫(機電)",
-  },
-]);
+// const tableData = ref([
+//   {
+//     itemCode: "ACP",
+//     itemName: "交流供電(機電)",
+//   },
+//   {
+//     itemCode: "AD",
+//     itemName: "竣工圖",
+//   },
+//   {
+//     itemCode: "AFC",
+//     itemName: "自動收費(機電)",
+//   },
+//   {
+//     itemCode: "BSUM",
+//     itemName: "送審文件(基設)",
+//   },
+//   {
+//     itemCode: "C",
+//     itemName: "證明書",
+//   },
+//   {
+//     itemCode: "CL",
+//     itemName: "計算書",
+//   },
+//   {
+//     itemCode: "COM",
+//     itemName: "通訊(機電)",
+//   },
+//   {
+//     itemCode: "DCP",
+//     itemName: "直流供電(機電)",
+//   },
+//   {
+//     itemCode: "DD",
+//     itemName: "設計圖",
+//   },
+//   {
+//     itemCode: "DEP",
+//     itemName: "機場設備(機電)",
+//   },
+//   {
+//     itemCode: "DMP",
+//     itemName: "設計管理計畫(機電)",
+//   },
+//   {
+//     itemCode: "ECS",
+//     itemName: "環控系統(機電)",
+//   },
+//   {
+//     itemCode: "ELE",
+//     itemName: "電梯(機電)",
+//   },
+//   {
+//     itemCode: "EMP",
+//     itemName: "其他管理計畫(機電)",
+//   },
+//   {
+//     itemCode: "ESC",
+//     itemName: "電扶梯(機電)",
+//   },
+//   {
+//     itemCode: "EST",
+//     itemName: "設備及系統測試計畫(機電)",
+//   },
+// ]);
 
 const handleEdit = (row) => {
   row.editable = true;
