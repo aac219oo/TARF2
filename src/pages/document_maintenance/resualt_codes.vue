@@ -8,117 +8,55 @@
       <p>蘇家淇(11548)</p>
     </el-header>
     <el-main>
-      <el-menu
-        :default-active="activeIndex"
-        class="el-menu-demo index_row"
-        mode="horizontal"
-        @select="handleSelect"
-      >
+      <el-menu :default-active="activeIndex" class="el-menu-demo index_row" mode="horizontal" @select="handleSelect">
         <!-- <el-menu-item index="4"
           ><a href="../access_setting/index.html">權限設定</a></el-menu-item
         > -->
         <!-- <el-menu-item index="5"><a href="../individual_words/index.html">個人使用詞彙</a></el-menu-item> -->
-        <el-menu-item index="6"
-          ><a href="../item_codes/index.html">送審項目代碼</a></el-menu-item
-        >
-        <el-menu-item index="1"
-          ><a href="../resualt_codes/index.html">送審結果代碼</a></el-menu-item
-        >
-        <el-menu-item index="2"
-          ><a href="../condition_codes/index.html"
-            >案件狀態代碼</a
-          ></el-menu-item
-        >
-        <el-menu-item index="3"
-          ><a href="../com_using_right/index.html"
-            >廠商使用權限</a
-          ></el-menu-item
-        >
+        <el-menu-item index="6"><a href="../item_codes/index.html">送審項目代碼</a></el-menu-item>
+        <el-menu-item index="1"><a href="../resualt_codes/index.html">送審結果代碼</a></el-menu-item>
+        <el-menu-item index="2"><a href="../condition_codes/index.html">案件狀態代碼</a></el-menu-item>
+        <el-menu-item index="3"><a href="../com_using_right/index.html">廠商使用權限</a></el-menu-item>
       </el-menu>
 
       <div class="maintenance_h3">技術文件【送審結果】代碼維護</div>
 
       <div class="maintenance_tool_wrap">
         <div class="maintenance_search">
-          <el-input
-            v-model="input3"
-            placeholder="搜尋"
-            class="input-with-select"
-            :suffix-icon="Search"
-          >
+          <el-input v-model="search" placeholder="搜尋" class="input-with-select" :suffix-icon="Search">
           </el-input>
         </div>
       </div>
 
-      <el-table
-        :data="tableData"
-        v-loading="loading"
-        border
-        stripe
-        style="width: 100%; max-width: 800px"
+      <el-table :data="tableData" v-loading="loading" border stripe style="width: 100%; max-width: 800px"
         :header-cell-style="{
           background: '#ebf4f9',
           color: '#000',
           textAlign: 'center',
-        }"
-      >
-        <el-table-column
-          type="index"
-          label="序號"
-          width="57"
-          :resizable="false"
-        />
-        <el-table-column
-          :prop="item.prop"
-          :label="item.label"
-          v-for="(item, index) in tableHeader"
-          :key="item.prop"
-          :resizable="false"
-        >
+        }">
+        <el-table-column type="index" label="序號" width="57" :resizable="false" />
+        <el-table-column :prop="item.prop" :label="item.label" v-for="(item, index) in tableHeader" :key="item.prop"
+          :resizable="false">
           <template #default="scope">
-            <div
-              v-show="item.editable || scope.row.editable"
-              class="editable-row"
-            >
+            <div v-show="item.editable || scope.row.editable" class="editable-row">
               <template v-if="item.type === 'input'">
-                <el-input
-                  size="small"
-                  v-model="scope.row[item.prop]"
-                  :placeholder="`請輸入${item.label}`"
-                  @change="handleEdit(scope.$index)"
-                />
+                <el-input size="small" v-model="scope.row[item.prop]" :placeholder="`請輸入${item.label}`"
+                  @change="handleAdd(scope.row)" />
               </template>
             </div>
-            <div
-              v-show="!item.editable && !scope.row.editable"
-              class="editable-row"
-            >
+            <div v-show="!item.editable && !scope.row.editable" class="editable-row">
               <span class="editable-row-span">{{ scope.row[item.prop] }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column width="120px" align="right" :resizable="false">
           <template #header>
-            <el-button class="maintenance_plus" @click="onAddItem"
-              ><img
-                src="../../assets/icon07.png"
-                style="width: 26px; vertical-align: bottom"
-                alt=""
-            /></el-button>
+            <el-button class="maintenance_plus" @click="onAddItem"><img src="../../assets/icon07.png"
+                style="width: 26px; vertical-align: bottom" alt="" /></el-button>
           </template>
           <template #default="scope">
-            <el-button
-              link
-              size="small"
-              v-show="scope.row.editable"
-              @click="scope.row.editable = false"
-              class="button_edit"
-            >
-              <img
-                src="../../assets/icon05.png"
-                style="width: 24px; vertical-align: bottom"
-                alt=""
-              />
+            <el-button link size="small" v-show="scope.row.editable" @click="handleSave(scope.row)" class="button_edit">
+              <img src="../../assets/icon05.png" style="width: 24px; vertical-align: bottom" alt="" />
             </el-button>
           </template>
         </el-table-column>
@@ -132,23 +70,34 @@ import { ref, onMounted } from "vue";
 import { Search } from "@element-plus/icons-vue";
 import axios from "axios";
 
-sessionStorage.setItem("UserId", "11695");
+sessionStorage.setItem("UserId", "11695"); //儲存session
+// navbar
+const activeIndex = ref("1");
+const handleSelect = (key: string, keyPath: string[]) => {
+  console.log(key, keyPath);
+};
+// search
+const search = ref("");
 const loading = ref(true);
-const tableData = ref();
+const tableData = ref(); //渲染結果在畫面上
+const url = ref("https://127.0.0.1:7227/api/ResultCode/") // 連到API
+const UserId = ref(() => { sessionStorage.getItem("UserId"); }) // 儲存UserId
+// 編輯表格功能
+const AddorEdit = ref(true); //新增編輯變數 新增:true 編輯:false
+const argPhraseDescDB = ref(""); //更改資料變數
 
 // session
 onMounted(() => {
   const UserId = sessionStorage.getItem("UserId");
-  const url =
-    "https://127.0.0.1:7227/api/ResultCode/GetResultBasc?UserId=" + UserId;
+  const urlTableData = url + "GetResultBasc?UserId=" + UserId;
   loading.value = false;
   axios
-    .get(url)
+    .get(urlTableData)
     .then((res) => {
       //console.log(res.data);
       tableData.value = res.data;
       //console.log(res.data);
-      console.log(tableData.value);
+      console.log(tableData.value[0].statusCode);  //印JSON陣列第零項後台傳送的訊息判斷1001、1002
     })
     .catch(function (error) {
       // handle error
@@ -156,20 +105,7 @@ onMounted(() => {
     });
 });
 
-// navbar
-const activeIndex = ref("1");
-const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
-
-const input3 = ref("");
-
-const item = {
-  number: "",
-  conditionCode: "",
-  conditionInstruction: "",
-};
-
+// 表頭渲染
 const tableHeader = ref([
   {
     prop: "resulT_CODE",
@@ -185,80 +121,91 @@ const tableHeader = ref([
   },
 ]);
 
-// const tableData = ref([
-//   {
-//     resultCode: "A",
-//     resultCaption: "『A』接受",
-//   },
-//   {
-//     resultCode: "B",
-//     resultCaption:
-//       "『B』接受，但需將依審查意見修正後之內容併下一階段成果文件提送",
-//   },
-//   {
-//     resultCode: "C",
-//     resultCaption: "『C』修正後再接受(請重新提送修正後之文件)",
-//   },
-//   {
-//     resultCode: "D",
-//     resultCaption: "『D』退件",
-//   },
-//   {
-//     resultCode: "E",
-//     resultCaption: "『E』存查參辦",
-//   },
-//   {
-//     resultCode: "F",
-//     resultCaption: "『F』同意備查",
-//   },
-//   {
-//     resultCode: "G",
-//     resultCaption: "『G』釐清檢討後提送修正文件續審",
-//   },
-//   {
-//     resultCode: "M1",
-//     resultCaption: "『M1』存查參辦",
-//   },
-//   {
-//     resultCode: "M2",
-//     resultCaption: "『M2』意見回覆，如附",
-//   },
-//   {
-//     resultCode: "M3",
-//     resultCaption: "『M3』無意見",
-//   },
-//   {
-//     resultCode: "N1",
-//     resultCaption: "『1』准予備查",
-//   },
-//   {
-//     resultCode: "N2",
-//     resultCaption: "『2』部分改善後重送，其餘准予備查",
-//   },
-//   {
-//     resultCode: "N3",
-//     resultCaption: "『3』不同意備查，全部改善後重送",
-//   },
-//   {
-//     resultCode: "N4",
-//     resultCaption: "『4』免審查",
-//   },
-// ]);
+// 儲存表格到API 
+const handleAdd = (row) => {
+  //console.log(row["phrasE_DESC"]); //印JSON中需獲取的值 //row['需要的值']
+  // 判斷編輯新增
+  if (AddorEdit.value) { //執行新增
+    const UserId = sessionStorage.getItem("UserId"); //session判斷是否可以從後台接收或傳送
+    const urlAdd = url + "SavingNew?UserId=" + UserId + "&argPhraseDesc=" + row["resulT_CODE, resulT_NAME"]; //取得新增資料的API
+    axios
+      .get(urlAdd)
+      .then((res) => {
+        const statusCode = res.data[0].statusCode; //儲存狀態代碼
+        const message = res.data[0].message; //儲存狀態訊息
+        //console.log(res.data);
+        // 傳送值狀態錯誤並顯示訊息
+        if (statusCode == "1002") {
+          alert(message);
+          window.location.reload(); //重整頁面
+        } else {
+        }
+        tableData.value = res.data;
+        //console.log(res.data);
+        console.log(statusCode + "Add"); //狀態代碼為新增
+        //console.log(tableData.value[0].statusCode);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  } else { //執行編輯
+    const UserId = sessionStorage.getItem("UserId");
+    const urlEdit = url + "SavingModify?UserId=" + UserId + "&argPhraseDesc=" + row["resulT_CODE, resulT_NAME"] + "&argPhraseDescDB=" + argPhraseDescDB.value; //取得編輯資料的API，並回傳舊資料的值
+    axios
+      .get(urlEdit)
+      .then((res) => {
+        const statusCode = res.data[0].statusCode; //儲存狀態代碼
+        const message = res.data[0].message; //儲存狀態訊息
+        //console.log(res.data);
+        //顯示錯誤警告
+        if (statusCode == "1002") {
+          alert(message);
+          window.location.reload();
+        } else {
+        }
+        tableData.value = res.data;
+        //console.log(res.data);
+        console.log(statusCode + "Edit"); //狀態代碼為編輯
+        //console.log(tableData.value[0].statusCode);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  }
+};
 
+const onAddItem = (index) => {
+  AddorEdit.value = true; //判斷為新增表格
+  const item = {
+    resulT_CODE: "",
+    resulT_NAME: "",
+    editable: true,
+  };
+  tableData.value.splice(index, 0, item); //自第一行新增表格
+  // console.log("AddorEdit：" + AddorEdit.value); //印確認編輯或新增變數
+};
+
+// 編輯表格
 const handleEdit = (row) => {
+  AddorEdit.value = false; //編輯
   row.editable = true;
+  argPhraseDescDB.value = row["resulT_CODE, resulT_NAME"];
+  console.log(
+    "AddorEdit：" +
+    AddorEdit.value +
+    "argPhraseDescDB：" +
+    argPhraseDescDB.value
+  ); //印編輯值
+};
+
+// 儲存表格
+const handleSave = (row) => {
+  row.editable = false;
 };
 
 const deleteRow = (index: number) => {
   tableData.value.splice(index, 1);
 };
 
-const onAddItem = (index) => {
-  const item = {
-    resultCode: "",
-    resultCaption: "",
-    editable: true,
-  };
-  tableData.value.splice(index, 0, item);
-};
 </script>
