@@ -89,19 +89,21 @@
         <el-table-column label="權限種類" prop="accessType" sortable width="130px" :resizable="false" />
         <el-table-column label="註銷" width="89" :resizable="false">
           <template #default="scope">
-            <el-switch v-model="scope.row.deleteOn" />
+            <el-switch v-model="scope.row.takeOff" @change="changeStatus($event, scope.row, scope.$index)" />
+            <!-- scope.row.deleteOn -->
+            <!-- deleteRight(scope.row) -->
           </template>
         </el-table-column>
         <el-table-column label="標號維護" width="89" :resizable="false">
           <template #default="scope">
-            <el-button link v-show="" @click="scope.row.openLabeling = true" class="button_edit">
+            <el-button v-show="scope.row.used" link @click="scope.row.openLabeling = true" class="button_edit">
               <img src="../../assets/icon04.png" style="width: 24px; vertical-align: bottom" alt="" />
             </el-button>
-            <el-dialog v-model="scope.row.openLabeling" append-to-body="true" center align-center
+            <el-dialog v-model="scope.row.openLabeling" :append-to-body="true" center align-center
               :close-on-click-modal="false" title="標號維護">
               <el-form :model="scope.row.formLabeling">
                 <el-form-item label="標號" :label-width="formLabelWidth">
-                  <el-select v-model="lableling01" multiple filterable allow-create default-first-option
+                  <el-select :v-model="scope.row.labeling" multiple filterable allow-create default-first-option
                     :reserve-keyword="false" placeholder=" ">
                     <el-option v-for="item in optionsLabeling" :key="item.labeling" :label="item.label"
                       :value="item.labeling" />
@@ -128,6 +130,7 @@ import { reactive, ref } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
 import { Search } from "@element-plus/icons-vue";
 // import { ElMessage, ElMessageBox } from 'element-plus'
+import axios from "axios";
 
 const search = ref("");
 // navbar
@@ -143,14 +146,24 @@ const formLabelWidth = "100px";
 const ruleFormRef = ref<FormInstance>();
 // 註銷開關
 // const deleteOn = ref(true)
+const changeStatus = (e, row, index) => {
+  console.log(e, row, index) // e返回狀態，row當前行數據，index下標
+  // console.log(row.takeOff)
+  console.log(row["takeOff"])
+  // const takeOff = row.takeOff
+  // const type = row.deleteOn
+  // .then((res) => {
+  //   console.log(res.data)
+  // })
+}
+
 const cancel = () => {
   dialogFormVisible.value = false;
 };
 // 顯示或隱藏按鍵
-// const showButton = ref(true)
-// const getStatus = () => {
-//   const used = tableData.values
-// }
+const used = ref(true)
+const testShow = () => {
+}
 
 // labeling選項
 const ruleForm = reactive({
@@ -202,6 +215,7 @@ const rules = reactive<FormRules>({
     },
   ],
 });
+
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
@@ -215,16 +229,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   });
 };
 
-// const testEnterSubmit = () => {
-//   console.log("test");
-// };
+// const labeling = ref<string[]>([]);
+const labeling01 = ref<string[]>([]);
 
-// const formLabeling = reactive({
-//   labeling: '',
-// })
 
-const labeling = ref<string[]>([]);
-const lableling01 = ref<string[]>(["CF620", "CF680C"]);
 const optionsLabeling = [
   {
     labeling: "CF620",
@@ -242,96 +250,45 @@ const optionsLabeling = [
 
 const optionsAccessType = [
   {
-    accessType: "審查權限",
+    accessType: "right",
     label: "審查權限",
   },
   {
-    accessType: "審查權限2",
-    label: "審查權限2",
+    accessType: "watch",
+    label: "委託監造",
   },
   {
-    accessType: "審查權限3",
-    label: "審查權限3",
+    accessType: "document",
+    label: "查詢文件權限",
+  },
+  {
+    accessType: "picture",
+    label: "查詢圖說權限",
+  },
+  {
+    accessType: "employees",
+    label: "本局同仁",
+  },
+  {
+    accessType: "apply",
+    label: "申請單權限",
   },
 ];
 
-// const handleClose = (done: () => void) => {
-//   ElMessageBox.confirm('確定取消儲存?',
-//     {
-//       confirmButtonText: '是',
-//       cancelButtonText: '否',
-//     })
-//     .then(() => {
-//       done()
-//     })
-//     .catch(() => {
-//       // catch error
-//     })
-// }
-
-// labelingMain選項
-// const labelingMain = ref<string[]>([])
-// const optionsLabelingMain = [
-//   {
-//     labelingMain: 'CF620',
-//     label: 'CF620',
-//   },
-//   {
-//     labelingMain: 'CF624G',
-//     label: 'CF624G',
-//   },
-//   {
-//     labelingMain: 'CF680C',
-//     label: 'CF680C',
-//   },
-// ]
-
-// const item = {
-//   userName: '' ,
-//   name: '' ,
-//   com_Name: '' ,
-//   accessCondition: '' ,
-//   accessType: '' ,
-// }
-
-// table
-// const tableHeader = ref([
-//   {
-//     prop: "userName",
-//     label: "帳號",
-//     editable: false,
-//   },
-//   {
-//     prop: "name",
-//     label: "姓名",
-//     editable: false,
-//   },
-//   {
-//     prop: "com_Name",
-//     label: "公司名稱",
-//     editable: false,
-//   },
-//   {
-//     prop: "accessCondition",
-//     label: "權限狀態",
-//     editable: false,
-//   },
-//   {
-//     prop: "accessType",
-//     label: "權限種類",
-//     editable: false,
-//   },
-// ]);
-
-const tableData = [
+const tableData = ref([
   {
     userName: "D0002612",
     name: "楊明耀",
     com_Name: "正堯工程顧問股份有限公司",
     accessCondition: "有效",
     accessType: "審查權限",
-    labeling: "",
-    used: '1'
+    labeling: {
+      CF680C: "CF680C",
+      CF624G: "CF624G",
+      CF620: "CF620"
+    },
+    used: true,
+    takeOff: false,
   },
   {
     userName: "D0002611",
@@ -339,8 +296,13 @@ const tableData = [
     com_Name: "中興工程顧問股份有限公司",
     accessCondition: "有效",
     accessType: "審查權限",
-    labeling: "",
-    used: '0'
+    labeling: {
+      CF680C: "CF680C",
+      CF624G: "CF624G",
+      CF620: "CF620"
+    },
+    used: true,
+    takeOff: false,
   },
   {
     userName: "D0002610",
@@ -348,8 +310,13 @@ const tableData = [
     com_Name: "中興工程顧問股份有限公司",
     accessCondition: "有效",
     accessType: "審查權限",
-    labeling: "",
-    used: '1'
+    labeling: {
+      CF680C: "CF680C",
+      CF624G: "CF624G",
+      CF620: "CF620"
+    },
+    used: true,
+    takeOff: false,
   },
   {
     userName: "D0002609",
@@ -357,8 +324,13 @@ const tableData = [
     com_Name: "中興工程顧問股份有限公司",
     accessCondition: "有效",
     accessType: "審查權限",
-    labeling: "",
-    used: '1'
+    labeling: {
+      CF680C: "CF680C",
+      CF624G: "CF624G",
+      CF620: "CF620"
+    },
+    used: true,
+    takeOff: true,
   },
   {
     userName: "D0002608",
@@ -366,8 +338,13 @@ const tableData = [
     com_Name: "00股份有限公司",
     accessCondition: "有效",
     accessType: "審查權限",
-    labeling: "",
-    used: '1'
+    labeling: {
+      CF680C: "CF680C",
+      CF624G: "CF624G",
+      CF620: "CF620"
+    },
+    used: true,
+    takeOff: false,
   },
   {
     userName: "D0002607",
@@ -375,8 +352,13 @@ const tableData = [
     com_Name: "00股份有限公司",
     accessCondition: "有效",
     accessType: "審查權限",
-    labeling: "",
-    used: '1'
+    labeling: {
+      CF680C: "CF680C",
+      CF624G: "CF624G",
+      CF620: "CF620"
+    },
+    used: true,
+    takeOff: true,
   },
   {
     userName: "D0002606",
@@ -384,8 +366,13 @@ const tableData = [
     com_Name: "千惠園藝社",
     accessCondition: "有效",
     accessType: "審查權限",
-    labeling: "",
-    used: '1'
+    labeling: {
+      CF680C: "CF680C",
+      CF624G: "CF624G",
+      CF620: "CF620"
+    },
+    used: true,
+    takeOff: false,
   },
   {
     userName: "D0002604",
@@ -393,8 +380,13 @@ const tableData = [
     com_Name: "綠野國際建築師事務所",
     accessCondition: "有效",
     accessType: "審查權限",
-    labeling: "",
-    used: '1'
+    labeling: {
+      CF680C: "CF680C",
+      CF624G: "CF624G",
+      CF620: "CF620"
+    },
+    used: true,
+    takeOff: true,
   },
   {
     userName: "D0002603",
@@ -402,8 +394,13 @@ const tableData = [
     com_Name: "綠野國際建築師事務所",
     accessCondition: "有效",
     accessType: "審查權限",
-    labeling: "",
-    used: '1'
+    labeling: {
+      CF680C: "CF680C",
+      CF624G: "CF624G",
+      CF620: "CF620"
+    },
+    used: true,
+    takeOff: true,
   },
   {
     userName: "D0002602",
@@ -411,8 +408,13 @@ const tableData = [
     com_Name: "綠野國際建築師事務所",
     accessCondition: "有效",
     accessType: "審查權限",
-    labeling: "",
-    used: '1'
+    labeling: {
+      CF680C: "CF680C",
+      CF624G: "CF624G",
+      CF620: "CF620"
+    },
+    used: true,
+    takeOff: true,
   },
   {
     userName: "D0002601",
@@ -420,8 +422,13 @@ const tableData = [
     com_Name: "綠野國際建築師事務所",
     accessCondition: "有效",
     accessType: "審查權限",
-    labeling: "",
-    used: '1'
+    labeling: {
+      CF680C: "CF680C",
+      CF624G: "CF624G",
+      CF620: "CF620"
+    },
+    used: true,
+    takeOff: false,
   },
   {
     userName: "D0002600",
@@ -429,8 +436,13 @@ const tableData = [
     com_Name: "大陸工程股份有限公司",
     accessCondition: "有效",
     accessType: "審查權限",
-    labeling: "",
-    used: '1'
+    labeling: {
+      CF680C: "CF680C",
+      CF624G: "CF624G",
+      CF620: "CF620"
+    },
+    used: true,
+    takeOff: true,
   },
   {
     userName: "D0002599",
@@ -438,8 +450,13 @@ const tableData = [
     com_Name: "法商阿爾斯通運輸股份有限公司",
     accessCondition: "有效",
     accessType: "審查權限",
-    labeling: "",
-    used: '1'
+    labeling: {
+      CF680C: "CF680C",
+      CF624G: "CF624G",
+      CF620: "CF620"
+    },
+    used: true,
+    takeOff: false,
   },
   {
     userName: "D0002598",
@@ -447,8 +464,13 @@ const tableData = [
     com_Name: "台北市停車管理工程處",
     accessCondition: "有效",
     accessType: "審查權限",
-    labeling: "",
-    used: '1'
+    labeling: {
+      CF680C: "CF680C",
+      CF624G: "CF624G",
+      CF620: "CF620"
+    },
+    used: true,
+    takeOff: false,
   },
   {
     userName: "D0002596",
@@ -456,9 +478,14 @@ const tableData = [
     com_Name: "千惠園藝社",
     accessCondition: "有效",
     accessType: "審查權限",
-    labeling: "",
-    used: '1'
+    labeling: {
+      CF680C: "CF680C",
+      CF624G: "CF624G",
+      CF620: "CF620"
+    },
+    used: true,
+    takeOff: false,
   },
-];
+]);
 
 </script>

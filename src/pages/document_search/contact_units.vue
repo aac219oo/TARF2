@@ -23,16 +23,17 @@ const tabledata = reactive({
 
 // axios
 //各單位窗口資訊查詢
-const url = "https://127.0.0.1:7227/api/ContactInfoQuery/GetDeptChargQuery";
+// const url = "https://127.0.0.1:7227/api/ContactInfoQuery/GetDeptChargQuery";
+const url = "http://tarf.grp.com.tw/api/Test/GetDeptChargQuery";
 
 onMounted(() => {
-  // loading.value = false;
-  setTimeout(() => (loading.value = false), 3000);
+  loading.value = true;
   axios
     .get(url)
     .then((res) => {
       console.log(res.data);
       tabledata.newsdata = res.data;
+      loading.value = false;
     })
     .catch(function (error) {
       // handle error
@@ -53,22 +54,9 @@ onMounted(() => {
       <p>蘇家淇(11548)</p>
     </el-header>
     <el-main>
-      <el-menu
-        :default-active="activeIndex"
-        class="el-menu-demo index_row"
-        mode="horizontal"
-        @select="handleSelect"
-      >
-        <el-menu-item index="1"
-          ><a href="../contact_units/index.html"
-            >捷運局各單位窗口資訊</a
-          ></el-menu-item
-        >
-        <el-menu-item index="2"
-          ><a href="../contact_com/index.html"
-            >各標號廠商窗口資訊</a
-          ></el-menu-item
-        >
+      <el-menu :default-active="activeIndex" class="el-menu-demo index_row" mode="horizontal" @select="handleSelect">
+        <el-menu-item index="1"><a href="../contact_units/index.html">捷運局各單位窗口資訊</a></el-menu-item>
+        <el-menu-item index="2"><a href="../contact_com/index.html">各標號廠商窗口資訊</a></el-menu-item>
       </el-menu>
 
       <el-row>
@@ -77,35 +65,18 @@ onMounted(() => {
         </div>
         <el-form class="contact-search">
           <el-form-item>
-            <el-input
-              v-model="search"
-              class="w-50 m-2"
-              size="default"
-              placeholder="搜尋"
-              :suffix-icon="Search"
-            />
+            <el-input v-model="search" class="w-50 m-2" size="default" placeholder="搜尋" :suffix-icon="Search" />
           </el-form-item>
         </el-form>
 
-        <el-table
-          class="tableForm tableContactUnits"
-          v-loading="loading"
-          :data="tabledata.newsdata"
-          stripe
-          border
+        <el-table class="tableForm tableContactUnits" v-loading="loading" :data="tabledata.newsdata" stripe border
           :header-cell-style="{
             background: '#ebf4f9',
             color: '#000',
             textAlign: 'center',
-          }"
-        >
+          }">
           <el-table-column type="index" label="序號" width="90" />
-          <el-table-column
-            prop="depT_NAME"
-            sortable
-            label="單位"
-            class="unitAlign"
-          />
+          <el-table-column prop="depT_NAME" sortable label="單位" class="unitAlign" />
           <el-table-column prop="empL_NAME" sortable label="姓名" />
           <el-table-column prop="ofF_TEL" sortable label="電話" />
         </el-table>

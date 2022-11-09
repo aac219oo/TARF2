@@ -138,7 +138,7 @@ const handleAdd = (row) => {
   // 判斷編輯新增
   if (AddorEdit.value) { //執行新增
     const UserId = sessionStorage.getItem("UserId"); //session判斷是否可以從後台接收或傳送
-    const urlAdd = url + "SavingNew?UserId=" + UserId + "&argPhraseDesc=" + row["casE_STATUS, statuS_DESC"]; //取得新增資料的API
+    const urlAdd = url + "SavingNew?UserId=" + UserId + "&argPhraseDesc=" + (row["casE_STATUS"], row["statuS_DESC"]); //取得新增資料的API
     axios
       .get(urlAdd)
       .then((res) => {
@@ -161,7 +161,7 @@ const handleAdd = (row) => {
       });
   } else { //執行編輯
     const UserId = sessionStorage.getItem("UserId");
-    const urlEdit = url + "SavingModify?UserId=" + UserId + "&argPhraseDesc=" + row["casE_STATUS, statuS_DESC"] + "&argPhraseDescDB=" + argPhraseDescDB.value; //取得編輯資料的API，並回傳舊資料的值
+    const urlEdit = url + "SavingModify?UserId=" + UserId + "&argPhraseDesc=" + (row["casE_STATUS"], row["statuS_DESC"]) + "&argPhraseDescDB=" + argPhraseDescDB.value; //取得編輯資料的API，並回傳舊資料的值
     axios
       .get(urlEdit)
       .then((res) => {
@@ -202,7 +202,7 @@ const onAddItem = (index) => {
 const handleEdit = (row) => {
   AddorEdit.value = false; //編輯
   row.editable = true;
-  argPhraseDescDB.value = row["casE_STATUS, statuS_DESC"];
+  argPhraseDescDB.value = (row["casE_STATUS"], row["statuS_DESC"]);
   console.log(
     "AddorEdit：" +
     AddorEdit.value +

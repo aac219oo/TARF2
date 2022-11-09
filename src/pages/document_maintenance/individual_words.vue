@@ -141,7 +141,7 @@ const tableHeader = ref([
 ]);
 
 
-// 儲存表格到API 
+// 儲存表格內容到API 
 const handleAdd = (row) => {
 	//console.log(row["phrasE_DESC"]); //印JSON中需獲取的值 //row['需要的值']
 	// 判斷編輯新增
