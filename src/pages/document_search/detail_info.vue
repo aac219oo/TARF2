@@ -1,4 +1,5 @@
 <template>
+  <el-config-provider :locale="locale"> </el-config-provider>
   <div class="common-layout">
     <el-container>
       <el-header>
@@ -439,109 +440,113 @@
   </div>
 </template>
 <style>
-.demo-tabs > .el-tabs__content {
-  padding: 32px;
-  color: #000;
-  font-size: 32px;
-  font-weight: 600;
-}
+  .demo-tabs > .el-tabs__content {
+    padding: 32px;
+    color: #000;
+    font-size: 32px;
+    font-weight: 600;
+  }
 </style>
 <script lang="ts" setup>
-import { ref } from "vue";
-import type { TabsPaneContext } from "element-plus";
+  import { ref, computed } from "vue"
+  import type { TabsPaneContext } from "element-plus"
+  import zhTw from "element-plus/dist/locale/zh-tw"
+  import en from "element-plus/es/locale/lang/en"
 
-const activeName = ref("first");
+  const language = ref("zh-tw")
+  const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
+  const activeName = ref("first")
 
-const handleClick = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event);
-};
-const tableData1 = [
-  {
-    unit: "綜 規 處",
-    condition: "結案",
-    opinion: "檢視",
-    result: "『A』接受",
-    date: "111年5月1日 08:30",
-  },
-  {
-    unit: "工 管 處",
-    condition: "結案",
-    opinion: "檢視",
-    result: "『A』接受",
-    date: "111年5月1日 08:30",
-  },
-  {
-    unit: "一區工程處土 六 所",
-    condition: "結案",
-    opinion: "檢視",
-    result: "『F』同意備查",
-    date: "111年5月1日 08:30",
-  },
-  {
-    unit: "一區工程處土 木 科",
-    condition: "結案",
-    opinion: "檢視",
-    result: "『F』同意備查",
-    date: "111年5月1日 08:30",
-  },
-  {
-    unit: "一區工程處水電環控科",
-    condition: "結案",
-    opinion: "檢視",
-    result: "『F』同意備查",
-    date: "111年5月1日 08:30",
-  },
-];
+  const handleClick = (tab: TabsPaneContext, event: Event) => {
+    console.log(tab, event)
+  }
+  const tableData1 = [
+    {
+      unit: "綜 規 處",
+      condition: "結案",
+      opinion: "檢視",
+      result: "『A』接受",
+      date: "111年5月1日 08:30",
+    },
+    {
+      unit: "工 管 處",
+      condition: "結案",
+      opinion: "檢視",
+      result: "『A』接受",
+      date: "111年5月1日 08:30",
+    },
+    {
+      unit: "一區工程處土 六 所",
+      condition: "結案",
+      opinion: "檢視",
+      result: "『F』同意備查",
+      date: "111年5月1日 08:30",
+    },
+    {
+      unit: "一區工程處土 木 科",
+      condition: "結案",
+      opinion: "檢視",
+      result: "『F』同意備查",
+      date: "111年5月1日 08:30",
+    },
+    {
+      unit: "一區工程處水電環控科",
+      condition: "結案",
+      opinion: "檢視",
+      result: "『F』同意備查",
+      date: "111年5月1日 08:30",
+    },
+  ]
 
-const tableData2 = [
-  {
-    unit: "土 建 處/黃作元(線上簽核方式送審)",
-    condition: "結案",
-    opinion: "檢視",
-    result: "『A』接受",
-    date: "111年5月1日 08:30",
-  },
-  {
-    unit: "土 建 處/朱慶村(線上簽核方式送審)",
-    condition: "結案",
-    opinion: "檢視",
-    result: "『F』同意備查",
-    date: "111年5月1日 08:30",
-  },
-  {
-    unit: "土 建 處/高雪莉(線上簽核方式送審)",
-    condition: "結案",
-    opinion: "檢視",
-    result: "『A』接受",
-    date: "111年5月1日 08:30",
-  },
-  {
-    unit: "一區工程處水電環控科",
-    condition: "結案",
-    opinion: "檢視",
-    result: "『F』同意備查",
-    date: "111年5月1日 08:30",
-  },
-];
+  const tableData2 = [
+    {
+      unit: "土 建 處/黃作元(線上簽核方式送審)",
+      condition: "結案",
+      opinion: "檢視",
+      result: "『A』接受",
+      date: "111年5月1日 08:30",
+    },
+    {
+      unit: "土 建 處/朱慶村(線上簽核方式送審)",
+      condition: "結案",
+      opinion: "檢視",
+      result: "『F』同意備查",
+      date: "111年5月1日 08:30",
+    },
+    {
+      unit: "土 建 處/高雪莉(線上簽核方式送審)",
+      condition: "結案",
+      opinion: "檢視",
+      result: "『A』接受",
+      date: "111年5月1日 08:30",
+    },
+    {
+      unit: "一區工程處水電環控科",
+      condition: "結案",
+      opinion: "檢視",
+      result: "『F』同意備查",
+      date: "111年5月1日 08:30",
+    },
+  ]
 
-const tableData3 = [
-  {
-    suggestion: "無意見(二區工程處材試所)",
-    response: "N/A",
-  },
-];
-const tableData4 = [
-  {
-    fileName: "0505E-11_Rev.0.docx",
-    fileExplain: "0505E-11_Rev.0_WORD",
-    uploadTime: "111年10月17日13時34分18秒",
-  },
-];
-const tableData5 = [
-  {
-    fileName: "APN11-201_221018-122637-1dc.pdf",
-    fileExplain: "工審單(二區工程處)",
-    uploadTime: "111年10月18日12時43分31秒",
-  },
-];
+  const tableData3 = [
+    {
+      suggestion: "無意見(二區工程處材試所)",
+      response: "N/A",
+    },
+  ]
+  const tableData4 = [
+    {
+      fileName: "0505E-11_Rev.0.docx",
+      fileExplain: "0505E-11_Rev.0_WORD",
+      uploadTime: "111年10月17日13時34分18秒",
+    },
+  ]
+  const tableData5 = [
+    {
+      fileName: "APN11-201_221018-122637-1dc.pdf",
+      fileExplain: "工審單(二區工程處)",
+      uploadTime: "111年10月18日12時43分31秒",
+    },
+  ]
 </script>

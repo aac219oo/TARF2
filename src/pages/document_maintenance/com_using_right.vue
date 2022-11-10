@@ -1,4 +1,5 @@
 <template>
+  <el-config-provider :locale="locale"> </el-config-provider>
   <el-container>
     <el-header>
       <a href="../../index.html">
@@ -298,12 +299,16 @@
   </el-container>
 </template>
 <script lang="ts" setup>
-  import { reactive, ref } from "vue"
+  import { reactive, ref, computed } from "vue"
   import type { FormInstance, FormRules } from "element-plus"
   import { Search } from "@element-plus/icons-vue"
   // import { ElMessage, ElMessageBox } from 'element-plus'
   import axios from "axios"
+  import zhTw from "element-plus/dist/locale/zh-tw"
+  import en from "element-plus/es/locale/lang/en"
 
+  const language = ref("zh-tw")
+  const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
   const search = ref("")
   // navbar
   const activeIndex = ref("1")
@@ -401,7 +406,7 @@
     })
   }
 
-  // const labeling = ref<string[]>([]);
+  const labeling = ref<string[]>([])
   const labeling01 = ref<string[]>([])
 
   const optionsLabeling = [

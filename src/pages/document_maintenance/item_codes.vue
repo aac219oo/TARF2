@@ -1,4 +1,5 @@
 <template>
+  <el-config-provider :locale="locale"> </el-config-provider>
   <el-container>
     <el-header>
       <a href="../../index.html">
@@ -160,10 +161,14 @@
   </el-container>
 </template>
 <script lang="ts" setup>
-  import { ref, onMounted } from "vue"
-  import { Search, Edit, Delete } from "@element-plus/icons-vue"
+  import { ref, onMounted, computed } from "vue"
+  import { Search } from "@element-plus/icons-vue"
   import axios from "axios"
+  import zhTw from "element-plus/dist/locale/zh-tw"
+  import en from "element-plus/es/locale/lang/en"
 
+  const language = ref("zh-tw")
+  const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
   sessionStorage.setItem("UserId", "11695") //儲存session
   // navbar
   const activeIndex = ref("1")
@@ -174,26 +179,25 @@
   const search = ref("")
   const loading = ref(true)
   const tableData = ref() //渲染結果在畫面上
-  const url = ref("https://127.0.0.1:7227/api/AplyItemCode/") // 連到API
+  const url = "https://127.0.0.1:7227/api/AplyItemCode/" // 連到API
   const UserId = ref(() => {
     sessionStorage.getItem("UserId")
   }) // 儲存UserId
   // 編輯表格功能
   const AddorEdit = ref(true) //新增編輯變數 新增:true 編輯:false
-  const argPhraseDescDB = ref("") //更改資料變數
+  const AplyItemCodeOrg = ref("") //更改資料變數
 
-  // 確認session + axios取得API中的JSON
+  // axios取得API中的JSON
   onMounted(() => {
-    const UserId = sessionStorage.getItem("UserId")
-    const urlTableData = url + "GetAplyItemBasc?UserId=" + UserId //接收API + session
-    loading.value = false //讀取畫面動畫
+    const urlTableData = url + "GetAplyItemBasc" //接收API + session
+    loading.value = true //讀取畫面動畫
     axios
       .get(urlTableData)
       .then((res) => {
-        //console.log(res.data);
+        // console.log(res.data)
         tableData.value = res.data
-        //console.log(res.data);
-        console.log(tableData.value[0].statusCode)
+        loading.value = false
+        // console.log(tableData.value[0].statusCode) //印JSON陣列第零項後台傳送的訊息判斷1001、1002
       })
       // 錯誤API提示
       .catch(function (error) {
@@ -221,13 +225,14 @@
   const handleAdd = (row) => {
     if (AddorEdit.value) {
       //執行新增
-      const UserId = sessionStorage.getItem("UserId") //session判斷是否可以從後台接收或傳送
+      // console.log(row.aplY_ITEM_CODE, row.aplY_ITEM_NAME)
       const urlAdd =
         url +
-        "SavingNew?UserId=" +
-        UserId +
-        "&argPhraseDesc=" +
-        (row["aplY_ITEM_CODE"], row["aplY_ITEM_NAME"]) //取得新增資料的API
+        "SavingNew?AplyItemCode=" +
+        row.aplY_ITEM_CODE +
+        "&AplyItemName=" +
+        row.aplY_ITEM_NAME //取得新增資料的API
+      // console.log(urlAdd)
       axios
         .get(urlAdd)
         .then((res) => {
@@ -250,15 +255,15 @@
         })
     } else {
       //執行編輯
-      const UserId = sessionStorage.getItem("UserId")
+      // console.log(row.aplY_ITEM_CODE, row.aplY_ITEM_NAME)
       const urlEdit =
         url +
-        "SavingModify?UserId=" +
-        UserId +
-        "&argPhraseDesc=" +
-        (row["aplY_ITEM_CODE"], row["aplY_ITEM_NAME"]) +
-        "&argPhraseDescDB=" +
-        argPhraseDescDB.value //取得編輯資料的API，並回傳舊資料的值
+        "SavingModify?AplyItemCode=" +
+        row.aplY_ITEM_CODE +
+        "&AplyItemCodeOrg=" +
+        AplyItemCodeOrg.value +
+        "&AplyItemName=" +
+        row.aplY_ITEM_NAME //取得編輯資料的API，並回傳舊資料的值
       axios
         .get(urlEdit)
         .then((res) => {
@@ -298,12 +303,12 @@
   const handleEdit = (row) => {
     AddorEdit.value = false //編輯
     row.editable = true
-    argPhraseDescDB.value = (row["aplY_ITEM_CODE"], row["aplY_ITEM_NAME"]) //原本的值
+    AplyItemCodeOrg.value = row.aplY_ITEM_CODE //原本的值
     console.log(
       "AddorEdit：" +
         AddorEdit.value +
-        "argPhraseDescDB：" +
-        argPhraseDescDB.value
+        "&AplyItemCodeOrg=" +
+        AplyItemCodeOrg.value
     ) //印編輯值
   }
 
@@ -314,14 +319,10 @@
 
   //刪除表格
   const deleteRow = (index: number) => {
-    // 儲存session
-    const UserId = sessionStorage.getItem("UserId")
+    tableData.value.splice(index, 1)
     const urlDelete =
-      url +
-      "DeletePhraseBasc?UserId=" +
-      UserId +
-      "&argPhraseDesc=" +
-      index["aplY_ITEM_CODE, aplY_ITEM_NAME"] // 儲存刪除api
+      url + "DeleteAplyItemCode?AplyItemCode=" + index["aplY_ITEM_CODE"] // 連api刪除功能
+    // console.log(urlDelete)
     axios
       .get(urlDelete)
       .then((res) => {
@@ -331,14 +332,13 @@
         // 錯誤訊息顯示
         if (statusCode == "1002") {
           alert(message)
-          window.location.reload()
+          // window.location.reload()
         } else {
           alert(message)
           tableData.value = res.data
         }
         //console.log(res.data);
-        console.log(statusCode)
-
+        // console.log(statusCode)
         //console.log(tableData.value[0].statusCode);
       })
       .catch(function (error) {

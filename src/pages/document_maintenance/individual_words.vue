@@ -1,4 +1,5 @@
 <template>
+  <el-config-provider :locale="locale"> </el-config-provider>
   <el-container>
     <el-header>
       <a href="../../index.html">
@@ -166,10 +167,14 @@
   </el-container>
 </template>
 <script lang="ts" setup>
-  import { ref, onMounted } from "vue"
+  import { ref, onMounted, computed } from "vue"
   import { Search } from "@element-plus/icons-vue"
   import axios from "axios"
+  import zhTw from "element-plus/dist/locale/zh-tw"
+  import en from "element-plus/es/locale/lang/en"
 
+  const language = ref("zh-tw")
+  const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
   sessionStorage.setItem("UserId", "11695") //儲存session
   // navbar
   const activeIndex = ref("1")
@@ -179,7 +184,7 @@
   const search = ref("") // search
   const loading = ref(true) // loading
   const tableData = ref() //渲染結果在畫面上
-  const url = ref("https://127.0.0.1:7227/api/PhraseRecd/") // 連到API
+  const url = "https://127.0.0.1:7227/api/PhraseRecd/" // 連到API
   const UserId = ref(() => {
     sessionStorage.getItem("UserId")
   }) // 儲存UserId
@@ -191,11 +196,12 @@
   onMounted(() => {
     const UserId = sessionStorage.getItem("UserId")
     const urlTableData = url + "GetPhraseRecd?UserId=" + UserId //接收API + session
+    // console.log(urlTableData)
     loading.value = false //讀取畫面動畫
     axios
       .get(urlTableData)
       .then((res) => {
-        // console.log(res.data); //印API接收到的JSON
+        // console.log(res.data) //印API接收到的JSON
         // const statusCode = res.data[0].statusCode; //後台傳送訊息狀態變數
         tableData.value = res.data //獲取JSON並處理
         // console.log(tableData.value[0].statusCode);  //印JSON陣列第零項後台傳送的訊息判斷1001、1002
@@ -260,6 +266,7 @@
         row["phrasE_DESC"] +
         "&argPhraseDescDB=" +
         argPhraseDescDB.value //取得編輯資料的API，並回傳舊資料的值
+      console.log(urlEdit)
       axios
         .get(urlEdit)
         .then((res) => {
@@ -316,6 +323,7 @@
 
   //刪除表格
   const deleteRow = (index: number) => {
+    tableData.value.splice(index, 1)
     // 儲存session
     const UserId = sessionStorage.getItem("UserId")
     const urlDelete =
@@ -333,7 +341,7 @@
         // 錯誤訊息顯示
         if (statusCode == "1002") {
           alert(message)
-          window.location.reload()
+          // window.location.reload()
         } else {
           alert(message)
           tableData.value = res.data

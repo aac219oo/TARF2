@@ -1,4 +1,5 @@
 <template>
+  <el-config-provider :locale="locale"> </el-config-provider>
   <el-container>
     <el-header>
       <a href="../../index.html">
@@ -34,10 +35,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+  import { ref, computed } from "vue"
+  import zhTw from "element-plus/dist/locale/zh-tw"
+  import en from "element-plus/es/locale/lang/en"
 
-const activeIndex = ref("1");
-const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
+  const language = ref("zh-tw")
+  const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
+
+  const activeIndex = ref("1")
+  const handleSelect = (key: string, keyPath: string[]) => {
+    console.log(key, keyPath)
+  }
 </script>

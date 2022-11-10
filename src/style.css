@@ -534,13 +534,25 @@ div.el-tabs__item {
 }
 
 #contact_units .el-table {
-  width: 800px;
+  width: 1000px;
 }
-
+#contact_units .el-table thead .cell,
 #contact_com .el-table thead .cell {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#contact_units .el-table thead .cell p,
+#contact_com .el-table thead .cell p {
+  white-space: nowrap;
+}
+
+#contact_units .el-table td.el-table__cell.el-table_1_column_4 div,
+#contact_com .el-table td.el-table__cell.el-table_1_column_5 div {
+  justify-content: flex-start;
+  padding: 0 72px;
+  white-space: nowrap;
 }
 
 .el-table.tableContactUnits td.el-table__cell.el-table_1_column_2 div {

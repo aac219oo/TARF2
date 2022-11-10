@@ -145,97 +145,98 @@
   </el-container>
 </template>
 <script lang="ts" setup>
-import { computed, reactive, ref, onMounted } from "vue";
-import type { TableColumnCtx } from "element-plus/es/components/table/src/table-column/defaults";
-import zhTw from "element-plus/dist/locale/zh-tw.mjs";
-import axios from "axios";
+  import { computed, reactive, ref, onMounted } from "vue"
+  import type { TableColumnCtx } from "element-plus/es/components/table/src/table-column/defaults"
+  import zhTw from "element-plus/dist/locale/zh-tw"
+  import en from "element-plus/es/locale/lang/en"
+  import axios from "axios"
 
-const language = ref("zh-tw");
-const locale = computed(() => language.value === "zh-tw");
-const dialogTableVisible = ref(false);
-// navbar
-const activeIndex = ref("1");
-const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
+  const language = ref("zh-tw")
+  const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
+  const dialogTableVisible = ref(false)
+  // navbar
+  const activeIndex = ref("1")
+  const handleSelect = (key: string, keyPath: string[]) => {
+    console.log(key, keyPath)
+  }
 
-sessionStorage.setItem("UserId", "11695");
-// session
-onMounted(() => {
-  const UserId = sessionStorage.getItem("UserId");
-  const url =
-    "https://127.0.0.1:7227/api/PhraseRecd/GetPhraseRecd?UserId=" + UserId;
-  axios
-    .get(url)
-    .then((res) => {
-      console.log(res.data);
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-    });
-});
+  sessionStorage.setItem("UserId", "11695")
+  // session
+  onMounted(() => {
+    const UserId = sessionStorage.getItem("UserId")
+    const url =
+      "https://127.0.0.1:7227/api/PhraseRecd/GetPhraseRecd?UserId=" + UserId
+    axios
+      .get(url)
+      .then((res) => {
+        console.log(res.data)
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error)
+      })
+  })
 
-// 選項
-const valueContact = ref<string[]>([]);
-const optionsContact = [
-  {
-    valueContact: "HTML",
-    label: "HTML",
-  },
-  {
-    valueContact: "CSS",
-    label: "CSS",
-  },
-  {
-    valueContact: "JavaScript",
-    label: "JavaScript",
-  },
-];
+  // 選項
+  const valueContact = ref<string[]>([])
+  const optionsContact = [
+    {
+      valueContact: "HTML",
+      label: "HTML",
+    },
+    {
+      valueContact: "CSS",
+      label: "CSS",
+    },
+    {
+      valueContact: "JavaScript",
+      label: "JavaScript",
+    },
+  ]
 
-// const selectOptionsSetting = (selectedValue) => {
-//       console.log(selectedValue);
-//       switch (selectedValue) {
-//         case 'HTML':
-//       }
-//     }
+  // const selectOptionsSetting = (selectedValue) => {
+  //       console.log(selectedValue);
+  //       switch (selectedValue) {
+  //         case 'HTML':
+  //       }
+  //     }
 
-const valueSetting = ref<string[]>([]);
-const optionsSetting = [
-  {
-    valueSetting: "HTML",
-    label: "HTML",
-  },
-  {
-    valueSetting: "CSS",
-    label: "CSS",
-  },
-  {
-    valueSetting: "JavaScript",
-    label: "JavaScript",
-  },
-];
+  const valueSetting = ref<string[]>([])
+  const optionsSetting = [
+    {
+      valueSetting: "HTML",
+      label: "HTML",
+    },
+    {
+      valueSetting: "CSS",
+      label: "CSS",
+    },
+    {
+      valueSetting: "JavaScript",
+      label: "JavaScript",
+    },
+  ]
 
-const gridData = [
-  {
-    date: "2016-05-02",
-    name: "John Smith",
-    address: "No.1518,  Jinshajiang Road, Putuo District",
-  },
-  {
-    date: "2016-05-04",
-    name: "John Smith",
-    address: "No.1518,  Jinshajiang Road, Putuo District",
-  },
-  {
-    date: "2016-05-01",
-    name: "John Smith",
-    address: "No.1518,  Jinshajiang Road, Putuo District",
-  },
-  {
-    date: "2016-05-03",
-    name: "John Smith",
-    address: "No.1518,  Jinshajiang Road, Putuo District",
-  },
-];
+  const gridData = [
+    {
+      date: "2016-05-02",
+      name: "John Smith",
+      address: "No.1518,  Jinshajiang Road, Putuo District",
+    },
+    {
+      date: "2016-05-04",
+      name: "John Smith",
+      address: "No.1518,  Jinshajiang Road, Putuo District",
+    },
+    {
+      date: "2016-05-01",
+      name: "John Smith",
+      address: "No.1518,  Jinshajiang Road, Putuo District",
+    },
+    {
+      date: "2016-05-03",
+      name: "John Smith",
+      address: "No.1518,  Jinshajiang Road, Putuo District",
+    },
+  ]
 </script>

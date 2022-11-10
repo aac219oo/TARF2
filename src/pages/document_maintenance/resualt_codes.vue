@@ -1,4 +1,5 @@
 <template>
+  <el-config-provider :locale="locale"> </el-config-provider>
   <el-container>
     <el-header>
       <a href="../../index.html">
@@ -107,6 +108,38 @@
             /></el-button>
           </template>
           <template #default="scope">
+            <el-popconfirm
+              width="170px"
+              title="確定要刪除嗎?"
+              confirm-button-text="是"
+              cancel-button-text="否"
+              confirm-button-type="danger"
+              cancel-button-type="primary"
+              @confirm="deleteRow(scope.row)"
+            >
+              <template #reference>
+                <el-button>
+                  <img
+                    src="../../assets/icon06.png"
+                    style="width: 24px; vertical-align: bottom"
+                    alt=""
+                  />
+                </el-button>
+              </template>
+            </el-popconfirm>
+            <el-button
+              link
+              size="small"
+              v-show="!scope.row.editable"
+              @click="handleEdit(scope.row)"
+              class="button_edit"
+            >
+              <img
+                src="../../assets/icon04.png"
+                style="width: 24px; vertical-align: bottom"
+                alt=""
+              />
+            </el-button>
             <el-button
               link
               size="small"
@@ -128,10 +161,14 @@
   </el-container>
 </template>
 <script lang="ts" setup>
-  import { ref, onMounted } from "vue"
+  import { ref, onMounted, computed } from "vue"
   import { Search } from "@element-plus/icons-vue"
   import axios from "axios"
+  import zhTw from "element-plus/dist/locale/zh-tw"
+  import en from "element-plus/es/locale/lang/en"
 
+  const language = ref("zh-tw")
+  const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
   sessionStorage.setItem("UserId", "11695") //儲存session
   // navbar
   const activeIndex = ref("1")
@@ -142,27 +179,27 @@
   const search = ref("")
   const loading = ref(true)
   const tableData = ref() //渲染結果在畫面上
-  const url = ref("https://127.0.0.1:7227/api/ResultCode/") // 連到API
+  const url = "https://127.0.0.1:7227/api/ResultCode/" // 連到API
   const UserId = ref(() => {
     sessionStorage.getItem("UserId")
   }) // 儲存UserId
   // 編輯表格功能
   const AddorEdit = ref(true) //新增編輯變數 新增:true 編輯:false
-  const argPhraseDescDB = ref("") //更改資料變數
+  const ResultCodeOrg = ref("") //更改資料變數
 
-  // session
+  // axios取得API中的JSON
   onMounted(() => {
-    const UserId = sessionStorage.getItem("UserId")
-    const urlTableData = url + "GetResultBasc?UserId=" + UserId
-    loading.value = false
+    const urlTableData = url + "GetResultBasc"
+    loading.value = true
     axios
       .get(urlTableData)
       .then((res) => {
         //console.log(res.data);
         tableData.value = res.data
-        //console.log(res.data);
+        loading.value = false
         console.log(tableData.value[0].statusCode) //印JSON陣列第零項後台傳送的訊息判斷1001、1002
       })
+      // 錯誤API提示
       .catch(function (error) {
         // handle error
         console.log(error)
@@ -191,13 +228,13 @@
     // 判斷編輯新增
     if (AddorEdit.value) {
       //執行新增
-      const UserId = sessionStorage.getItem("UserId") //session判斷是否可以從後台接收或傳送
+      // console.log(row.resulT_CODE, row.resulT_NAME)
       const urlAdd =
         url +
-        "SavingNew?UserId=" +
-        UserId +
-        "&argPhraseDesc=" +
-        (row["resulT_CODE"], row["resulT_NAME"]) //取得新增資料的API
+        "SavingNew?ResultCode=" +
+        row.resulT_CODE +
+        "&ResultName=" +
+        row.resulT_NAME //取得新增資料的API
       axios
         .get(urlAdd)
         .then((res) => {
@@ -223,12 +260,12 @@
       const UserId = sessionStorage.getItem("UserId")
       const urlEdit =
         url +
-        "SavingModify?UserId=" +
-        UserId +
-        "&argPhraseDesc=" +
-        (row["resulT_CODE"], row["resulT_NAME"]) +
-        "&argPhraseDescDB=" +
-        argPhraseDescDB.value //取得編輯資料的API，並回傳舊資料的值
+        "SavingModify?ResultCode=" +
+        row.resulT_CODE +
+        "&ResultCodeOrg=" +
+        ResultCodeOrg.value +
+        "&ResultName=" +
+        row.resulT_NAME //取得編輯資料的API，並回傳舊資料的值
       axios
         .get(urlEdit)
         .then((res) => {
@@ -268,12 +305,12 @@
   const handleEdit = (row) => {
     AddorEdit.value = false //編輯
     row.editable = true
-    ;(argPhraseDescDB.value = row["resulT_CODE"]), row["resulT_NAME"]
+    ;(ResultCodeOrg.value = row["resulT_CODE"]), row["resulT_NAME"]
     console.log(
       "AddorEdit：" +
         AddorEdit.value +
         "argPhraseDescDB：" +
-        argPhraseDescDB.value
+        ResultCodeOrg.value
     ) //印編輯值
   }
 
@@ -284,5 +321,29 @@
 
   const deleteRow = (index: number) => {
     tableData.value.splice(index, 1)
+    const urlDelete =
+      url + "DeleteResultCode?ResultCode=" + index["resulT_CODE"]
+    axios
+      .get(urlDelete)
+      .then((res) => {
+        const statusCode = res.data[0].statusCode
+        const message = res.data[0].message
+        //console.log(res.data);
+        // 錯誤訊息顯示
+        if (statusCode == "1002") {
+          alert(message)
+          // window.location.reload()
+        } else {
+          alert(message)
+          tableData.value = res.data
+        }
+        //console.log(res.data);
+        // console.log(statusCode)
+        //console.log(tableData.value[0].statusCode);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error)
+      })
   }
 </script>

@@ -1,535 +1,3 @@
-<script lang="ts" setup>
-import { computed, reactive, ref } from "vue";
-import type { TableColumnCtx } from "element-plus/es/components/table/src/table-column/defaults";
-import { ElementPlus, Search } from "@element-plus/icons-vue";
-import zhTw from "element-plus/dist/locale/zh-tw";
-import en from "element-plus/es/locale/lang/en";
-
-const language = ref("zh-tw");
-const locale = computed(() => (language.value === "zh-tw" ? zhTw : en));
-// 統計圖表
-
-interface Product {
-  id: string;
-  name: string;
-  amount1: string;
-  amount2: string;
-  amount3: number;
-}
-
-interface SummaryMethodProps<T = Product> {
-  columns: TableColumnCtx<T>[];
-  data: T[];
-}
-
-const getSummaries = (param: SummaryMethodProps) => {
-  const { columns, data } = param;
-  const sums: string[] = [];
-  columns.forEach((column, index) => {
-    if (index === 0) {
-      sums[index] = "合計";
-      return;
-    }
-    const values = data.map((item) => Number(item[column.property]));
-    if (!values.every((value) => Number.isNaN(value))) {
-      sums[index] = ` ${values.reduce((prev, curr) => {
-        const value = Number(curr);
-        if (!Number.isNaN(value)) {
-          return prev + curr;
-        } else {
-          return prev;
-        }
-      }, 0)}`;
-    } else {
-      sums[index] = "N/A";
-    }
-  });
-
-  return sums;
-};
-
-// 其他設定值
-const tabPosition = ref("top");
-
-const value = ref("");
-
-const formInline = reactive({
-  user: "",
-  region: "",
-});
-
-const size = ref("default");
-
-const onSubmit = () => {
-  console.log("submit!");
-};
-
-const tableData1 = [
-  {
-    labelNumber: "CR285",
-    TuchengDingpu: "-",
-    airport: "-",
-    Wanda: "-",
-    Songshan: "-",
-    TaichungGreen: "-",
-    Xinzhuang: "-",
-    ring: "-",
-    Xinyi: "-",
-  },
-  {
-    labelNumber: "CR380E",
-    TuchengDingpu: "-",
-    airport: "-",
-    Wanda: "-",
-    Songshan: "-",
-    TaichungGreen: "-",
-    Xinzhuang: "-",
-    ring: "-",
-    Xinyi: "-",
-  },
-  {
-    labelNumber: "CR382A",
-    TuchengDingpu: "-",
-    airport: "-",
-    Wanda: "-",
-    Songshan: "-",
-    TaichungGreen: "-",
-    Xinzhuang: "-",
-    ring: "-",
-    Xinyi: "-",
-  },
-  {
-    labelNumber: "CR383A",
-    TuchengDingpu: "-",
-    airport: "-",
-    Wanda: "-",
-    Songshan: "-",
-    TaichungGreen: "-",
-    Xinzhuang: "-",
-    ring: "-",
-    Xinyi: "-",
-  },
-  {
-    labelNumber: "CR385A",
-    TuchengDingpu: "-",
-    airport: "-",
-    Wanda: "-",
-    Songshan: "-",
-    TaichungGreen: "-",
-    Xinzhuang: "-",
-    ring: "-",
-    Xinyi: "-",
-  },
-  {
-    labelNumber: "CR387A",
-    TuchengDingpu: "-",
-    airport: "-",
-    Wanda: "-",
-    Songshan: "-",
-    TaichungGreen: "-",
-    Xinzhuang: "-",
-    ring: "-",
-    Xinyi: "-",
-  },
-  {
-    labelNumber: "CR580C",
-    TuchengDingpu: "-",
-    airport: "-",
-    Wanda: "-",
-    Songshan: "-",
-    TaichungGreen: "-",
-    Xinzhuang: "-",
-    ring: "-",
-    Xinyi: "-",
-  },
-  {
-    labelNumber: "CR581A",
-    TuchengDingpu: "-",
-    airport: "-",
-    Wanda: "-",
-    Songshan: "-",
-    TaichungGreen: "-",
-    Xinzhuang: "-",
-    ring: "-",
-    Xinyi: "-",
-  },
-  {
-    labelNumber: "CF620",
-    TuchengDingpu: "-",
-    airport: "-",
-    Wanda: "-",
-    Songshan: "-",
-    TaichungGreen: "-",
-    Xinzhuang: "-",
-    ring: "-",
-    Xinyi: "-",
-  },
-];
-
-const tableData2 = [
-  {
-    years: "101",
-    jan: "-",
-    feb: "-",
-    mar: "-",
-    apr: "-",
-    may: "-",
-    jun: "-",
-    jul: "-",
-    aug: "-",
-    sep: "-",
-    oct: "-",
-    nov: "-",
-    dec: "-",
-  },
-  {
-    years: "102",
-    jan: "-",
-    feb: "-",
-    mar: "-",
-    apr: "-",
-    may: "-",
-    jun: "-",
-    jul: "-",
-    aug: "-",
-    sep: "-",
-    oct: "-",
-    nov: "-",
-    dec: "-",
-  },
-  {
-    years: "103",
-    jan: "-",
-    feb: "-",
-    mar: "-",
-    apr: "-",
-    may: "-",
-    jun: "-",
-    jul: "-",
-    aug: "-",
-    sep: "-",
-    oct: "-",
-    nov: "-",
-    dec: "-",
-  },
-  {
-    years: "104",
-    jan: "-",
-    feb: "-",
-    mar: "-",
-    apr: "1",
-    may: "1",
-    jun: "-",
-    jul: "-",
-    aug: "-",
-    sep: "-",
-    oct: "-",
-    nov: "-",
-    dec: "-",
-    tatle: "2",
-  },
-  {
-    years: "105",
-    jan: "-",
-    feb: "-",
-    mar: "-",
-    apr: "1",
-    may: "-",
-    jun: "-",
-    jul: "-",
-    aug: "-",
-    sep: "-",
-    oct: "-",
-    nov: "-",
-    dec: "-",
-    tatle: "1",
-  },
-  {
-    years: "106",
-    jan: "-",
-    feb: "-",
-    mar: "-",
-    apr: "-",
-    may: "-",
-    jun: "-",
-    jul: "-",
-    aug: "-",
-    sep: "-",
-    oct: "-",
-    nov: "-",
-    dec: "-",
-  },
-  {
-    years: "107",
-    jan: "1",
-    feb: "-",
-    mar: "-",
-    apr: "-",
-    may: "-",
-    jun: "-",
-    jul: "1",
-    aug: "1",
-    sep: "-",
-    oct: "-",
-    nov: "-",
-    dec: "-",
-    tatle: "3",
-  },
-  {
-    years: "108",
-    jan: "-",
-    feb: "-",
-    mar: "-",
-    apr: "-",
-    may: "-",
-    jun: "-",
-    jul: "3",
-    aug: "14",
-    sep: "45",
-    oct: "16",
-    nov: "10",
-    dec: "9",
-    tatle: "97",
-  },
-  {
-    years: "109",
-    jan: "11",
-    feb: "17",
-    mar: "51",
-    apr: "58",
-    may: "65",
-    jun: "64",
-    jul: "54",
-    aug: "39",
-    sep: "44",
-    oct: "35",
-    nov: "28",
-    dec: "29",
-    tatle: "495",
-  },
-  {
-    years: "110",
-    jan: "22",
-    feb: "19",
-    mar: "21",
-    apr: "11",
-    may: "13",
-    jun: "15",
-    jul: "13",
-    aug: "18",
-    sep: "23",
-    oct: "18",
-    nov: "18",
-    dec: "16",
-    tatle: "207",
-  },
-  {
-    years: "111",
-    jan: "19",
-    feb: "13",
-    mar: "17",
-    apr: "10",
-    may: "10",
-    jun: "12",
-    jul: "10",
-    aug: "-",
-    sep: "-",
-    oct: "-",
-    nov: "-",
-    dec: "-",
-    tatle: "91",
-  },
-];
-const tableData3 = [
-  {
-    id: 1,
-    labelNumber: "綜規處",
-    TuchengDingpu: "-",
-    airport: "-",
-    Wanda: "-",
-    Songshan: "-",
-    TaichungGreen: "-",
-    Xinzhuang: "-",
-    ring: "-",
-    Xinyi: "-",
-    children: [
-      {
-        labelNumber: "綜規處處本部",
-        TuchengDingpu: "-",
-        airport: "-",
-        Wanda: "-",
-        Songshan: "-",
-        TaichungGreen: "-",
-        Xinzhuang: "-",
-        ring: "-",
-        Xinyi: "-",
-      },
-      {
-        labelNumber: "綜規處第一課",
-        TuchengDingpu: "-",
-        airport: "-",
-        Wanda: "-",
-        Songshan: "-",
-        TaichungGreen: "-",
-        Xinzhuang: "-",
-        ring: "-",
-        Xinyi: "-",
-      },
-      {
-        labelNumber: "綜規處第二課",
-        TuchengDingpu: "-",
-        airport: "-",
-        Wanda: "-",
-        Songshan: "-",
-        TaichungGreen: "-",
-        Xinzhuang: "-",
-        ring: "-",
-        Xinyi: "-",
-      },
-    ],
-  },
-  {
-    id: 2,
-    labelNumber: "土建處",
-    TuchengDingpu: "-",
-    airport: "-",
-    Wanda: "-",
-    Songshan: "-",
-    TaichungGreen: "-",
-    Xinzhuang: "-",
-    ring: "-",
-    Xinyi: "-",
-  },
-  {
-    id: 3,
-    labelNumber: "機設處",
-    TuchengDingpu: "-",
-    airport: "-",
-    Wanda: "-",
-    Songshan: "-",
-    TaichungGreen: "-",
-    Xinzhuang: "-",
-    ring: "-",
-    Xinyi: "-",
-  },
-  {
-    id: 4,
-    labelNumber: "工管處",
-    TuchengDingpu: "-",
-    airport: "-",
-    Wanda: "-",
-    Songshan: "-",
-    TaichungGreen: "-",
-    Xinzhuang: "-",
-    ring: "-",
-    Xinyi: "-",
-  },
-  {
-    id: 5,
-    labelNumber: "開發處",
-    TuchengDingpu: "-",
-    airport: "-",
-    Wanda: "-",
-    Songshan: "-",
-    TaichungGreen: "-",
-    Xinzhuang: "-",
-    ring: "-",
-    Xinyi: "-",
-  },
-  {
-    id: 6,
-    labelNumber: "技術處",
-    TuchengDingpu: "-",
-    airport: "-",
-    Wanda: "-",
-    Songshan: "-",
-    TaichungGreen: "-",
-    Xinzhuang: "-",
-    ring: "-",
-    Xinyi: "-",
-  },
-  {
-    id: 7,
-    labelNumber: "一區工程處",
-    TuchengDingpu: "-",
-    airport: "-",
-    Wanda: "-",
-    Songshan: "-",
-    TaichungGreen: "-",
-    Xinzhuang: "-",
-    ring: "-",
-    Xinyi: "-",
-  },
-  {
-    id: 8,
-    labelNumber: "二區工程處",
-    TuchengDingpu: "-",
-    airport: "-",
-    Wanda: "-",
-    Songshan: "-",
-    TaichungGreen: "-",
-    Xinzhuang: "-",
-    ring: "-",
-    Xinyi: "-",
-  },
-  {
-    id: 9,
-    labelNumber: "機電工程處",
-    TuchengDingpu: "-",
-    airport: "-",
-    Wanda: "-",
-    Songshan: "-",
-    TaichungGreen: "-",
-    Xinzhuang: "-",
-    ring: "-",
-    Xinyi: "-",
-  },
-];
-const tableData4 = [
-  {
-    id: 1,
-    labelNumber: "台灣世曦工程顧問股份有限公司",
-    TuchengDingpu: "16,545",
-    airport: "0",
-    Wanda: "0",
-    children: [
-      {
-        labelNumber: "台灣世曦工程顧問股份有限公司",
-        TuchengDingpu: "16,545",
-        airport: "0",
-        Wanda: "0",
-      },
-    ],
-  },
-  {
-    id: 2,
-    labelNumber: "翰品聯合建築師事務所",
-    TuchengDingpu: "1,698",
-    airport: "0",
-    Wanda: "0",
-  },
-  {
-    id: 3,
-    labelNumber: "綜規處",
-    TuchengDingpu: "6",
-    airport: "0",
-    Wanda: "0",
-    children: [
-      {
-        labelNumber: "綜規處第四課",
-        TuchengDingpu: "6",
-        airport: "0",
-        Wanda: "0",
-      },
-    ],
-  },
-];
-
-// msg
-
-const item =
-  "總計：229,253筆　　　111年06月合計：2,249筆 　　　本月(111/07)合計：685筆";
-</script>
 <template>
   <el-config-provider :locale="locale"> </el-config-provider>
   <el-container>
@@ -983,3 +451,535 @@ const item =
     </el-main>
   </el-container>
 </template>
+<script lang="ts" setup>
+  import { computed, reactive, ref } from "vue"
+  import type { TableColumnCtx } from "element-plus/es/components/table/src/table-column/defaults"
+  import { ElementPlus, Search } from "@element-plus/icons-vue"
+  import zhTw from "element-plus/dist/locale/zh-tw"
+  import en from "element-plus/es/locale/lang/en"
+
+  const language = ref("zh-tw")
+  const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
+  // 統計圖表
+
+  interface Product {
+    id: string
+    name: string
+    amount1: string
+    amount2: string
+    amount3: number
+  }
+
+  interface SummaryMethodProps<T = Product> {
+    columns: TableColumnCtx<T>[]
+    data: T[]
+  }
+
+  const getSummaries = (param: SummaryMethodProps) => {
+    const { columns, data } = param
+    const sums: string[] = []
+    columns.forEach((column, index) => {
+      if (index === 0) {
+        sums[index] = "合計"
+        return
+      }
+      const values = data.map((item) => Number(item[column.property]))
+      if (!values.every((value) => Number.isNaN(value))) {
+        sums[index] = ` ${values.reduce((prev, curr) => {
+          const value = Number(curr)
+          if (!Number.isNaN(value)) {
+            return prev + curr
+          } else {
+            return prev
+          }
+        }, 0)}`
+      } else {
+        sums[index] = "N/A"
+      }
+    })
+
+    return sums
+  }
+
+  // 其他設定值
+  const tabPosition = ref("top")
+
+  const value = ref("")
+
+  const formInline = reactive({
+    user: "",
+    region: "",
+  })
+
+  const size = ref("default")
+
+  const onSubmit = () => {
+    console.log("submit!")
+  }
+
+  const tableData1 = [
+    {
+      labelNumber: "CR285",
+      TuchengDingpu: "-",
+      airport: "-",
+      Wanda: "-",
+      Songshan: "-",
+      TaichungGreen: "-",
+      Xinzhuang: "-",
+      ring: "-",
+      Xinyi: "-",
+    },
+    {
+      labelNumber: "CR380E",
+      TuchengDingpu: "-",
+      airport: "-",
+      Wanda: "-",
+      Songshan: "-",
+      TaichungGreen: "-",
+      Xinzhuang: "-",
+      ring: "-",
+      Xinyi: "-",
+    },
+    {
+      labelNumber: "CR382A",
+      TuchengDingpu: "-",
+      airport: "-",
+      Wanda: "-",
+      Songshan: "-",
+      TaichungGreen: "-",
+      Xinzhuang: "-",
+      ring: "-",
+      Xinyi: "-",
+    },
+    {
+      labelNumber: "CR383A",
+      TuchengDingpu: "-",
+      airport: "-",
+      Wanda: "-",
+      Songshan: "-",
+      TaichungGreen: "-",
+      Xinzhuang: "-",
+      ring: "-",
+      Xinyi: "-",
+    },
+    {
+      labelNumber: "CR385A",
+      TuchengDingpu: "-",
+      airport: "-",
+      Wanda: "-",
+      Songshan: "-",
+      TaichungGreen: "-",
+      Xinzhuang: "-",
+      ring: "-",
+      Xinyi: "-",
+    },
+    {
+      labelNumber: "CR387A",
+      TuchengDingpu: "-",
+      airport: "-",
+      Wanda: "-",
+      Songshan: "-",
+      TaichungGreen: "-",
+      Xinzhuang: "-",
+      ring: "-",
+      Xinyi: "-",
+    },
+    {
+      labelNumber: "CR580C",
+      TuchengDingpu: "-",
+      airport: "-",
+      Wanda: "-",
+      Songshan: "-",
+      TaichungGreen: "-",
+      Xinzhuang: "-",
+      ring: "-",
+      Xinyi: "-",
+    },
+    {
+      labelNumber: "CR581A",
+      TuchengDingpu: "-",
+      airport: "-",
+      Wanda: "-",
+      Songshan: "-",
+      TaichungGreen: "-",
+      Xinzhuang: "-",
+      ring: "-",
+      Xinyi: "-",
+    },
+    {
+      labelNumber: "CF620",
+      TuchengDingpu: "-",
+      airport: "-",
+      Wanda: "-",
+      Songshan: "-",
+      TaichungGreen: "-",
+      Xinzhuang: "-",
+      ring: "-",
+      Xinyi: "-",
+    },
+  ]
+
+  const tableData2 = [
+    {
+      years: "101",
+      jan: "-",
+      feb: "-",
+      mar: "-",
+      apr: "-",
+      may: "-",
+      jun: "-",
+      jul: "-",
+      aug: "-",
+      sep: "-",
+      oct: "-",
+      nov: "-",
+      dec: "-",
+    },
+    {
+      years: "102",
+      jan: "-",
+      feb: "-",
+      mar: "-",
+      apr: "-",
+      may: "-",
+      jun: "-",
+      jul: "-",
+      aug: "-",
+      sep: "-",
+      oct: "-",
+      nov: "-",
+      dec: "-",
+    },
+    {
+      years: "103",
+      jan: "-",
+      feb: "-",
+      mar: "-",
+      apr: "-",
+      may: "-",
+      jun: "-",
+      jul: "-",
+      aug: "-",
+      sep: "-",
+      oct: "-",
+      nov: "-",
+      dec: "-",
+    },
+    {
+      years: "104",
+      jan: "-",
+      feb: "-",
+      mar: "-",
+      apr: "1",
+      may: "1",
+      jun: "-",
+      jul: "-",
+      aug: "-",
+      sep: "-",
+      oct: "-",
+      nov: "-",
+      dec: "-",
+      tatle: "2",
+    },
+    {
+      years: "105",
+      jan: "-",
+      feb: "-",
+      mar: "-",
+      apr: "1",
+      may: "-",
+      jun: "-",
+      jul: "-",
+      aug: "-",
+      sep: "-",
+      oct: "-",
+      nov: "-",
+      dec: "-",
+      tatle: "1",
+    },
+    {
+      years: "106",
+      jan: "-",
+      feb: "-",
+      mar: "-",
+      apr: "-",
+      may: "-",
+      jun: "-",
+      jul: "-",
+      aug: "-",
+      sep: "-",
+      oct: "-",
+      nov: "-",
+      dec: "-",
+    },
+    {
+      years: "107",
+      jan: "1",
+      feb: "-",
+      mar: "-",
+      apr: "-",
+      may: "-",
+      jun: "-",
+      jul: "1",
+      aug: "1",
+      sep: "-",
+      oct: "-",
+      nov: "-",
+      dec: "-",
+      tatle: "3",
+    },
+    {
+      years: "108",
+      jan: "-",
+      feb: "-",
+      mar: "-",
+      apr: "-",
+      may: "-",
+      jun: "-",
+      jul: "3",
+      aug: "14",
+      sep: "45",
+      oct: "16",
+      nov: "10",
+      dec: "9",
+      tatle: "97",
+    },
+    {
+      years: "109",
+      jan: "11",
+      feb: "17",
+      mar: "51",
+      apr: "58",
+      may: "65",
+      jun: "64",
+      jul: "54",
+      aug: "39",
+      sep: "44",
+      oct: "35",
+      nov: "28",
+      dec: "29",
+      tatle: "495",
+    },
+    {
+      years: "110",
+      jan: "22",
+      feb: "19",
+      mar: "21",
+      apr: "11",
+      may: "13",
+      jun: "15",
+      jul: "13",
+      aug: "18",
+      sep: "23",
+      oct: "18",
+      nov: "18",
+      dec: "16",
+      tatle: "207",
+    },
+    {
+      years: "111",
+      jan: "19",
+      feb: "13",
+      mar: "17",
+      apr: "10",
+      may: "10",
+      jun: "12",
+      jul: "10",
+      aug: "-",
+      sep: "-",
+      oct: "-",
+      nov: "-",
+      dec: "-",
+      tatle: "91",
+    },
+  ]
+  const tableData3 = [
+    {
+      id: 1,
+      labelNumber: "綜規處",
+      TuchengDingpu: "-",
+      airport: "-",
+      Wanda: "-",
+      Songshan: "-",
+      TaichungGreen: "-",
+      Xinzhuang: "-",
+      ring: "-",
+      Xinyi: "-",
+      children: [
+        {
+          labelNumber: "綜規處處本部",
+          TuchengDingpu: "-",
+          airport: "-",
+          Wanda: "-",
+          Songshan: "-",
+          TaichungGreen: "-",
+          Xinzhuang: "-",
+          ring: "-",
+          Xinyi: "-",
+        },
+        {
+          labelNumber: "綜規處第一課",
+          TuchengDingpu: "-",
+          airport: "-",
+          Wanda: "-",
+          Songshan: "-",
+          TaichungGreen: "-",
+          Xinzhuang: "-",
+          ring: "-",
+          Xinyi: "-",
+        },
+        {
+          labelNumber: "綜規處第二課",
+          TuchengDingpu: "-",
+          airport: "-",
+          Wanda: "-",
+          Songshan: "-",
+          TaichungGreen: "-",
+          Xinzhuang: "-",
+          ring: "-",
+          Xinyi: "-",
+        },
+      ],
+    },
+    {
+      id: 2,
+      labelNumber: "土建處",
+      TuchengDingpu: "-",
+      airport: "-",
+      Wanda: "-",
+      Songshan: "-",
+      TaichungGreen: "-",
+      Xinzhuang: "-",
+      ring: "-",
+      Xinyi: "-",
+    },
+    {
+      id: 3,
+      labelNumber: "機設處",
+      TuchengDingpu: "-",
+      airport: "-",
+      Wanda: "-",
+      Songshan: "-",
+      TaichungGreen: "-",
+      Xinzhuang: "-",
+      ring: "-",
+      Xinyi: "-",
+    },
+    {
+      id: 4,
+      labelNumber: "工管處",
+      TuchengDingpu: "-",
+      airport: "-",
+      Wanda: "-",
+      Songshan: "-",
+      TaichungGreen: "-",
+      Xinzhuang: "-",
+      ring: "-",
+      Xinyi: "-",
+    },
+    {
+      id: 5,
+      labelNumber: "開發處",
+      TuchengDingpu: "-",
+      airport: "-",
+      Wanda: "-",
+      Songshan: "-",
+      TaichungGreen: "-",
+      Xinzhuang: "-",
+      ring: "-",
+      Xinyi: "-",
+    },
+    {
+      id: 6,
+      labelNumber: "技術處",
+      TuchengDingpu: "-",
+      airport: "-",
+      Wanda: "-",
+      Songshan: "-",
+      TaichungGreen: "-",
+      Xinzhuang: "-",
+      ring: "-",
+      Xinyi: "-",
+    },
+    {
+      id: 7,
+      labelNumber: "一區工程處",
+      TuchengDingpu: "-",
+      airport: "-",
+      Wanda: "-",
+      Songshan: "-",
+      TaichungGreen: "-",
+      Xinzhuang: "-",
+      ring: "-",
+      Xinyi: "-",
+    },
+    {
+      id: 8,
+      labelNumber: "二區工程處",
+      TuchengDingpu: "-",
+      airport: "-",
+      Wanda: "-",
+      Songshan: "-",
+      TaichungGreen: "-",
+      Xinzhuang: "-",
+      ring: "-",
+      Xinyi: "-",
+    },
+    {
+      id: 9,
+      labelNumber: "機電工程處",
+      TuchengDingpu: "-",
+      airport: "-",
+      Wanda: "-",
+      Songshan: "-",
+      TaichungGreen: "-",
+      Xinzhuang: "-",
+      ring: "-",
+      Xinyi: "-",
+    },
+  ]
+  const tableData4 = [
+    {
+      id: 1,
+      labelNumber: "台灣世曦工程顧問股份有限公司",
+      TuchengDingpu: "16,545",
+      airport: "0",
+      Wanda: "0",
+      children: [
+        {
+          labelNumber: "台灣世曦工程顧問股份有限公司",
+          TuchengDingpu: "16,545",
+          airport: "0",
+          Wanda: "0",
+        },
+      ],
+    },
+    {
+      id: 2,
+      labelNumber: "翰品聯合建築師事務所",
+      TuchengDingpu: "1,698",
+      airport: "0",
+      Wanda: "0",
+    },
+    {
+      id: 3,
+      labelNumber: "綜規處",
+      TuchengDingpu: "6",
+      airport: "0",
+      Wanda: "0",
+      children: [
+        {
+          labelNumber: "綜規處第四課",
+          TuchengDingpu: "6",
+          airport: "0",
+          Wanda: "0",
+        },
+      ],
+    },
+  ]
+
+  // msg
+
+  const item =
+    "總計：229,253筆　　　111年06月合計：2,249筆 　　　本月(111/07)合計：685筆"
+</script>

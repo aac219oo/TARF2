@@ -1,4 +1,5 @@
 <template>
+  <el-config-provider :locale="locale"> </el-config-provider>
   <el-container>
     <el-header>
       <a href="../../index.html">
@@ -114,8 +115,7 @@
               cancel-button-text="否"
               confirm-button-type="danger"
               cancel-button-type="primary"
-              @confirm="deleteRow(scope.$index)"
-              v-if="showButton"
+              @confirm="deleteRow(scope.row)"
             >
               <template #reference>
                 <el-button>
@@ -131,7 +131,6 @@
               link
               size="small"
               v-show="!scope.row.editable"
-              v-if="showButton"
               @click="handleEdit(scope.row)"
               class="button_edit"
             >
@@ -145,7 +144,6 @@
               link
               size="small"
               v-show="scope.row.editable"
-              v-if="showButton"
               @click="handleSave(scope.row)"
               class="button_edit"
             >
@@ -163,10 +161,14 @@
   </el-container>
 </template>
 <script lang="ts" setup>
-  import { ref, onMounted } from "vue"
+  import { ref, onMounted, computed } from "vue"
   import { Search, Edit, Delete } from "@element-plus/icons-vue"
   import axios from "axios"
+  import zhTw from "element-plus/dist/locale/zh-tw"
+  import en from "element-plus/es/locale/lang/en"
 
+  const language = ref("zh-tw")
+  const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
   sessionStorage.setItem("UserId", "11695") //儲存session
   // navbar
   const activeIndex = ref("1")
@@ -176,51 +178,29 @@
   const search = ref("") // search
   const loading = ref(true)
   const tableData = ref() //渲染結果在畫面上
-  const url = ref("https://127.0.0.1:7227/api/StatusCode/") // 連到API
+  const url = "https://127.0.0.1:7227/api/StatusCode/" // 連到API
   const UserId = ref(() => {
     sessionStorage.getItem("UserId")
   }) // 儲存UserId
   // 編輯表格功能
   const AddorEdit = ref(true) //新增編輯變數 新增:true 編輯:false
-  const argPhraseDescDB = ref("") //更改資料變數
+  const StatusCodeOrg = ref("") //更改資料變數
   // 顯示隱藏功能鍵
-  // const ShowOrHide = ref(true)
-  const showButton = (ShowOrHide) => {
-    const UserId = sessionStorage.getItem("UserId") //session判斷是否可以從後台接收或傳送
-    const urlTableData = url + "GetPhraseRecd?UserId=" + UserId //接收API + session
-    axios
-      .get(urlTableData)
-      .then((res) => {
-        const used = res.data.used
-        //console.log(res.data);
-        //console.log(res.data);
-        console.log(tableData.value)
-        if (used == "1") {
-          ShowOrHide.value = true
-        } else {
-          ShowOrHide.value = false
-        }
-        tableData.value = res.data
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error)
-      })
-  }
 
-  // 確認session + axios取得API中的JSON
+  // axios取得API中的JSON
   onMounted(() => {
-    const UserId = sessionStorage.getItem("UserId")
-    const urlTableData = url + "GetPhraseRecd?UserId=" + UserId //接收API + session
-    // loading.value = false;
-    setTimeout(() => (loading.value = false), 1000)
+    const urlTableData = url + "GetStatusBasc" //接收API + session
+    loading.value = true
     axios
       .get(urlTableData)
       .then((res) => {
         //console.log(res.data);
         tableData.value = res.data
+        loading.value = false
         //console.log(res.data);
-        console.log(tableData.value)
+        for (let i = 0; i <= tableData.value.length; i++) {
+          // console.log(tableData.value[i].codE_USED)
+        }
       })
       .catch(function (error) {
         // handle error
@@ -249,13 +229,12 @@
     // 判斷編輯新增
     if (AddorEdit.value) {
       //執行新增
-      const UserId = sessionStorage.getItem("UserId") //session判斷是否可以從後台接收或傳送
       const urlAdd =
         url +
-        "SavingNew?UserId=" +
-        UserId +
-        "&argPhraseDesc=" +
-        (row["casE_STATUS"], row["statuS_DESC"]) //取得新增資料的API
+        "SavingNew?StatusCode=" +
+        row.casE_STATUS +
+        "&StatusDesc=" +
+        row.statuS_DESC //取得新增資料的API
       axios
         .get(urlAdd)
         .then((res) => {
@@ -278,15 +257,14 @@
         })
     } else {
       //執行編輯
-      const UserId = sessionStorage.getItem("UserId")
       const urlEdit =
         url +
-        "SavingModify?UserId=" +
-        UserId +
-        "&argPhraseDesc=" +
-        (row["casE_STATUS"], row["statuS_DESC"]) +
-        "&argPhraseDescDB=" +
-        argPhraseDescDB.value //取得編輯資料的API，並回傳舊資料的值
+        "SavingModify?StatusCode=" +
+        row.casE_STATUS +
+        "&StatusCodeOrg=" +
+        StatusCodeOrg.value +
+        "&StatusDesc=" +
+        row.statuS_DESC //取得編輯資料的API，並回傳舊資料的值
       axios
         .get(urlEdit)
         .then((res) => {
@@ -327,12 +305,9 @@
   const handleEdit = (row) => {
     AddorEdit.value = false //編輯
     row.editable = true
-    argPhraseDescDB.value = (row["casE_STATUS"], row["statuS_DESC"])
+    StatusCodeOrg.value = row.casE_STATUS
     console.log(
-      "AddorEdit：" +
-        AddorEdit.value +
-        "argPhraseDescDB：" +
-        argPhraseDescDB.value
+      "AddorEdit:" + AddorEdit.value + ";StatusCodeOrg:" + StatusCodeOrg.value
     ) //印編輯值
   }
 
@@ -343,14 +318,9 @@
 
   //刪除表格
   const deleteRow = (index: number) => {
-    // 儲存session
-    const UserId = sessionStorage.getItem("UserId")
+    // tableData.value.splice(index, 1)
     const urlDelete =
-      url +
-      "DeletePhraseBasc?UserId=" +
-      UserId +
-      "&argPhraseDesc=" +
-      index["casE_STATUS, statuS_DESC"] // 儲存刪除api
+      url + "DeleteStatusCode?StatusCode=" + index["casE_STATUS"] // 連api刪除功能
     axios
       .get(urlDelete)
       .then((res) => {
@@ -360,7 +330,7 @@
         // 錯誤訊息顯示
         if (statusCode == "1002") {
           alert(message)
-          window.location.reload() //重整頁面
+          // window.location.reload() //重整頁面
         } else {
           alert(message)
           tableData.value = res.data
