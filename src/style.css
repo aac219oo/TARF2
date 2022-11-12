@@ -178,6 +178,10 @@ i.el-icon svg {
   justify-content: space-between;
 }
 
+.fillEmpty {
+  width: 240px;
+}
+
 .label {
   white-space: nowrap;
   font-weight: 600;
@@ -225,10 +229,7 @@ i.el-icon svg {
   align-items: flex-end;
 }
 
-.el-form--default.el-form--label-top
-  .el-row
-  .el-form-item.label-left
-  .el-form-item__label {
+.el-form--default.el-form--label-top .el-row .el-form-item.label-left .el-form-item__label {
   padding-left: 10px;
 }
 
@@ -251,14 +252,8 @@ i.el-icon svg {
   margin-left: 10px;
 }
 
-.el-form-item.button-items
-  .el-form-item__content
-  .button-items-search
-  .el-button,
-.el-form-item.button-items
-  .el-form-item__content
-  .button-items-export
-  .el-button {
+.el-form-item.button-items .el-form-item__content .button-items-search .el-button,
+.el-form-item.button-items .el-form-item__content .button-items-export .el-button {
   display: block;
   padding: 0;
   height: 40px;
@@ -267,30 +262,16 @@ i.el-icon svg {
   border: none;
 }
 
-.el-form-item.button-items
-  .el-form-item__content
-  .button-items-search
-  .el-button
-  > span,
-.el-form-item.button-items
-  .el-form-item__content
-  .button-items-export
-  .el-button
-  > span {
+.el-form-item.button-items .el-form-item__content .button-items-search .el-button>span,
+.el-form-item.button-items .el-form-item__content .button-items-export .el-button>span {
   font-weight: 700;
   display: unset;
   width: 70px;
   text-align-last: justify;
 }
 
-.el-form-item.button-items
-  .el-form-item__content
-  .button-items-search
-  .el-button:hover,
-.el-form-item.button-items
-  .el-form-item__content
-  .button-items-export
-  .el-button:hover {
+.el-form-item.button-items .el-form-item__content .button-items-search .el-button:hover,
+.el-form-item.button-items .el-form-item__content .button-items-export .el-button:hover {
   background-color: transparent;
 }
 
@@ -456,11 +437,11 @@ div.el-tabs__item {
   border: none;
 }
 
-.button_position .el-button + .el-button {
+.button_position .el-button+.el-button {
   margin: 20px 0 20px 0;
 }
 
-.button_position .el-button > span {
+.button_position .el-button>span {
   font-weight: 700;
   display: unset;
   width: 70px;
@@ -472,7 +453,7 @@ div.el-tabs__item {
   padding: 10px 0;
 }
 
-.el-table__row--level-1 td > div {
+.el-table__row--level-1 td>div {
   text-indent: 2rem;
 }
 
@@ -503,6 +484,7 @@ div.el-tabs__item {
 #detail_info .el-table {
   margin-bottom: 30px;
 }
+
 /* /detail_info */
 
 /* contact */
@@ -536,6 +518,7 @@ div.el-tabs__item {
 #contact_units .el-table {
   width: 1000px;
 }
+
 #contact_units .el-table thead .cell,
 #contact_com .el-table thead .cell {
   display: flex;
@@ -570,7 +553,7 @@ div.el-tabs__item {
   margin-right: 100px;
 }
 
-.el-menu--horizontal > .el-menu-item a {
+.el-menu--horizontal>.el-menu-item a {
   font-size: 1.15rem;
   font-weight: 600;
 }
@@ -671,7 +654,7 @@ div.el-tabs__item {
   color: #fff;
 }
 
-.access_button .el-button > span {
+.access_button .el-button>span {
   font-weight: 600;
   display: unset;
   width: 70px;
@@ -763,12 +746,12 @@ div.el-tabs__item {
   display: block;
 }
 
-.button_edit.el-button + .el-button {
+.button_edit.el-button+.el-button {
   /* margin: unset; */
   color: #0276ab;
 }
 
-.button_edit.el-button + .el-button:hover {
+.button_edit.el-button+.el-button:hover {
   color: #0276ab;
 }
 

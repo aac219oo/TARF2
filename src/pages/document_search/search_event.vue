@@ -27,29 +27,13 @@
                 </el-radio-group>
               </div>
               <el-form-item class="label-left">
-                <el-date-picker
-                  v-model="form.date1"
-                  type="date"
-                  placeholder="請選擇日期"
-                  :size="size"
-                  for="apply_date1"
-                />
+                <el-date-picker v-model="form.date1" type="date" placeholder="請選擇日期" :size="size" for="apply_date1" />
                 <span class="decoration">~</span>
-                <el-date-picker
-                  v-model="form.date2"
-                  type="date"
-                  placeholder="請選擇日期"
-                  :size="size"
-                  for="apply_date2"
-                />
+                <el-date-picker v-model="form.date2" type="date" placeholder="請選擇日期" :size="size" for="apply_date2" />
               </el-form-item>
             </div>
             <el-form-item label="送審項目">
-              <el-select
-                v-model="form.items"
-                placeholder="請選擇送審項目"
-                :size="size"
-              >
+              <el-select v-model="form.items" placeholder="請選擇送審項目" :size="size">
                 <el-option label="project1" value="project1" />
                 <el-option label="project2" value="project2" />
                 <el-option label="project3" value="project3" />
@@ -57,19 +41,16 @@
               </el-select>
             </el-form-item>
             <el-form-item label="標號">
-              <el-select
-                v-model="form.labelNumber"
-                placeholder="請選擇標號"
-                :size="size"
-              >
+              <el-select v-model="form.labelNumber" placeholder="請選擇標號" :size="size">
                 <el-option label="CF620" value="CF620" />
                 <el-option label="CF621" value="CF621" />
                 <el-option label="CF622" value="CF622" />
                 <el-option label="CF623" value="CF623" />
               </el-select>
             </el-form-item>
-            <el-form-item label="承辦人">
-              <el-select
+            <el-form-item label=" ">
+              <div class="fillEmpty"></div>
+              <!-- <el-select
                 v-model="form.agency"
                 placeholder="請選擇承辦人"
                 :size="size"
@@ -90,80 +71,46 @@
                   label="技術發展處 蘇嘉淇"
                   value="技術發展處 蘇嘉淇"
                 />
-              </el-select>
+              </el-select> -->
             </el-form-item>
           </div>
           <div class="searchSelectBottom">
             <el-form-item label="審查單位">
-              <el-select
-                v-model="form.department"
-                placeholder="請選擇審查單位"
-                :size="size"
-              >
-                <el-option
-                  label="技術發展處 蘇嘉淇"
-                  value="技術發展處 蘇嘉淇"
-                />
-                <el-option
-                  label="技術發展處 蘇嘉淇"
-                  value="技術發展處 蘇嘉淇"
-                />
-                <el-option
-                  label="技術發展處 蘇嘉淇"
-                  value="技術發展處 蘇嘉淇"
-                />
-                <el-option
-                  label="技術發展處 蘇嘉淇"
-                  value="技術發展處 蘇嘉淇"
-                />
+              <el-select v-model="form.department" placeholder="請選擇審查單位" :size="size">
+                <el-option label="技術發展處 蘇嘉淇" value="技術發展處 蘇嘉淇" />
+                <el-option label="技術發展處 蘇嘉淇" value="技術發展處 蘇嘉淇" />
+                <el-option label="技術發展處 蘇嘉淇" value="技術發展處 蘇嘉淇" />
+                <el-option label="技術發展處 蘇嘉淇" value="技術發展處 蘇嘉淇" />
               </el-select>
             </el-form-item>
             <el-form-item label="辦理情形">
-              <el-select
-                v-model="form.condition"
-                placeholder="請選擇辦理情形"
-                :size="size"
-              >
+              <el-select v-model="form.condition" placeholder="請選擇辦理情形" :size="size">
                 <el-option label="如期結案(會審/受文案件)" value="如期結案" />
                 <el-option label="會審中" value="會審中" />
                 <el-option label="簽收結案" value="簽收結案" />
                 <el-option label="退件" value="退件" />
               </el-select>
             </el-form-item>
-            <el-form-item label="審查案件查詢(限閱)">
-              <el-select
-                v-model="form.reading"
-                placeholder="請選擇審查案件"
-                :size="size"
-              >
-                <el-option label="限閱" value="限閱" />
-                <el-option label="閱" value="閱" />
+            <el-form-item label="承辦人">
+              <el-select v-model="form.agency" placeholder="請選擇承辦人" :size="size">
+                <el-option label="技術發展處 蘇嘉淇" value="技術發展處 蘇嘉淇" />
+                <el-option label="技術發展處 蘇嘉淇" value="技術發展處 蘇嘉淇" />
+                <el-option label="技術發展處 蘇嘉淇" value="技術發展處 蘇嘉淇" />
+                <el-option label="技術發展處 蘇嘉淇" value="技術發展處 蘇嘉淇" />
               </el-select>
             </el-form-item>
             <el-form-item label="關鍵字" class="searchTitle">
-              <el-input
-                v-model="form.title"
-                placeholder="(主旨，多組關鍵字請用空白分隔)"
-                :size="size"
-              />
+              <el-input v-model="form.title" placeholder="(主旨，多組關鍵字請用空白分隔)" :size="size" />
             </el-form-item>
             <el-form-item class="button-items">
               <div class="button-items-search">
                 <el-button @click="onSubmit">
-                  <img
-                    src="../../assets/icon01.png"
-                    style="width: 26px; vertical-align: bottom"
-                    alt=""
-                  />
+                  <img src="../../assets/icon01.png" style="width: 26px; vertical-align: bottom" alt="" />
                 </el-button>
               </div>
               <div class="button-items-export">
                 <el-button>
-                  <img
-                    src="../../assets/icon02.png"
-                    style="width: 26px; vertical-align: bottom"
-                    alt=""
-                  />
+                  <img src="../../assets/icon02.png" style="width: 26px; vertical-align: bottom" alt="" />
                 </el-button>
               </div>
             </el-form-item>
@@ -172,105 +119,41 @@
       </el-form>
 
       <!-- searchTable -->
-      <div class="title_main"><h4>審查案件查詢清單</h4></div>
+      <div class="title_main">
+        <h4>審查案件查詢清單</h4>
+      </div>
       <el-row class="tableForm">
         <el-col>
-          <el-table
-            border
-            :data="
-              tables.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-            "
-            :stripe="true"
-            :header-cell-style="{
-              background: '#ebf4f9',
-              color: '#000',
-              textAlign: 'center',
-            }"
-          >
-            <el-table-column
-              type="index"
-              :index="indexMethoud"
-              label="序號"
-              width="57"
-              :resizable="false"
-            />
-            <el-table-column
-              label="案號"
-              prop="e_number"
-              sortable
-              :min-width="25"
-              :resizable="false"
-            ></el-table-column>
-            <el-table-column
-              label="標號"
-              prop="labelNumber"
-              sortable
-              align="center"
-              :min-width="20"
-              :resizable="false"
-            ></el-table-column>
-            <el-table-column
-              label="主旨"
-              prop="title"
-              sortable
-              :resizable="false"
-            ></el-table-column>
-            <el-table-column
-              label="申請日期"
-              prop="apply_date"
-              sortable
-              align="center"
-              :min-width="21"
-              :resizable="false"
-            ></el-table-column>
-            <el-table-column
-              label="案件承辦人"
-              prop="agency"
-              sortable
-              :min-width="25"
-              :resizable="false"
-            ></el-table-column>
-            <el-table-column
-              label="狀態"
-              prop="condition"
-              sortable
-              :min-width="20"
-              :resizable="false"
-            ></el-table-column>
-            <el-table-column
-              label="狀態日期"
-              prop="condition_date"
-              sortable
-              align="center"
-              :min-width="21"
-              :resizable="false"
-            ></el-table-column>
+          <el-table border :data="
+            tables.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+          " :stripe="true" :header-cell-style="{
+  background: '#ebf4f9',
+  color: '#000',
+  textAlign: 'center',
+}">
+            <el-table-column type="index" :index="indexMethoud" label="序號" width="57" :resizable="false" />
+            <el-table-column label="案號" prop="e_number" sortable :min-width="25" :resizable="false"></el-table-column>
+            <el-table-column label="標號" prop="labelNumber" sortable align="center" :min-width="20" :resizable="false">
+            </el-table-column>
+            <el-table-column label="主旨" prop="title" sortable :resizable="false"></el-table-column>
+            <el-table-column label="申請日期" prop="apply_date" sortable align="center" :min-width="21" :resizable="false">
+            </el-table-column>
+            <el-table-column label="案件承辦人" prop="agency" sortable :min-width="25" :resizable="false"></el-table-column>
+            <el-table-column label="狀態" prop="condition" sortable :min-width="20" :resizable="false"></el-table-column>
+            <el-table-column label="狀態日期" prop="condition_date" sortable align="center" :min-width="21"
+              :resizable="false"></el-table-column>
             <el-table-column :min-width="15" :resizable="false">
-              <a href="../detail_info/index.html"
-                ><img
-                  src="../../assets/icon02.png"
-                  style="width: 25px; vertical-align: bottom"
-                  alt=""
-              /></a>
-              <el-button type="print"
-                ><img
-                  src="../../assets/icon03.png"
-                  style="width: 25px; vertical-align: bottom"
-                  alt=""
-              /></el-button>
+              <a href="../detail_info/index.html"><img src="../../assets/icon02.png"
+                  style="width: 25px; vertical-align: bottom" alt="" /></a>
+              <el-button type="print"><img src="../../assets/icon03.png" style="width: 25px; vertical-align: bottom"
+                  alt="" /></el-button>
             </el-table-column>
           </el-table>
         </el-col>
         <el-col>
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            v-model:current-page="currentPage"
-            :page-sizes="[5, 10, 15, 20]"
-            v-model:page-size="pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="50"
-          >
+          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+            v-model:current-page="currentPage" :page-sizes="[5, 10, 15, 20]" v-model:page-size="pageSize"
+            layout="total, sizes, prev, pager, next, jumper" :total="50">
           </el-pagination>
         </el-col>
       </el-row>
