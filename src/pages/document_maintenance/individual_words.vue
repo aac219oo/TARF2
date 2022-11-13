@@ -103,6 +103,7 @@
             >
               <span class="editable-row-span">{{ scope.row[item.prop] }}</span>
             </div>
+            <!-- <div v-else class="editable-row">{{ scope.row.message }}</div> -->
           </template>
         </el-table-column>
         <el-table-column width="120px" align="right" :resizable="false">
@@ -185,25 +186,24 @@
   const loading = ref(true) // loading
   const tableData = ref() //渲染結果在畫面上
   const url = "https://127.0.0.1:7227/api/PhraseRecd/" // 連到API
-  const UserId = ref(() => {
-    sessionStorage.getItem("UserId")
-  }) // 儲存UserId
+  const UserId = sessionStorage.getItem("UserId") // 儲存UserId
   // 編輯表格功能
   const AddorEdit = ref(true) //新增編輯變數 新增:true 編輯:false
   const argPhraseDescDB = ref("") //更改資料變數
-
+  console.log(UserId)
   // 確認session + axios取得API中的JSON
   onMounted(() => {
-    const UserId = sessionStorage.getItem("UserId")
+    // const UserId = sessionStorage.getItem("UserId")
     const urlTableData = url + "GetPhraseRecd?UserId=" + UserId //接收API + session
     // console.log(urlTableData)
-    loading.value = false //讀取畫面動畫
+    loading.value = true //讀取畫面動畫
     axios
       .get(urlTableData)
       .then((res) => {
-        // console.log(res.data) //印API接收到的JSON
+        console.log(res.data) //印API接收到的JSON
         // const statusCode = res.data[0].statusCode; //後台傳送訊息狀態變數
         tableData.value = res.data //獲取JSON並處理
+        loading.value = false
         // console.log(tableData.value[0].statusCode);  //印JSON陣列第零項後台傳送的訊息判斷1001、1002
       })
       // 錯誤API提示
@@ -228,24 +228,26 @@
     // 判斷編輯新增
     if (AddorEdit.value) {
       //執行新增
-      const UserId = sessionStorage.getItem("UserId") //session判斷是否可以從後台接收或傳送
+      // const UserId = sessionStorage.getItem("UserId") //session判斷是否可以從後台接收或傳送
       const urlAdd =
         url +
         "SavingNew?UserId=" +
         UserId +
         "&argPhraseDesc=" +
         row["phrasE_DESC"] //取得新增資料的API
+      console.log(urlAdd)
       axios
         .get(urlAdd)
         .then((res) => {
           const statusCode = res.data[0].statusCode //儲存狀態代碼
           const message = res.data[0].message //儲存狀態訊息
-          //console.log(res.data);
+          console.log(res.data)
           // 傳送值狀態錯誤並顯示訊息
           if (statusCode == "1002") {
             alert(message)
             window.location.reload() //重整頁面
           } else {
+            console.log(statusCode + "Add")
           }
           tableData.value = res.data
           //console.log(res.data);
@@ -257,13 +259,13 @@
         })
     } else {
       //執行編輯
-      const UserId = sessionStorage.getItem("UserId")
+      // const UserId = sessionStorage.getItem("UserId")
       const urlEdit =
         url +
         "SavingModify?UserId=" +
         UserId +
         "&argPhraseDesc=" +
-        row["phrasE_DESC"] +
+        row.phrasE_DESC +
         "&argPhraseDescDB=" +
         argPhraseDescDB.value //取得編輯資料的API，並回傳舊資料的值
       console.log(urlEdit)
@@ -296,11 +298,12 @@
     AddorEdit.value = true //判斷為新增表格
     // 定義新增表格
     const item = {
+      statusCode: "1001",
       phrasE_DESC: "",
       editable: true,
     }
     tableData.value.splice(index, 0, item) //自第一行新增表格
-    // console.log("AddorEdit：" + AddorEdit.value); //印確認編輯或新增變數
+    console.log("AddorEdit：" + AddorEdit.value) //印確認編輯或新增變數
   }
 
   // 編輯表格
@@ -325,7 +328,7 @@
   const deleteRow = (index: number) => {
     tableData.value.splice(index, 1)
     // 儲存session
-    const UserId = sessionStorage.getItem("UserId")
+    // const UserId = sessionStorage.getItem("UserId")
     const urlDelete =
       url +
       "DeletePhraseBasc?UserId=" +

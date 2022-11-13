@@ -50,7 +50,6 @@
             <el-select
               v-model="valueContact"
               filterable
-              allow-create
               default-first-option
               :reserve-keyword="false"
               placeholder="請選擇"
@@ -72,7 +71,6 @@
               v-model="valueSetting"
               multiple
               filterable
-              allow-create
               default-first-option
               :reserve-keyword="false"
               placeholder="請選擇"
@@ -92,7 +90,7 @@
           <a href="../index_maintenance/index.html">離開</a>
         </div>
         <div class="access_button_save access_button">
-          <el-button>儲存</el-button>
+          <el-button @click="onSubmit">儲存</el-button>
         </div>
       </div>
 
@@ -136,7 +134,7 @@
           <span class="dialog-footer">
             <el-button @click="dialogTableVisible = false">取消</el-button>
             <el-button type="primary" @click="dialogTableVisible = false">
-              儲存
+              儲存兼任窗口
             </el-button>
           </span>
         </template>
@@ -177,6 +175,10 @@
       })
   })
 
+  const onSubmit = () => {
+    console.log(valueSetting.value)
+  }
+
   // 選項
   const valueContact = ref<string[]>([])
   const optionsContact = [
@@ -187,6 +189,46 @@
     {
       valueContact: "CSS",
       label: "CSS",
+    },
+    {
+      valueContact: "JavaScript1",
+      label: "JavaScript",
+    },
+    {
+      valueContact: "JavaScript2",
+      label: "JavaScript",
+    },
+    {
+      valueContact: "JavaScript3",
+      label: "JavaScript",
+    },
+    {
+      valueContact: "JavaScript4",
+      label: "JavaScript",
+    },
+    {
+      valueContact: "JavaScript5",
+      label: "JavaScript",
+    },
+    {
+      valueContact: "JavaScript6",
+      label: "JavaScript",
+    },
+    {
+      valueContact: "JavaScript7",
+      label: "JavaScript",
+    },
+    {
+      valueContact: "JavaScript8",
+      label: "JavaScript",
+    },
+    {
+      valueContact: "JavaScript9",
+      label: "JavaScript",
+    },
+    {
+      valueContact: "JavaScript0",
+      label: "JavaScript",
     },
     {
       valueContact: "JavaScript",
@@ -214,6 +256,42 @@
     {
       valueSetting: "JavaScript",
       label: "JavaScript",
+    },
+    {
+      valueSetting: "HTML1",
+      label: "HTML",
+    },
+    {
+      valueSetting: "HTML2",
+      label: "HTML",
+    },
+    {
+      valueSetting: "HTML3",
+      label: "HTML",
+    },
+    {
+      valueSetting: "HTML4",
+      label: "HTML",
+    },
+    {
+      valueSetting: "HTML5",
+      label: "HTML",
+    },
+    {
+      valueSetting: "HTML6",
+      label: "HTML",
+    },
+    {
+      valueSetting: "HTML7",
+      label: "HTML",
+    },
+    {
+      valueSetting: "HTML8",
+      label: "HTML",
+    },
+    {
+      valueSetting: "HTML9",
+      label: "HTML",
     },
   ]
 
