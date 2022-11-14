@@ -76,10 +76,10 @@
               placeholder="請選擇"
             >
               <el-option
-                v-for="item in optionsSetting"
-                :key="item.empL_SERI_AGENT"
-                :label="item.empL_NAME_AGENT"
-                :value="item.empL_SERI_AGENT"
+                v-for="(item, index) in optionsSettingReg"
+                :key="index"
+                :label="item.data"
+                :value="index"
               />
             </el-select>
           </div>
@@ -153,11 +153,9 @@
 </template>
 <script lang="ts" setup>
   import { computed, reactive, ref, onMounted } from "vue"
-  import type { TableColumnCtx } from "element-plus/es/components/table/src/table-column/defaults"
   import zhTw from "element-plus/dist/locale/zh-tw"
   import en from "element-plus/es/locale/lang/en"
   import axios from "axios"
-  import { Key } from "@element-plus/icons-vue"
 
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
@@ -185,6 +183,7 @@
   // 代理人設定
   const valueSetting = ref<string[]>([])
   const optionsSetting = ref()
+  const optionsSettingReg = ref()
   // axios請求選單資料
   onMounted(() => {
     // 單位聯絡窗口選項
@@ -217,19 +216,22 @@
       UserName +
       "&DeptNo=" +
       DeptNo2
-    console.log(urlOptionsSetting)
+    // console.log(urlOptionsSetting)
     axios
       .get(urlOptionsSetting)
       .then((res) => {
         console.log(res.data)
         optionsSetting.value = res.data
-        const re = /\s*(?:;|$)\s*/
-        const reg = optionsSetting.value["0"].empL_NAME_AGENT.split(re)
+        const re = /\s*(?:;|$)\s*/ // 符號分割
+        const reg = optionsSetting.value["0"].empL_NAME_AGENT.split(re) // 字串成陣列
         const reg2 = optionsSetting.value["0"].empL_SERI_AGENT.split(re)
         console.log(reg)
         for (let i = 0; i <= reg.length; i++) {
-          console.log(reg[i])
+          console.log((reg[i] = reg2[i]))
           // optionsSetting.value[reg[i]]
+          optionsSettingReg.value = reg[i]
+          console.log(optionsSettingReg.value)
+          // reg[i] = reg2[i]
         }
       })
       .catch(function (error) {
@@ -243,9 +245,8 @@
   // 單位聯絡窗口彈跳視窗
   const openContactInfo = (row) => {
     dialogTableVisible.value = true
-    console.log(row)
+    // console.log(row)
     // console.log(optionsContact.value[row].depA_CODE)
-
     const urlOptionsContact =
       url + "LoadDeptChargData?UserId=" + UserId + "&DeptNo=" + row
     console.log(urlOptionsContact)
@@ -287,7 +288,7 @@
 
   const onSubmitSetting = () => {
     const urlSubmitContact =
-      url + "ChargDataSavingNew?UserId=" + UserId + "&DeptNo=" + DeptNo1
+      url + "ChargDataSavingNew?UserId=" + UserId + "&DeptNo=" + DeptNo2
     axios
       .get(urlSubmitContact)
       .then((res) => {
