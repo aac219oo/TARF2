@@ -152,8 +152,8 @@
 
   // axios
   //各單位窗口資訊查詢
-  // const url = "https://127.0.0.1:7227/api/ContactInfoQuery/GetDeptChargQuery"
-  const url = "https://127.0.0.1:7227/api/test/GetDeptChargQuery"
+  const url = "https://127.0.0.1:7227/api/ContactInfoQuery/GetDeptChargQuery"
+  // const url = "https://127.0.0.1:7227/api/test/GetDeptChargQuery"
   // const url = "http://tarf.grp.com.tw/api/Test/GetDeptChargQuery"
 
   const tabledata = ref<User[]>([])

@@ -56,10 +56,10 @@
             >
               <el-option
                 v-for="item in optionsContact"
-                :key="item.valueContact"
-                :label="item.label"
-                :value="item.valueContact"
-                @click="dialogTableVisible = true"
+                :key="item.depA_CODE"
+                :label="item.depA_NAME"
+                :value="item.depA_CODE"
+                @click="openContactInfo(item.depA_CODE)"
               />
             </el-select>
           </div>
@@ -77,9 +77,9 @@
             >
               <el-option
                 v-for="item in optionsSetting"
-                :key="item.valueSetting"
-                :label="item.label"
-                :value="item.valueSetting"
+                :key="item.empL_SERI_AGENT"
+                :label="item.empL_NAME_AGENT"
+                :value="item.empL_SERI_AGENT"
               />
             </el-select>
           </div>
@@ -90,7 +90,7 @@
           <a href="../index_maintenance/index.html">離開</a>
         </div>
         <div class="access_button_save access_button">
-          <el-button @click="onSubmit">儲存</el-button>
+          <el-button @click="onSubmitSetting">儲存</el-button>
         </div>
       </div>
 
@@ -102,38 +102,47 @@
             align="center"
             label-class-name="my-label"
             class-name="my-content"
-            width="150px"
-            >{{}}</el-descriptions-item
+            v-for="item in contactInfo"
+            :key="item.depT_NO"
+            >{{ item.depT_NO }}</el-descriptions-item
           >
           <el-descriptions-item
             label="員工編號"
             label-align="right"
             align="center"
-            >{{}}</el-descriptions-item
+            v-for="item in contactInfo"
+            :key="item.empL_SERI"
+            >{{ item.empL_SERI }}</el-descriptions-item
           >
           <el-descriptions-item
             label="員工姓名"
             label-align="right"
             align="center"
-            >{{}}</el-descriptions-item
+            v-for="item in contactInfo"
+            :key="item.empL_NAME"
+            >{{ item.empL_NAME }}</el-descriptions-item
           >
           <el-descriptions-item
             label="建立日期"
             label-align="right"
             align="center"
-            >{{}}</el-descriptions-item
+            v-for="item in contactInfo"
+            :key="item.iN_DATE"
+            >{{ item.iN_DATE }}</el-descriptions-item
           >
           <el-descriptions-item
             label="使用狀態"
             label-align="right"
             align="center"
-            >{{}}</el-descriptions-item
+            v-for="item in contactInfo"
+            :key="item.status"
+            >{{ item.status }}</el-descriptions-item
           >
         </el-descriptions>
         <template #footer>
           <span class="dialog-footer">
             <el-button @click="dialogTableVisible = false">取消</el-button>
-            <el-button type="primary" @click="dialogTableVisible = false">
+            <el-button type="primary" @click="onSubmitContact">
               儲存兼任窗口
             </el-button>
           </span>
@@ -148,6 +157,7 @@
   import zhTw from "element-plus/dist/locale/zh-tw"
   import en from "element-plus/es/locale/lang/en"
   import axios from "axios"
+  import { Key } from "@element-plus/icons-vue"
 
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
@@ -158,16 +168,69 @@
     console.log(key, keyPath)
   }
 
-  sessionStorage.setItem("UserId", "11695")
   // session
+  sessionStorage.setItem("UserId", "11695")
+  sessionStorage.setItem("UserName", "唐經魁")
+  sessionStorage.setItem("DeptNo1", "1")
+  sessionStorage.setItem("DeptNo2", "J8")
+  const UserId = sessionStorage.getItem("UserId")
+  const UserName = sessionStorage.getItem("UserName")
+  const DeptNo1 = sessionStorage.getItem("DeptNo1")
+  const DeptNo2 = sessionStorage.getItem("DeptNo2")
+  const url = "https://127.0.0.1:7227/api/DeptChargOtherDept/"
+
+  // 單位聯絡窗口選項
+  const valueContact = ref<string[]>([])
+  const optionsContact = ref()
+  // 代理人設定
+  const valueSetting = ref<string[]>([])
+  const optionsSetting = ref()
+  // axios請求選單資料
   onMounted(() => {
-    const UserId = sessionStorage.getItem("UserId")
-    const url =
-      "https://127.0.0.1:7227/api/PhraseRecd/GetPhraseRecd?UserId=" + UserId
+    // 單位聯絡窗口選項
+    const urlOptionsContact =
+      url + "LoadDeptNo?UserId=" + UserId + "&DeptNo=" + DeptNo1
+    console.log(urlOptionsContact)
     axios
-      .get(url)
+      .get(urlOptionsContact)
+      .then((res) => {
+        const statusCode = res.data[0].statusCode //儲存狀態代碼
+        const message = res.data[0].message //儲存狀態訊息
+        console.log(res.data)
+        optionsContact.value = res.data
+        if (statusCode == "1002") {
+          console.log(message)
+        } else {
+        }
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error)
+      })
+
+    // 代理人設定
+    const urlOptionsSetting =
+      url +
+      "LoadDropDownList?UserId=" +
+      UserId +
+      "&UserName=" +
+      UserName +
+      "&DeptNo=" +
+      DeptNo2
+    console.log(urlOptionsSetting)
+    axios
+      .get(urlOptionsSetting)
       .then((res) => {
         console.log(res.data)
+        optionsSetting.value = res.data
+        const re = /\s*(?:;|$)\s*/
+        const reg = optionsSetting.value["0"].empL_NAME_AGENT.split(re)
+        const reg2 = optionsSetting.value["0"].empL_SERI_AGENT.split(re)
+        console.log(reg)
+        for (let i = 0; i <= reg.length; i++) {
+          console.log(reg[i])
+          // optionsSetting.value[reg[i]]
+        }
       })
       .catch(function (error) {
         // handle error
@@ -175,66 +238,76 @@
       })
   })
 
-  const onSubmit = () => {
-    console.log(valueSetting.value)
+  // 聯絡資訊
+  const contactInfo = ref()
+  // 單位聯絡窗口彈跳視窗
+  const openContactInfo = (row) => {
+    dialogTableVisible.value = true
+    console.log(row)
+    // console.log(optionsContact.value[row].depA_CODE)
+
+    const urlOptionsContact =
+      url + "LoadDeptChargData?UserId=" + UserId + "&DeptNo=" + row
+    console.log(urlOptionsContact)
+    axios
+      .get(urlOptionsContact)
+      .then((res) => {
+        console.log(res.data)
+        contactInfo.value = res.data
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error)
+      })
   }
 
-  // 選項
-  const valueContact = ref<string[]>([])
-  const optionsContact = [
-    {
-      valueContact: "HTML",
-      label: "HTML",
-    },
-    {
-      valueContact: "CSS",
-      label: "CSS",
-    },
-    {
-      valueContact: "JavaScript1",
-      label: "JavaScript",
-    },
-    {
-      valueContact: "JavaScript2",
-      label: "JavaScript",
-    },
-    {
-      valueContact: "JavaScript3",
-      label: "JavaScript",
-    },
-    {
-      valueContact: "JavaScript4",
-      label: "JavaScript",
-    },
-    {
-      valueContact: "JavaScript5",
-      label: "JavaScript",
-    },
-    {
-      valueContact: "JavaScript6",
-      label: "JavaScript",
-    },
-    {
-      valueContact: "JavaScript7",
-      label: "JavaScript",
-    },
-    {
-      valueContact: "JavaScript8",
-      label: "JavaScript",
-    },
-    {
-      valueContact: "JavaScript9",
-      label: "JavaScript",
-    },
-    {
-      valueContact: "JavaScript0",
-      label: "JavaScript",
-    },
-    {
-      valueContact: "JavaScript",
-      label: "JavaScript",
-    },
-  ]
+  const onSubmitContact = () => {
+    const urlSubmitContact =
+      url + "ChargDataSavingNew?UserId=" + UserId + "&DeptNo=" + DeptNo1
+    axios
+      .get(urlSubmitContact)
+      .then((res) => {
+        const statusCode = res.data[0].statusCode //儲存狀態代碼
+        const message = res.data[0].message //儲存狀態訊息
+        console.log(res.data)
+        if (statusCode == "1002") {
+          alert(message)
+          // window.location.reload() //重整頁面
+        } else {
+        }
+        //console.log(res.data);
+        console.log(statusCode + "Add") //狀態代碼為新增
+        //console.log(tableData.value[0].statusCode);
+        dialogTableVisible.value = false
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
+
+  const onSubmitSetting = () => {
+    const urlSubmitContact =
+      url + "ChargDataSavingNew?UserId=" + UserId + "&DeptNo=" + DeptNo1
+    axios
+      .get(urlSubmitContact)
+      .then((res) => {
+        const statusCode = res.data[0].statusCode //儲存狀態代碼
+        const message = res.data[0].message //儲存狀態訊息
+        console.log(res.data)
+        if (statusCode == "1002") {
+          alert(message)
+          // window.location.reload() //重整頁面
+        } else {
+        }
+        //console.log(res.data);
+        console.log(statusCode + "Add") //狀態代碼為新增
+        //console.log(tableData.value[0].statusCode);
+        dialogTableVisible.value = false
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
 
   // const selectOptionsSetting = (selectedValue) => {
   //       console.log(selectedValue);
@@ -242,79 +315,4 @@
   //         case 'HTML':
   //       }
   //     }
-
-  const valueSetting = ref<string[]>([])
-  const optionsSetting = [
-    {
-      valueSetting: "HTML",
-      label: "HTML",
-    },
-    {
-      valueSetting: "CSS",
-      label: "CSS",
-    },
-    {
-      valueSetting: "JavaScript",
-      label: "JavaScript",
-    },
-    {
-      valueSetting: "HTML1",
-      label: "HTML",
-    },
-    {
-      valueSetting: "HTML2",
-      label: "HTML",
-    },
-    {
-      valueSetting: "HTML3",
-      label: "HTML",
-    },
-    {
-      valueSetting: "HTML4",
-      label: "HTML",
-    },
-    {
-      valueSetting: "HTML5",
-      label: "HTML",
-    },
-    {
-      valueSetting: "HTML6",
-      label: "HTML",
-    },
-    {
-      valueSetting: "HTML7",
-      label: "HTML",
-    },
-    {
-      valueSetting: "HTML8",
-      label: "HTML",
-    },
-    {
-      valueSetting: "HTML9",
-      label: "HTML",
-    },
-  ]
-
-  const gridData = [
-    {
-      date: "2016-05-02",
-      name: "John Smith",
-      address: "No.1518,  Jinshajiang Road, Putuo District",
-    },
-    {
-      date: "2016-05-04",
-      name: "John Smith",
-      address: "No.1518,  Jinshajiang Road, Putuo District",
-    },
-    {
-      date: "2016-05-01",
-      name: "John Smith",
-      address: "No.1518,  Jinshajiang Road, Putuo District",
-    },
-    {
-      date: "2016-05-03",
-      name: "John Smith",
-      address: "No.1518,  Jinshajiang Road, Putuo District",
-    },
-  ]
 </script>
