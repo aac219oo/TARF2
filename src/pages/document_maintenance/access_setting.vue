@@ -75,12 +75,12 @@
               :reserve-keyword="false"
               placeholder="請選擇"
             >
-              <el-option
-                v-for="(item, index) in optionsSettingReg"
-                :key="index"
-                :label="item.data"
-                :value="index"
-              />
+              <!-- <el-option
+                v-for="item in "
+                :key="item"
+                :label="item.label"
+                :value="item.value"
+              /> -->
             </el-select>
           </div>
         </div>
@@ -183,13 +183,14 @@
   // 代理人設定
   const valueSetting = ref<string[]>([])
   const optionsSetting = ref()
-  const optionsSettingReg = ref()
+  const optionsSettingShowTest = ref()
+  const optionsSettingShow = ref()
   // axios請求選單資料
   onMounted(() => {
     // 單位聯絡窗口選項
     const urlOptionsContact =
       url + "LoadDeptNo?UserId=" + UserId + "&DeptNo=" + DeptNo1
-    console.log(urlOptionsContact)
+    // console.log(urlOptionsContact)
     axios
       .get(urlOptionsContact)
       .then((res) => {
@@ -223,16 +224,10 @@
         console.log(res.data)
         optionsSetting.value = res.data
         const re = /\s*(?:;|$)\s*/ // 符號分割
-        const reg = optionsSetting.value["0"].empL_NAME_AGENT.split(re) // 字串成陣列
-        const reg2 = optionsSetting.value["0"].empL_SERI_AGENT.split(re)
-        console.log(reg)
-        for (let i = 0; i <= reg.length; i++) {
-          console.log((reg[i] = reg2[i]))
-          // optionsSetting.value[reg[i]]
-          optionsSettingReg.value = reg[i]
-          console.log(optionsSettingReg.value)
-          // reg[i] = reg2[i]
-        }
+        const arrayLabel = optionsSetting.value["0"].empL_NAME_AGENT.split(re) // 字串成陣列
+        const arrayValue = optionsSetting.value["0"].empL_SERI_AGENT.split(re)
+        console.log(arrayLabel)
+        console.log(arrayValue)
       })
       .catch(function (error) {
         // handle error

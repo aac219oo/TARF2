@@ -68,10 +68,10 @@
               <el-form-item
                 label="帳號"
                 :label-width="formLabelWidth"
-                prop="userName"
+                prop="EmplSeri"
               >
                 <el-input
-                  v-model="ruleForm.userName"
+                  v-model="ruleForm.EmplSeri"
                   @keyup.enter="submitForm(ruleFormRef)"
                   placeholder="請輸入"
                   clearable
@@ -80,10 +80,10 @@
               <el-form-item
                 label="姓名"
                 :label-width="formLabelWidth"
-                prop="name"
+                prop="UserName"
               >
                 <el-input
-                  v-model="ruleForm.name"
+                  v-model="ruleForm.UserName"
                   @keyup.enter="submitForm(ruleFormRef)"
                   placeholder="請輸入"
                   clearable
@@ -92,10 +92,10 @@
               <el-form-item
                 label="公司名稱"
                 :label-width="formLabelWidth"
-                prop="com_Name"
+                prop="DeptName"
               >
                 <el-input
-                  v-model="ruleForm.com_Name"
+                  v-model="ruleForm.DeptName"
                   @keyup.enter="submitForm(ruleFormRef)"
                   placeholder="請輸入"
                   clearable
@@ -104,32 +104,30 @@
               <el-form-item
                 label="權限種類"
                 :label-width="formLabelWidth"
-                prop="accessType"
+                prop="RighItem"
               >
                 <el-select
-                  v-model="ruleForm.accessType"
-                  multiple
+                  v-model="ruleForm.RighItem"
                   filterable
-                  allow-create
                   default-first-option
                   :reserve-keyword="false"
                   placeholder="請選擇"
                 >
                   <el-option
-                    v-for="item in optionsAccessType"
-                    :key="item.accessType"
+                    v-for="item in optionsRighItem"
+                    :key="item.value"
                     :label="item.label"
-                    :value="item.accessType"
+                    :value="item.value"
                   />
                 </el-select>
               </el-form-item>
               <el-form-item
                 label="統一編號"
                 :label-width="formLabelWidth"
-                prop="UniformNumbers"
+                prop="CustUnifNo"
               >
                 <el-input
-                  v-model="ruleForm.UniformNumbers"
+                  v-model="ruleForm.CustUnifNo"
                   @keyup.enter="submitForm(ruleFormRef)"
                   placeholder="請輸入"
                   clearable
@@ -138,22 +136,21 @@
               <el-form-item
                 label="標號"
                 :label-width="formLabelWidth"
-                prop="labeling"
+                prop="ProjIdStr"
               >
                 <el-select
-                  v-model="ruleForm.labeling"
+                  v-model="ruleForm.ProjIdStr"
                   multiple
                   filterable
-                  allow-create
                   default-first-option
                   :reserve-keyword="false"
                   placeholder="請選擇"
                 >
                   <el-option
-                    v-for="item in optionsLabeling"
-                    :key="item.labeling"
-                    :label="item.label"
-                    :value="item.labeling"
+                    v-for="(item, index) in optionsProjIdStr"
+                    :key="index"
+                    :label="item.proJ_ID"
+                    :value="item.proJ_ID"
                   />
                 </el-select>
               </el-form-item>
@@ -177,6 +174,7 @@
       <el-table
         :data="tableData"
         class="tableComUsing"
+        v-loading="loading"
         border
         stripe
         style="width: 100%"
@@ -189,39 +187,39 @@
         <el-table-column
           type="index"
           label="序號"
-          width="57"
+          width="70"
           :resizable="false"
         />
         <el-table-column
           label="帳號"
-          prop="userName"
+          prop="useR_ID"
           sortable
           width="160px"
           :resizable="false"
         />
         <el-table-column
           label="姓名"
-          prop="name"
+          prop="useR_NAME"
           width="130px"
           sortable
           :resizable="false"
         />
         <el-table-column
           label="公司名稱"
-          prop="com_Name"
+          prop="depT_NAME"
           sortable
           :resizable="false"
         />
         <el-table-column
           label="權限狀態"
-          prop="accessCondition"
+          prop="rigH_STAT_DESC"
           sortable
           width="130px"
           :resizable="false"
         />
         <el-table-column
           label="權限種類"
-          prop="accessType"
+          prop="rigH_ITEM_DESC"
           sortable
           width="130px"
           :resizable="false"
@@ -237,66 +235,61 @@
           </template>
         </el-table-column>
         <el-table-column label="標號維護" width="89" :resizable="false">
-          <template #default="scope">
-            <el-button
-              v-show="scope.row.used"
-              link
-              @click="scope.row.openLabeling = true"
-              class="button_edit"
-            >
+          <template #default>
+            <el-button link @click="openLabeling = true" class="button_edit">
               <img
                 src="../../assets/icon04.png"
                 style="width: 24px; vertical-align: bottom"
                 alt=""
               />
             </el-button>
-            <el-dialog
-              v-model="scope.row.openLabeling"
-              :append-to-body="true"
-              center
-              align-center
-              :close-on-click-modal="false"
-              title="標號維護"
-            >
-              <el-form :model="scope.row.formLabeling">
-                <el-form-item label="標號" :label-width="formLabelWidth">
-                  <el-select
-                    :v-model="scope.row.labeling"
-                    multiple
-                    filterable
-                    allow-create
-                    default-first-option
-                    :reserve-keyword="false"
-                    placeholder=" "
-                  >
-                    <el-option
-                      v-for="item in optionsLabeling"
-                      :key="item.labeling"
-                      :label="item.label"
-                      :value="item.labeling"
-                    />
-                  </el-select>
-                </el-form-item>
-              </el-form>
-              <template #footer>
-                <span class="dialog-footer">
-                  <el-button @click="scope.row.openLabeling = false"
-                    >取消</el-button
-                  >
-                  <el-button
-                    type="primary"
-                    @click="scope.row.openLabeling = false"
-                  >
-                    儲存
-                  </el-button>
-                </span>
-              </template>
-            </el-dialog>
           </template>
         </el-table-column>
       </el-table>
     </el-main>
   </el-container>
+  <template>
+    <el-dialog
+      v-model="openLabeling"
+      :append-to-body="true"
+      center
+      align-center
+      :close-on-click-modal="false"
+      title="標號維護"
+    >
+      <el-form :model="ruleForm">
+        <el-form-item
+          label="標號"
+          prop="ProjIdStr"
+          :label-width="formLabelWidth"
+        >
+          <el-select
+            :v-model="ruleForm.ProjIdStr"
+            multiple
+            filterable
+            default-first-option
+            :reserve-keyword="false"
+            placeholder=""
+          >
+            <el-option
+              v-for="(item, index) in optionsProjIdStr"
+              :key="index"
+              :label="item.proJ_ID"
+              :value="item.proJ_ID"
+            />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="cancel">取消</el-button>
+          <el-button type="primary" @click="openLabeling = false">
+            儲存
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
+  </template>
 </template>
 <script lang="ts" setup>
   import { reactive, ref, computed, onMounted } from "vue"
@@ -307,8 +300,12 @@
   import zhTw from "element-plus/dist/locale/zh-tw"
   import en from "element-plus/es/locale/lang/en"
 
+  sessionStorage.setItem("UserId", "11695") //儲存session
+  const url = "https://127.0.0.1:7227/api/UserRigh/" // 連到API
+  const UserId = sessionStorage.getItem("UserId") // 儲存UserId
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
+  const loading = ref(true)
   const search = ref("")
   // navbar
   const activeIndex = ref("1")
@@ -317,7 +314,7 @@
   }
   // dialogAddItem
   const dialogFormVisible = ref(false)
-  // const openLabeling = ref(false)
+  const openLabeling = ref(false)
   const formLabelWidth = "100px"
   // ruleForm
   const ruleFormRef = ref<FormInstance>()
@@ -342,49 +339,49 @@
   // const testShow = () => {
   // }
 
-  // labeling選項
+  // 新增廠商
   const ruleForm = reactive({
-    userName: "",
-    name: "",
-    com_Name: "",
-    accessType: "",
-    UniformNumbers: "",
-    labeling: "",
+    EmplSeri: "",
+    UserName: "",
+    DeptName: "",
+    RighItem: "",
+    CustUnifNo: "",
+    ProjIdStr: "",
   })
   const rules = reactive<FormRules>({
-    userName: [
+    EmplSeri: [
       { required: true, message: "請輸入帳號", trigger: "blur" },
       { min: 3, max: 20, message: "長度3到20字", trigger: "blur" },
     ],
-    name: [
+    UserName: [
       {
         required: true,
         message: "請輸入姓名",
         trigger: "blur",
       },
     ],
-    com_Name: [
+    DeptName: [
       {
         required: true,
         message: "請輸入公司名稱",
         trigger: "blur",
       },
     ],
-    accessType: [
+    RighItem: [
       {
         required: true,
         message: "請選擇權限種類",
         trigger: "blur",
       },
     ],
-    UniformNumbers: [
+    CustUnifNo: [
       {
         required: true,
         message: "請輸入統一編號",
         trigger: "blur",
       },
     ],
-    labeling: [
+    ProjIdStr: [
       {
         required: true,
         message: "請選擇標號",
@@ -392,72 +389,101 @@
       },
     ],
   })
-
+  // 送出新增帳號表單
   const submitForm = async (formEl: FormInstance | undefined) => {
     if (!formEl) return
     await formEl.validate((valid, fields) => {
       if (valid) {
-        console.log("submit!")
+        console.log(ruleForm)
         dialogFormVisible.value = false
+        const urlSavingNew =
+          url +
+          "SavingNew?EmplSeri=" +
+          ruleForm.EmplSeri +
+          "&UserId=" +
+          UserId +
+          "&UserName=" +
+          ruleForm.UserName +
+          "&DeptName=" +
+          ruleForm.DeptName +
+          "&RighItem=" +
+          ruleForm.RighItem +
+          "&CustUnifNo=" +
+          ruleForm.CustUnifNo +
+          "&ProjIdStr=" +
+          ruleForm.ProjIdStr
+        axios
+          .get(urlSavingNew)
+          .then((res) => {
+            tableData.value = res.data
+          })
+          .catch(function (error) {
+            // handle error
+            console.log(error)
+          })
       } else {
         console.log("error submit!", fields)
         dialogFormVisible.value = true
       }
     })
   }
-
-  const labeling = ref<string[]>([])
-  const labeling01 = ref<string[]>([])
-
-  const optionsLabeling = [
+  // 權限種類
+  const optionsRighItem = [
     {
-      labeling: "CF620",
-      label: "CF620",
-    },
-    {
-      labeling: "CF624G",
-      label: "CF624G",
-    },
-    {
-      labeling: "CF680C",
-      label: "CF680C",
-    },
-  ]
-
-  const optionsAccessType = [
-    {
-      accessType: "right",
-      label: "審查權限",
-    },
-    {
-      accessType: "watch",
-      label: "委託監造",
-    },
-    {
-      accessType: "document",
+      value: "0",
       label: "查詢文件權限",
     },
     {
-      accessType: "picture",
+      value: "1",
       label: "查詢圖說權限",
     },
     {
-      accessType: "employees",
-      label: "本局同仁",
+      value: "2",
+      label: "申請單權限",
     },
     {
-      accessType: "apply",
-      label: "申請單權限",
+      value: "3",
+      label: "審查權限",
+    },
+    {
+      value: "4",
+      label: "委託監造",
+    },
+    {
+      value: "5",
+      label: "本局同仁",
     },
   ]
 
+  const QueryProjData = reactive({
+    ProjIdStr: "",
+  })
+
+  const optionsProjIdStr = ref()
   const tableData = ref()
   onMounted(() => {
-    const url = "https://127.0.0.1:7227/api/UserRigh/LoadNetUserRigh"
+    // 讀table資料
+    const urlLoadNetUserRigh = url + "LoadNetUserRigh"
+    loading.value = true
     axios
-      .get(url)
+      .get(urlLoadNetUserRigh)
       .then((res) => {
         tableData.value = res.data
+        loading.value = false
+        console.log(res.data)
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error)
+      })
+
+    // 讀標號資料
+    const urlLoadProj = url + "LoadProj"
+    axios
+      .get(urlLoadProj)
+      .then((res) => {
+        optionsProjIdStr.value = res.data
+        console.log(res.data)
       })
       .catch(function (error) {
         // handle error
