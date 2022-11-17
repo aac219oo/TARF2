@@ -227,7 +227,7 @@
         <el-table-column label="註銷" width="89" :resizable="false">
           <template #default="scope">
             <el-switch
-              v-model="scope.row.takeOff"
+              v-model="scope.row.revokE_FLAG"
               @change="changeStatus($event, scope.row, scope.$index)"
             />
             <!-- scope.row.deleteOn -->
@@ -235,61 +235,66 @@
           </template>
         </el-table-column>
         <el-table-column label="標號維護" width="89" :resizable="false">
-          <template #default>
-            <el-button link @click="openLabeling = true" class="button_edit">
+          <template #default="scope">
+            <el-button
+              link
+              @click="scope.row.openLabeling = true"
+              class="button_edit"
+            >
               <img
                 src="../../assets/icon04.png"
                 style="width: 24px; vertical-align: bottom"
                 alt=""
               />
             </el-button>
+            <el-dialog
+              v-model="scope.row.openLabeling"
+              :append-to-body="true"
+              center
+              align-center
+              :close-on-click-modal="false"
+              title="標號維護"
+            >
+              <el-form :model="QueryProjData">
+                <el-form-item label="標號" :label-width="formLabelWidth">
+                  <el-select
+                    :v-model="QueryProjData"
+                    @change="$forceUpdate()"
+                    multiple
+                    filterable
+                    allow-create
+                    default-first-option
+                    :reserve-keyword="false"
+                    placeholder=" "
+                  >
+                    <el-option
+                      v-for="(item, index) in optionsProjIdStr"
+                      :key="index"
+                      :label="item.proJ_ID"
+                      :value="item.proJ_ID"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-form>
+              <template #footer>
+                <span class="dialog-footer">
+                  <el-button @click="scope.row.openLabeling = false"
+                    >取消</el-button
+                  >
+                  <el-button
+                    type="primary"
+                    @click="scope.row.openLabeling = false"
+                  >
+                    儲存
+                  </el-button>
+                </span>
+              </template>
+            </el-dialog>
           </template>
         </el-table-column>
       </el-table>
     </el-main>
   </el-container>
-  <template>
-    <el-dialog
-      v-model="openLabeling"
-      :append-to-body="true"
-      center
-      align-center
-      :close-on-click-modal="false"
-      title="標號維護"
-    >
-      <el-form :model="ruleForm">
-        <el-form-item
-          label="標號"
-          prop="ProjIdStr"
-          :label-width="formLabelWidth"
-        >
-          <el-select
-            :v-model="ruleForm.ProjIdStr"
-            multiple
-            filterable
-            default-first-option
-            :reserve-keyword="false"
-            placeholder=""
-          >
-            <el-option
-              v-for="(item, index) in optionsProjIdStr"
-              :key="index"
-              :label="item.proJ_ID"
-              :value="item.proJ_ID"
-            />
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="cancel">取消</el-button>
-          <el-button type="primary" @click="openLabeling = false">
-            儲存
-          </el-button>
-        </span>
-      </template>
-    </el-dialog>
-  </template>
 </template>
 <script lang="ts" setup>
   import { reactive, ref, computed, onMounted } from "vue"
@@ -321,12 +326,32 @@
   // 註銷開關
   // const deleteOn = ref(true)
   const changeStatus = (e, row, index) => {
-    console.log(e, row, index) // e返回狀態，row當前行數據，index下標
+    // console.log(e, row, index) // e返回狀態，row當前行數據，index下標
     // console.log(row.takeOff)
-    console.log(row["takeOff"])
-    // const takeOff = row.takeOff
-    // const type = row.deleteOn
-    // .then((res) => {
+    // console.log(row["rigH_STAT_DESC"])
+    const UserId = "D0002636"
+    const UserName = "連奕書"
+    const RighStat = "N"
+    const urlRevokeNetUserRigh =
+      url +
+      "RevokeNetUserRigh?UserId=" +
+      UserId +
+      "&UserName=" +
+      UserName +
+      "&RighStat=" +
+      RighStat
+    // console.log(urlRevokeNetUserRigh)
+    axios
+      .get(urlRevokeNetUserRigh)
+      .then((res) => {
+        // console.log(res.data)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+
+    // const revokE_FLAG = row.revokE_FLAG
+    // const type = row.revokE_FLAG.then((res) => {
     //   console.log(res.data)
     // })
   }
@@ -455,9 +480,11 @@
     },
   ]
 
-  const QueryProjData = reactive({
-    ProjIdStr: "",
-  })
+  // interface searchSelect {
+  //   $forceUpdate(): void
+  // }
+
+  const QueryProjData = ref("")
 
   const optionsProjIdStr = ref()
   const tableData = ref()
@@ -470,7 +497,7 @@
       .then((res) => {
         tableData.value = res.data
         loading.value = false
-        console.log(res.data)
+        console.log(res.data[0].rigH_STAT_DESC)
       })
       .catch(function (error) {
         // handle error
@@ -483,10 +510,25 @@
       .get(urlLoadProj)
       .then((res) => {
         optionsProjIdStr.value = res.data
-        console.log(res.data)
+        // console.log(res.data)
       })
       .catch(function (error) {
         // handle error
+        console.log(error)
+      })
+
+    //讀取標號維護已有標號
+    const UserId = "D0002636"
+    const urlQueryProjData = url + "QueryProjData?UserId=" + UserId
+    console.log(urlQueryProjData)
+    axios
+      .get(urlQueryProjData)
+      .then((res) => {
+        // console.log(res.data[0].proJ_ID)
+        QueryProjData.value = res.data[0].proJ_ID
+        // console.log(QueryProjData.value)
+      })
+      .catch(function (error) {
         console.log(error)
       })
   })
