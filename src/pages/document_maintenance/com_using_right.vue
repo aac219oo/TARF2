@@ -230,8 +230,6 @@
               v-model="scope.row.revokE_FLAG"
               @change="changeStatus($event, scope.row, scope.$index)"
             />
-            <!-- scope.row.deleteOn -->
-            <!-- deleteRight(scope.row) -->
           </template>
         </el-table-column>
         <el-table-column label="標號維護" width="89" :resizable="false">
@@ -259,7 +257,6 @@
                 <el-form-item label="標號" :label-width="formLabelWidth">
                   <el-select
                     :v-model="QueryProjData"
-                    @change="$forceUpdate()"
                     multiple
                     filterable
                     allow-create
@@ -267,6 +264,7 @@
                     :reserve-keyword="false"
                     placeholder=" "
                   >
+                    <!-- @change="$forceUpdate()" -->
                     <el-option
                       v-for="(item, index) in optionsProjIdStr"
                       :key="index"
@@ -349,20 +347,11 @@
       .catch(function (error) {
         console.log(error)
       })
-
-    // const revokE_FLAG = row.revokE_FLAG
-    // const type = row.revokE_FLAG.then((res) => {
-    //   console.log(res.data)
-    // })
   }
 
   const cancel = () => {
     dialogFormVisible.value = false
   }
-  // 顯示或隱藏按鍵
-  // const used = ref(true)
-  // const testShow = () => {
-  // }
 
   // 新增廠商
   const ruleForm = reactive({
@@ -480,9 +469,9 @@
     },
   ]
 
-  // interface searchSelect {
-  //   $forceUpdate(): void
-  // }
+  interface QueryProjData {
+    $forceUpdate(): void
+  }
 
   const QueryProjData = ref("")
 

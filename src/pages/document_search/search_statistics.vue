@@ -32,7 +32,7 @@
                   <div class="input_position">
                     <el-form-item class="datepicker" label="統計月份">
                       <el-date-picker
-                        v-model="value"
+                        v-model="BascDateValue"
                         type="daterange"
                         unlink-panels
                         range-separator="~"
@@ -43,7 +43,7 @@
                     </el-form-item>
                     <el-form-item class="button-items">
                       <div class="button-items-search">
-                        <el-button @click="onSubmit"
+                        <el-button @click="SubmitBascDateValue"
                           ><img
                             src="../../assets/icon01.png"
                             style="width: 26px; vertical-align: bottom"
@@ -51,14 +51,12 @@
                         /></el-button>
                       </div>
                       <div class="button-items-export">
-                        <el-button>
-                          <a href="../detail_info/index.html">
-                            <img
-                              src="../../assets/icon02.png"
-                              style="width: 26px; vertical-align: bottom"
-                              alt=""
-                            />
-                          </a>
+                        <el-button @click="getBascDate">
+                          <img
+                            src="../../assets/icon02.png"
+                            style="width: 26px; vertical-align: bottom"
+                            alt=""
+                          />
                         </el-button>
                       </div>
                     </el-form-item>
@@ -86,7 +84,7 @@
             </div>
             <el-table
               class="tableForm"
-              :data="tableData1"
+              :data="tableDataBasc"
               border
               stripe
               show-summary
@@ -99,7 +97,7 @@
               }"
             >
               <el-table-column
-                prop="labelNumber"
+                prop="PROJ_ID"
                 label="&ensp;&ensp;線別&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;標別"
                 width="150"
                 :resizable="false"
@@ -112,18 +110,46 @@
     <el-table-column prop="Xinzhuang" label="新莊線" :resizable="false"/>
     <el-table-column prop="ring" label="環狀縣" :resizable="false"/>
     <el-table-column prop="Xinyi" label="信義線" :resizable="false"/> -->
-              <el-table-column prop="jan" label="1月" :resizable="false" />
-              <el-table-column prop="feb" label="2月" :resizable="false" />
-              <el-table-column prop="mar" label="3月" :resizable="false" />
-              <el-table-column prop="apr" label="4月" :resizable="false" />
-              <el-table-column prop="may" label="5月" :resizable="false" />
-              <el-table-column prop="jun" label="6月" :resizable="false" />
-              <el-table-column prop="jul" label="7月" :resizable="false" />
-              <el-table-column prop="aug" label="8月" :resizable="false" />
-              <el-table-column prop="sep" label="9月" :resizable="false" />
-              <el-table-column prop="oct" label="10月" :resizable="false" />
-              <el-table-column prop="nov" label="11月" :resizable="false" />
-              <el-table-column prop="dec" label="12月" :resizable="false" />
+              <el-table-column
+                prop="CUNT_1"
+                label="CUNT_1"
+                :resizable="false"
+              />
+              <el-table-column
+                prop="CUNT_A"
+                label="CUNT_A"
+                :resizable="false"
+              />
+              <el-table-column
+                prop="CUNT_E"
+                label="CUNT_E"
+                :resizable="false"
+              />
+              <el-table-column
+                prop="CUNT_G"
+                label="CUNT_G"
+                :resizable="false"
+              />
+              <el-table-column
+                prop="CUNT_J"
+                label="CUNT_J"
+                :resizable="false"
+              />
+              <el-table-column
+                prop="CUNT_K"
+                label="CUNT_K"
+                :resizable="false"
+              />
+              <el-table-column
+                prop="CUNT_Q"
+                label="CUNT_Q"
+                :resizable="false"
+              />
+              <el-table-column
+                prop="CUNT_R"
+                label="CUNT_R"
+                :resizable="false"
+              />
             </el-table>
           </el-tab-pane>
 
@@ -141,7 +167,7 @@
                   <div class="input_position">
                     <el-form-item class="datepicker" label="統計月份">
                       <el-date-picker
-                        v-model="value"
+                        v-model="CaseTotleValue"
                         type="daterange"
                         unlink-panels
                         range-separator="~"
@@ -152,7 +178,7 @@
                     </el-form-item>
                     <el-form-item class="button-items">
                       <div class="button-items-search">
-                        <el-button @click="onSubmit"
+                        <el-button @click="SubmitCaseTotleValue"
                           ><img
                             src="../../assets/icon01.png"
                             style="width: 26px; vertical-align: bottom"
@@ -160,14 +186,12 @@
                         /></el-button>
                       </div>
                       <div class="button-items-export">
-                        <el-button>
-                          <a href="../detail_info/index.html">
-                            <img
-                              src="../../assets/icon02.png"
-                              style="width: 26px; vertical-align: bottom"
-                              alt=""
-                            />
-                          </a>
+                        <el-button @click="getCaseTotle">
+                          <img
+                            src="../../assets/icon02.png"
+                            style="width: 26px; vertical-align: bottom"
+                            alt=""
+                          />
                         </el-button>
                       </div>
                     </el-form-item>
@@ -196,11 +220,9 @@
             </div>
             <el-table
               class="tableForm"
-              :data="tableData2"
+              :data="tableDataCaseTotle"
               border
               stripe
-              show-summary
-              :summary-method="getSummaries"
               style="width: 100%"
               :header-cell-style="{
                 background: '#ebf4f9',
@@ -209,24 +231,28 @@
               }"
             >
               <el-table-column
-                prop="years"
+                prop="YEARS"
                 label="年份"
                 width="100"
                 :resizable="false"
               />
-              <el-table-column prop="jan" label="1月" :resizable="false" />
-              <el-table-column prop="feb" label="2月" :resizable="false" />
-              <el-table-column prop="mar" label="3月" :resizable="false" />
-              <el-table-column prop="apr" label="4月" :resizable="false" />
-              <el-table-column prop="may" label="5月" :resizable="false" />
-              <el-table-column prop="jun" label="6月" :resizable="false" />
-              <el-table-column prop="jul" label="7月" :resizable="false" />
-              <el-table-column prop="aug" label="8月" :resizable="false" />
-              <el-table-column prop="sep" label="9月" :resizable="false" />
-              <el-table-column prop="oct" label="10月" :resizable="false" />
-              <el-table-column prop="nov" label="11月" :resizable="false" />
-              <el-table-column prop="dec" label="12月" :resizable="false" />
-              <el-table-column prop="tatle" label="合計" :resizable="false" />
+              <el-table-column prop="CUNT_01" label="1月" :resizable="false" />
+              <el-table-column prop="CUNT_02" label="2月" :resizable="false" />
+              <el-table-column prop="CUNT_03" label="3月" :resizable="false" />
+              <el-table-column prop="CUNT_04" label="4月" :resizable="false" />
+              <el-table-column prop="CUNT_05" label="5月" :resizable="false" />
+              <el-table-column prop="CUNT_06" label="6月" :resizable="false" />
+              <el-table-column prop="CUNT_07" label="7月" :resizable="false" />
+              <el-table-column prop="CUNT_08" label="8月" :resizable="false" />
+              <el-table-column prop="CUNT_09" label="9月" :resizable="false" />
+              <el-table-column prop="CUNT_10" label="10月" :resizable="false" />
+              <el-table-column prop="CUNT_11" label="11月" :resizable="false" />
+              <el-table-column prop="CUNT_12" label="12月" :resizable="false" />
+              <el-table-column
+                prop="CUNT_ALL"
+                label="合計"
+                :resizable="false"
+              />
             </el-table>
           </el-tab-pane>
 
@@ -244,7 +270,7 @@
                   <div class="input_position">
                     <el-form-item class="datepicker" label="統計月份">
                       <el-date-picker
-                        v-model="value"
+                        v-model="HandleCountValue"
                         type="daterange"
                         unlink-panels
                         range-separator="~"
@@ -255,7 +281,7 @@
                     </el-form-item>
                     <el-form-item class="button-items">
                       <div class="button-items-search">
-                        <el-button @click="onSubmit"
+                        <el-button @click="SubmitHandleCountValue"
                           ><img
                             src="../../assets/icon01.png"
                             style="width: 26px; vertical-align: bottom"
@@ -263,14 +289,12 @@
                         /></el-button>
                       </div>
                       <div class="button-items-export">
-                        <el-button>
-                          <a href="../detail_info/index.html">
-                            <img
-                              src="../../assets/icon02.png"
-                              style="width: 26px; vertical-align: bottom"
-                              alt=""
-                            />
-                          </a>
+                        <el-button @click="getHandleCount">
+                          <img
+                            src="../../assets/icon02.png"
+                            style="width: 26px; vertical-align: bottom"
+                            alt=""
+                          />
                         </el-button>
                       </div>
                     </el-form-item>
@@ -298,12 +322,14 @@
             </div>
             <el-table
               class="tableForm tableSearchCondition"
-              :data="tableData3"
+              :data="tableDataHandleCount"
               row-key="id"
               border
               stripe
               show-summary
               :summary-method="getSummaries"
+              :expand-row-keys="expands"
+              @expand-change="expandColumn"
               style="width: 100%"
               :header-cell-style="{
                 background: '#ebf4f9',
@@ -312,43 +338,43 @@
               }"
             >
               <el-table-column
-                prop="labelNumber"
+                prop="DEPT_NAME"
                 label="單位"
                 width="180"
                 :resizable="false"
               />
               <el-table-column
-                prop="TuchengDingpu"
+                prop="TOTLE_COUNT"
                 label="案件總數(1)"
                 :resizable="false"
               />
               <el-table-column
-                prop="airport"
+                prop="SCHEDULED_COUNT"
                 label="如期結案(2)"
                 :resizable="false"
               />
               <el-table-column
-                prop="Wanda"
+                prop="LATE_CLOSE_COUNT"
                 label="逾期結案(3)"
                 :resizable="false"
               />
               <el-table-column
-                prop="Songshan"
+                prop="NOT_CLOSE_COUNT"
                 label="未結案(4)"
                 :resizable="false"
               />
               <el-table-column
-                prop="TaichungGreen"
+                prop="NOT_CLOSE_SCHEDULED_COUNT"
                 label="如期未結案(5)"
                 :resizable="false"
               />
               <el-table-column
-                prop="Xinzhuang"
+                prop="NOT_CLOSE_LATE_COUNT"
                 label="逾期未結案(6)"
                 :resizable="false"
               />
               <el-table-column
-                prop="ring"
+                prop="LATE_RATE"
                 label="逾期比例(7)"
                 :resizable="false"
               />
@@ -377,7 +403,7 @@
                   <div class="input_position">
                     <el-form-item class="datepicker" label="統計月份">
                       <el-date-picker
-                        v-model="value"
+                        v-model="TotleCountsValue"
                         type="daterange"
                         unlink-panels
                         range-separator="~"
@@ -388,7 +414,7 @@
                     </el-form-item>
                     <el-form-item class="button-items">
                       <div class="button-items-search">
-                        <el-button @click="onSubmit"
+                        <el-button @click="SubmitTotleCountsValue"
                           ><img
                             src="../../assets/icon01.png"
                             style="width: 26px; vertical-align: bottom"
@@ -396,14 +422,12 @@
                         /></el-button>
                       </div>
                       <div class="button-items-export">
-                        <el-button>
-                          <a href="../detail_info/index.html">
-                            <img
-                              src="../../assets/icon02.png"
-                              style="width: 26px; vertical-align: bottom"
-                              alt=""
-                            />
-                          </a>
+                        <el-button @click="getCountDetail">
+                          <img
+                            src="../../assets/icon02.png"
+                            style="width: 26px; vertical-align: bottom"
+                            alt=""
+                          />
                         </el-button>
                       </div>
                     </el-form-item>
@@ -424,7 +448,7 @@
             </div>
             <el-table
               class="tableForm"
-              :data="tableData4"
+              :data="tableDataTotleCounts"
               row-key="id"
               border
               stripe
@@ -438,23 +462,23 @@
               }"
             >
               <el-table-column
-                prop="labelNumber"
+                prop="DEPT_NAME"
                 label="單位名稱"
                 min-width="120"
                 :resizable="false"
               />
               <el-table-column
-                prop="TuchengDingpu"
+                prop="TOTLE_COUNT"
                 label="全部數量"
                 :resizable="false"
               />
               <el-table-column
-                prop="airport"
+                prop="SCHEDULED_COUNT"
                 label="111年6月數量"
                 :resizable="false"
               />
               <el-table-column
-                prop="Wanda"
+                prop="LATE_CLOSE_COUNT"
                 label="本月數量"
                 :resizable="false"
               />
@@ -475,10 +499,12 @@
   import dayjs from "dayjs"
   import type { FormInstance, FormRules } from "element-plus"
 
+  sessionStorage.setItem("UserId", "11695")
+  const UserId = sessionStorage.getItem("UserId")
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
+  const url = "https://localhost:7227/api/StatisticsProjidCount/"
   // 統計圖表
-
   interface Product {
     id: string
     name: string
@@ -521,11 +547,9 @@
   // 其他設定值
   const tabPosition = ref("top")
 
-  const value = ref("")
-
   const formInline = reactive({
-    user: "",
-    region: "",
+    StartDate: "",
+    EndDate: "",
   })
 
   const ruleFormRef = ref<FormInstance>()
@@ -535,591 +559,136 @@
 
   const size = ref("default")
 
-  const onSubmit = () => {
-    // const url = "http://tarf.grp.com.tw/api/Test/GetDeptChargQuery"
-    // axios
-    //   .get(url)
-    //   .then((res) => {
-    //     value.value = res.data
-    //     console.log("submit!" + value.value)
-    //   })
-    var date1 = new Date(value.value["0"])
-    var date2 = new Date(value.value["1"])
-    console.log(
-      dayjs(date1).format("YYYY-MM-DD") +
-        ";" +
-        dayjs(date2).format("YYYY-MM-DD")
-    )
+  // DateValue
+  const BascDateValue = ref("")
+  const CaseTotleValue = ref("")
+  const HandleCountValue = ref("")
+  const TotleCountsValue = ref("")
+  // tableData
+  const tableDataBasc = ref()
+  const tableDataCaseTotle = ref()
+  const tableDataHandleCount = ref()
+  const tableDataTotleCounts = ref()
+
+  // children展開只盞開一行
+  const expands = ref()
+  const getRowKeys = (row) => {
+    return row.id
+  }
+  const expandColumn = (row, expandedRows) => {
+    if (expandedRows.length) {
+      expands.value = []
+      if (row) {
+        expands.value.push(row.id)
+      }
+    } else {
+      expands.value = []
+    }
   }
 
-  const tableData1 = [
-    {
-      labelNumber: "CR285",
-      TuchengDingpu: "-",
-      airport: "-",
-      Wanda: "-",
-      Songshan: "-",
-      TaichungGreen: "-",
-      Xinzhuang: "-",
-      ring: "-",
-      Xinyi: "-",
-    },
-    {
-      labelNumber: "CR380E",
-      TuchengDingpu: "-",
-      airport: "-",
-      Wanda: "-",
-      Songshan: "-",
-      TaichungGreen: "-",
-      Xinzhuang: "-",
-      ring: "-",
-      Xinyi: "-",
-    },
-    {
-      labelNumber: "CR382A",
-      TuchengDingpu: "-",
-      airport: "-",
-      Wanda: "-",
-      Songshan: "-",
-      TaichungGreen: "-",
-      Xinzhuang: "-",
-      ring: "-",
-      Xinyi: "-",
-    },
-    {
-      labelNumber: "CR383A",
-      TuchengDingpu: "-",
-      airport: "-",
-      Wanda: "-",
-      Songshan: "-",
-      TaichungGreen: "-",
-      Xinzhuang: "-",
-      ring: "-",
-      Xinyi: "-",
-    },
-    {
-      labelNumber: "CR385A",
-      TuchengDingpu: "-",
-      airport: "-",
-      Wanda: "-",
-      Songshan: "-",
-      TaichungGreen: "-",
-      Xinzhuang: "-",
-      ring: "-",
-      Xinyi: "-",
-    },
-    {
-      labelNumber: "CR387A",
-      TuchengDingpu: "-",
-      airport: "-",
-      Wanda: "-",
-      Songshan: "-",
-      TaichungGreen: "-",
-      Xinzhuang: "-",
-      ring: "-",
-      Xinyi: "-",
-    },
-    {
-      labelNumber: "CR580C",
-      TuchengDingpu: "-",
-      airport: "-",
-      Wanda: "-",
-      Songshan: "-",
-      TaichungGreen: "-",
-      Xinzhuang: "-",
-      ring: "-",
-      Xinyi: "-",
-    },
-    {
-      labelNumber: "CR581A",
-      TuchengDingpu: "-",
-      airport: "-",
-      Wanda: "-",
-      Songshan: "-",
-      TaichungGreen: "-",
-      Xinzhuang: "-",
-      ring: "-",
-      Xinyi: "-",
-    },
-    {
-      labelNumber: "CF620",
-      TuchengDingpu: "-",
-      airport: "-",
-      Wanda: "-",
-      Songshan: "-",
-      TaichungGreen: "-",
-      Xinzhuang: "-",
-      ring: "-",
-      Xinyi: "-",
-    },
-  ]
+  // submit
+  const SubmitBascDateValue = () => {
+    const StartDate = dayjs(new Date(BascDateValue.value["0"])).format(
+      "YYYY-MM-DD"
+    )
+    const EndDate = dayjs(new Date(BascDateValue.value["1"])).format(
+      "YYYY-MM-DD"
+    )
+    console.log(StartDate + ";" + EndDate)
+    const urlBascDateValue =
+      url + "GetCaseBascDate?StartDate=" + StartDate + "&EndDate=" + EndDate
+    console.log(urlBascDateValue)
+    axios
+      .get(urlBascDateValue)
+      .then((res) => {
+        tableDataBasc.value = res.data
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
+  const SubmitCaseTotleValue = () => {
+    const QueryRole = {}
+    const DeptNo = {}
+    const urlCaseTotleValue =
+      url +
+      "GetStatisticsDeptCaseTotle?UserId=" +
+      UserId +
+      "&QueryRole=" +
+      QueryRole +
+      "&DeptNo=" +
+      DeptNo
+    console.log(urlCaseTotleValue)
+    axios
+      .get(urlCaseTotleValue)
+      .then((res) => {
+        tableDataCaseTotle.value = res.data
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
+  const SubmitHandleCountValue = () => {
+    const CountYear = dayjs(new Date(HandleCountValue.value["0"])).format(
+      "YYYY-MM-DD"
+    )
+    const CountMonth = dayjs(new Date(HandleCountValue.value["1"])).format(
+      "YYYY-MM-DD"
+    )
+    console.log(CountYear + ";" + CountMonth)
+    const urlBascDateValue =
+      url +
+      "GetCaseBascDate?CountYear=" +
+      CountYear +
+      "&CountMonth=" +
+      CountMonth
+    console.log(urlBascDateValue)
+    axios
+      .get(urlBascDateValue)
+      .then((res) => {
+        tableDataHandleCount.value = res.data
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
+  const SubmitTotleCountsValue = () => {
+    const CountDate = {}
+    const DeptNo = {}
+    const CountTarget = {}
+    const urlTotleCountsValue =
+      url +
+      "GetCaseBascDate?CountDate=" +
+      CountDate +
+      "&DeptNo=" +
+      DeptNo +
+      "&CountTarget=" +
+      CountTarget
+    console.log(urlTotleCountsValue)
+    axios
+      .get(urlTotleCountsValue)
+      .then((res) => {
+        tableDataTotleCounts.value = res.data
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
 
-  const tableData2 = [
-    {
-      years: "101",
-      jan: "-",
-      feb: "-",
-      mar: "-",
-      apr: "-",
-      may: "-",
-      jun: "-",
-      jul: "-",
-      aug: "-",
-      sep: "-",
-      oct: "-",
-      nov: "-",
-      dec: "-",
-    },
-    {
-      years: "102",
-      jan: "-",
-      feb: "-",
-      mar: "-",
-      apr: "-",
-      may: "-",
-      jun: "-",
-      jul: "-",
-      aug: "-",
-      sep: "-",
-      oct: "-",
-      nov: "-",
-      dec: "-",
-    },
-    {
-      years: "103",
-      jan: "-",
-      feb: "-",
-      mar: "-",
-      apr: "-",
-      may: "-",
-      jun: "-",
-      jul: "-",
-      aug: "-",
-      sep: "-",
-      oct: "-",
-      nov: "-",
-      dec: "-",
-    },
-    {
-      years: "104",
-      jan: "-",
-      feb: "-",
-      mar: "-",
-      apr: "1",
-      may: "1",
-      jun: "-",
-      jul: "-",
-      aug: "-",
-      sep: "-",
-      oct: "-",
-      nov: "-",
-      dec: "-",
-      tatle: "2",
-    },
-    {
-      years: "105",
-      jan: "-",
-      feb: "-",
-      mar: "-",
-      apr: "1",
-      may: "-",
-      jun: "-",
-      jul: "-",
-      aug: "-",
-      sep: "-",
-      oct: "-",
-      nov: "-",
-      dec: "-",
-      tatle: "1",
-    },
-    {
-      years: "106",
-      jan: "-",
-      feb: "-",
-      mar: "-",
-      apr: "-",
-      may: "-",
-      jun: "-",
-      jul: "-",
-      aug: "-",
-      sep: "-",
-      oct: "-",
-      nov: "-",
-      dec: "-",
-    },
-    {
-      years: "107",
-      jan: "1",
-      feb: "-",
-      mar: "-",
-      apr: "-",
-      may: "-",
-      jun: "-",
-      jul: "1",
-      aug: "1",
-      sep: "-",
-      oct: "-",
-      nov: "-",
-      dec: "-",
-      tatle: "3",
-    },
-    {
-      years: "108",
-      jan: "-",
-      feb: "-",
-      mar: "-",
-      apr: "-",
-      may: "-",
-      jun: "-",
-      jul: "3",
-      aug: "14",
-      sep: "45",
-      oct: "16",
-      nov: "10",
-      dec: "9",
-      tatle: "97",
-    },
-    {
-      years: "109",
-      jan: "11",
-      feb: "17",
-      mar: "51",
-      apr: "58",
-      may: "65",
-      jun: "64",
-      jul: "54",
-      aug: "39",
-      sep: "44",
-      oct: "35",
-      nov: "28",
-      dec: "29",
-      tatle: "495",
-    },
-    {
-      years: "110",
-      jan: "22",
-      feb: "19",
-      mar: "21",
-      apr: "11",
-      may: "13",
-      jun: "15",
-      jul: "13",
-      aug: "18",
-      sep: "23",
-      oct: "18",
-      nov: "18",
-      dec: "16",
-      tatle: "207",
-    },
-    {
-      years: "111",
-      jan: "19",
-      feb: "13",
-      mar: "17",
-      apr: "10",
-      may: "10",
-      jun: "12",
-      jul: "10",
-      aug: "-",
-      sep: "-",
-      oct: "-",
-      nov: "-",
-      dec: "-",
-      tatle: "91",
-    },
-  ]
-  const tableData3 = [
-    {
-      id: 1,
-      labelNumber: "綜規處",
-      TuchengDingpu: "-",
-      airport: "-",
-      Wanda: "-",
-      Songshan: "-",
-      TaichungGreen: "-",
-      Xinzhuang: "-",
-      ring: "-",
-      Xinyi: "-",
-      children: [
-        {
-          labelNumber: "綜規處處本部",
-          TuchengDingpu: "-",
-          airport: "-",
-          Wanda: "-",
-          Songshan: "-",
-          TaichungGreen: "-",
-          Xinzhuang: "-",
-          ring: "-",
-          Xinyi: "-",
-          children: [
-            {
-              labelNumber: "test1",
-              TuchengDingpu: "-",
-              airport: "-",
-              Wanda: "-",
-              Songshan: "-",
-              TaichungGreen: "-",
-              Xinzhuang: "-",
-              ring: "-",
-              Xinyi: "-",
-            },
-            {
-              labelNumber: "test2",
-              TuchengDingpu: "-",
-              airport: "-",
-              Wanda: "-",
-              Songshan: "-",
-              TaichungGreen: "-",
-              Xinzhuang: "-",
-              ring: "-",
-              Xinyi: "-",
-            },
-            {
-              labelNumber: "test3",
-              TuchengDingpu: "-",
-              airport: "-",
-              Wanda: "-",
-              Songshan: "-",
-              TaichungGreen: "-",
-              Xinzhuang: "-",
-              ring: "-",
-              Xinyi: "-",
-            },
-          ],
-        },
-        {
-          labelNumber: "綜規處第一課",
-          TuchengDingpu: "-",
-          airport: "-",
-          Wanda: "-",
-          Songshan: "-",
-          TaichungGreen: "-",
-          Xinzhuang: "-",
-          ring: "-",
-          Xinyi: "-",
-          children: [
-            {
-              labelNumber: "test1",
-              TuchengDingpu: "-",
-              airport: "-",
-              Wanda: "-",
-              Songshan: "-",
-              TaichungGreen: "-",
-              Xinzhuang: "-",
-              ring: "-",
-              Xinyi: "-",
-            },
-            {
-              labelNumber: "test2",
-              TuchengDingpu: "-",
-              airport: "-",
-              Wanda: "-",
-              Songshan: "-",
-              TaichungGreen: "-",
-              Xinzhuang: "-",
-              ring: "-",
-              Xinyi: "-",
-            },
-            {
-              labelNumber: "test3",
-              TuchengDingpu: "-",
-              airport: "-",
-              Wanda: "-",
-              Songshan: "-",
-              TaichungGreen: "-",
-              Xinzhuang: "-",
-              ring: "-",
-              Xinyi: "-",
-            },
-          ],
-        },
-        {
-          labelNumber: "綜規處第二課",
-          TuchengDingpu: "-",
-          airport: "-",
-          Wanda: "-",
-          Songshan: "-",
-          TaichungGreen: "-",
-          Xinzhuang: "-",
-          ring: "-",
-          Xinyi: "-",
-          children: [
-            {
-              labelNumber: "test1",
-              TuchengDingpu: "-",
-              airport: "-",
-              Wanda: "-",
-              Songshan: "-",
-              TaichungGreen: "-",
-              Xinzhuang: "-",
-              ring: "-",
-              Xinyi: "-",
-            },
-            {
-              labelNumber: "test2",
-              TuchengDingpu: "-",
-              airport: "-",
-              Wanda: "-",
-              Songshan: "-",
-              TaichungGreen: "-",
-              Xinzhuang: "-",
-              ring: "-",
-              Xinyi: "-",
-            },
-            {
-              labelNumber: "test3",
-              TuchengDingpu: "-",
-              airport: "-",
-              Wanda: "-",
-              Songshan: "-",
-              TaichungGreen: "-",
-              Xinzhuang: "-",
-              ring: "-",
-              Xinyi: "-",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: 2,
-      labelNumber: "土建處",
-      TuchengDingpu: "-",
-      airport: "-",
-      Wanda: "-",
-      Songshan: "-",
-      TaichungGreen: "-",
-      Xinzhuang: "-",
-      ring: "-",
-      Xinyi: "-",
-    },
-    {
-      id: 3,
-      labelNumber: "機設處",
-      TuchengDingpu: "-",
-      airport: "-",
-      Wanda: "-",
-      Songshan: "-",
-      TaichungGreen: "-",
-      Xinzhuang: "-",
-      ring: "-",
-      Xinyi: "-",
-    },
-    {
-      id: 4,
-      labelNumber: "工管處",
-      TuchengDingpu: "-",
-      airport: "-",
-      Wanda: "-",
-      Songshan: "-",
-      TaichungGreen: "-",
-      Xinzhuang: "-",
-      ring: "-",
-      Xinyi: "-",
-    },
-    {
-      id: 5,
-      labelNumber: "開發處",
-      TuchengDingpu: "-",
-      airport: "-",
-      Wanda: "-",
-      Songshan: "-",
-      TaichungGreen: "-",
-      Xinzhuang: "-",
-      ring: "-",
-      Xinyi: "-",
-    },
-    {
-      id: 6,
-      labelNumber: "技術處",
-      TuchengDingpu: "-",
-      airport: "-",
-      Wanda: "-",
-      Songshan: "-",
-      TaichungGreen: "-",
-      Xinzhuang: "-",
-      ring: "-",
-      Xinyi: "-",
-    },
-    {
-      id: 7,
-      labelNumber: "一區工程處",
-      TuchengDingpu: "-",
-      airport: "-",
-      Wanda: "-",
-      Songshan: "-",
-      TaichungGreen: "-",
-      Xinzhuang: "-",
-      ring: "-",
-      Xinyi: "-",
-    },
-    {
-      id: 8,
-      labelNumber: "二區工程處",
-      TuchengDingpu: "-",
-      airport: "-",
-      Wanda: "-",
-      Songshan: "-",
-      TaichungGreen: "-",
-      Xinzhuang: "-",
-      ring: "-",
-      Xinyi: "-",
-    },
-    {
-      id: 9,
-      labelNumber: "機電工程處",
-      TuchengDingpu: "-",
-      airport: "-",
-      Wanda: "-",
-      Songshan: "-",
-      TaichungGreen: "-",
-      Xinzhuang: "-",
-      ring: "-",
-      Xinyi: "-",
-    },
-  ]
-  const tableData4 = [
-    {
-      id: 1,
-      labelNumber: "台灣世曦工程顧問股份有限公司",
-      TuchengDingpu: "16,545",
-      airport: "0",
-      Wanda: "0",
-      children: [
-        {
-          labelNumber: "台灣世曦工程顧問股份有限公司",
-          TuchengDingpu: "16,545",
-          airport: "0",
-          Wanda: "0",
-        },
-      ],
-    },
-    {
-      id: 2,
-      labelNumber: "翰品聯合建築師事務所",
-      TuchengDingpu: "1,698",
-      airport: "0",
-      Wanda: "0",
-    },
-    {
-      id: 3,
-      labelNumber: "綜規處",
-      TuchengDingpu: "6",
-      airport: "0",
-      Wanda: "0",
-      children: [
-        {
-          labelNumber: "綜規處第四課",
-          TuchengDingpu: "6",
-          airport: "0",
-          Wanda: "0",
-        },
-      ],
-    },
-  ]
-
+  // 資料匯出
+  const getBascDate = () => {
+    console.log("匯出各標送審文件統計")
+  }
+  const getCaseTotle = () => {
+    console.log("匯出單位審查案件數量統計")
+  }
+  const getHandleCount = () => {
+    console.log("匯出審查案件辦理情形統計")
+  }
+  const getCountDetail = () => {
+    console.log("匯出主辦單位審查文件數量統計")
+  }
   // msg
-
   const item =
     "總計：229,253筆　　　111年06月合計：2,249筆 　　　本月(111/07)合計：685筆"
 </script>

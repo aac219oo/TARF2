@@ -107,7 +107,7 @@
                 alt=""
             /></el-button>
           </template>
-          <template #default="scope">
+          <template #default="scope" :v-show="CODE_USED">
             <el-popconfirm
               width="170px"
               title="確定要刪除嗎?"
@@ -186,6 +186,8 @@
   // 編輯表格功能
   const AddorEdit = ref(true) //新增編輯變數 新增:true 編輯:false
   const AplyItemCodeOrg = ref("") //更改資料變數
+  // 顯示或隱藏按鍵
+  const CODE_USED = ref()
 
   // axios取得API中的JSON
   onMounted(() => {
@@ -198,6 +200,13 @@
         tableData.value = res.data
         loading.value = false
         // console.log(tableData.value[0].statusCode) //印JSON陣列第零項後台傳送的訊息判斷1001、1002
+        const ShowButton = () => {
+          if ((CODE_USED.value = true)) {
+            res.data.CODE_USED == "1"
+          } else {
+            res.data.CODE_USED == "0"
+          }
+        }
       })
       // 錯誤API提示
       .catch(function (error) {

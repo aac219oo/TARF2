@@ -62,7 +62,10 @@
             width="57"
             :resizable="false"
           />
-          <el-table-column prop="proJ_ID" sortable :resizable="false"
+          <el-table-column
+            prop="proJ_ID"
+            :sortable="sortable"
+            :resizable="false"
             ><template #header>
               <p>標號</p>
               <el-input
@@ -72,9 +75,13 @@
                 placeholder="搜尋"
                 :suffix-icon="Search"
                 @keypress="stopEnter"
+                @click.stop.prevent="stopSortable"
               /> </template
           ></el-table-column>
-          <el-table-column prop="depT_NAME" sortable :resizable="false"
+          <el-table-column
+            prop="depT_NAME"
+            :sortable="sortable"
+            :resizable="false"
             ><template #header>
               <p>單位</p>
               <el-input
@@ -84,9 +91,13 @@
                 placeholder="搜尋"
                 :suffix-icon="Search"
                 @keypress="stopEnter"
+                @click.stop.prevent="stopSortable"
               /> </template
           ></el-table-column>
-          <el-table-column prop="useR_NAME" sortable :resizable="false"
+          <el-table-column
+            prop="useR_NAME"
+            :sortable="sortable"
+            :resizable="false"
             ><template #header>
               <p>姓名</p>
               <el-input
@@ -96,6 +107,7 @@
                 placeholder="搜尋"
                 :suffix-icon="Search"
                 @keypress="stopEnter"
+                @click.stop.prevent="stopSortable"
               /> </template
           ></el-table-column>
           <el-table-column
@@ -122,6 +134,10 @@
   const activeIndex = ref("1")
   const handleSelect = (key: string, keyPath: string[]) => {
     console.log(key, keyPath)
+  }
+  const sortable = ref(true)
+  const stopSortable = () => {
+    console.log(false)
   }
   // loading
   const loading = ref(true)
@@ -162,8 +178,8 @@
 
   // axios
   //各標號廠商窗口資訊
-  const url = "https://127.0.0.1:7227/api/ContactInfoQuery/GetOtherChargQuery"
-  // const url = "https://127.0.0.1:7227/api/test/GetOtherChargQuery"
+  // const url = "https://127.0.0.1:7227/api/ContactInfoQuery/GetOtherChargQuery"
+  const url = "https://127.0.0.1:7227/api/test/GetOtherChargQuery"
   // const url = "http://tarf.grp.com.tw/api/Test/GetDeptChargQuery"
 
   const tabledata = ref<User[]>([])

@@ -68,18 +68,21 @@
             class="unitAlign"
             ><template #header>
               <p>單位</p>
-              <el-input
-                v-model="searchDepT_NAME"
-                class="w-50 m-2"
-                size="default"
-                placeholder="搜尋"
-                :suffix-icon="Search"
-                @keypress="stopEnter"
-              /> </template
+              <el-select
+                v-model="selectDepT_NAME"
+                filterable
+                default-first-option
+                :reserve-keyword="false"
+                placeholder="請選擇" />
+              <el-option
+                v-for="(item, index) in optionsDepT_NAME"
+                :key="index"
+                :label="item.DepT_NAME"
+                :value="item.DepT_NAME" /></template
           ></el-table-column>
           <el-table-column
             prop="empL_NAME"
-            sortable
+            :sortable="sortable"
             label="姓名"
             :resizable="false"
             ><template #header>
@@ -91,6 +94,7 @@
                 placeholder="搜尋"
                 :suffix-icon="Search"
                 @keypress="stopEnter"
+                @click.stop.prevent="stopSortable"
               /> </template
           ></el-table-column>
           <el-table-column
@@ -119,6 +123,10 @@
   const handleSelect = (key: string, keyPath: string[]) => {
     console.log(key, keyPath)
   }
+  const sortable = ref(true)
+  const stopSortable = () => {
+    console.log(false)
+  }
   // loading
   const loading = ref(true)
   // filter
@@ -127,14 +135,15 @@
     empL_NAME: string
     ofF_TEL: string
   }
-  const searchDepT_NAME = ref("")
+
+  const selectDepT_NAME = ref<string[]>([])
+  const optionsDepT_NAME = ref({})
+  const DepT_NAME = ref()
   const searchEmpL_NAME = ref("")
   const filterTableData = computed<User[]>(() => {
     return tabledata.value.filter(
       (data) =>
-        data.depT_NAME
-          .toLowerCase()
-          .includes(searchDepT_NAME.value.toLowerCase()) &&
+        !searchEmpL_NAME.value ||
         data.empL_NAME
           .toLowerCase()
           .includes(searchEmpL_NAME.value.toLowerCase())
@@ -152,8 +161,8 @@
 
   // axios
   //各單位窗口資訊查詢
-  const url = "https://127.0.0.1:7227/api/ContactInfoQuery/GetDeptChargQuery"
-  // const url = "https://127.0.0.1:7227/api/test/GetDeptChargQuery"
+  // const url = "https://127.0.0.1:7227/api/ContactInfoQuery/GetDeptChargQuery"
+  const url = "https://127.0.0.1:7227/api/test/GetDeptChargQuery"
   // const url = "http://tarf.grp.com.tw/api/Test/GetDeptChargQuery"
 
   const tabledata = ref<User[]>([])
@@ -162,6 +171,22 @@
     loading.value = true
     axios
       .get(url)
+      .then((res) => {
+        console.log(res.data)
+        tabledata.value = res.data
+        loading.value = false
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error)
+      })
+      .then(function () {
+        // always executed
+      })
+
+    const urlSelectDepT_NAME = url + "&DepT_NAME=" + DepT_NAME
+    axios
+      .get(urlSelectDepT_NAME)
       .then((res) => {
         console.log(res.data)
         tabledata.value = res.data
