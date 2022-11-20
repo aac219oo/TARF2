@@ -269,7 +269,7 @@
                 <div class="container_left">
                   <div class="input_position">
                     <el-form-item class="datepicker" label="統計月份">
-                      <el-date-picker
+                      <!-- <el-date-picker
                         v-model="HandleCountValue"
                         type="daterange"
                         unlink-panels
@@ -277,6 +277,16 @@
                         start-placeholder="請選擇日期"
                         end-placeholder="請選擇日期"
                         :size="size"
+                      /> -->
+                      <el-date-picker
+                        v-model="HandleCountYearValue"
+                        type="year"
+                        placeholder="請選擇年份"
+                      />
+                      <el-date-picker
+                        v-model="HandleCountMonthValue"
+                        type="month"
+                        placeholder="請選擇月份"
                       />
                     </el-form-item>
                     <el-form-item class="button-items">
@@ -562,7 +572,8 @@
   // DateValue
   const BascDateValue = ref("")
   const CaseTotleValue = ref("")
-  const HandleCountValue = ref("")
+  const HandleCountYearValue = ref("")
+  const HandleCountMonthValue = ref("")
   const TotleCountsValue = ref("")
   // tableData
   const tableDataBasc = ref()
