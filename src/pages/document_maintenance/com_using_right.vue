@@ -236,7 +236,7 @@
           <template #default="scope">
             <el-button
               link
-              @click="scope.row.openLabeling = true"
+              @click="openQueryProjData(scope.row)"
               class="button_edit"
             >
               <img
@@ -246,7 +246,7 @@
               />
             </el-button>
             <el-dialog
-              v-model="scope.row.openLabeling"
+              v-model="scope.row.openQueryProjData"
               :append-to-body="true"
               center
               align-center
@@ -259,10 +259,8 @@
                     :v-model="QueryProjData"
                     multiple
                     filterable
-                    allow-create
                     default-first-option
                     :reserve-keyword="false"
-                    placeholder=" "
                   >
                     <!-- @change="$forceUpdate()" -->
                     <el-option
@@ -276,7 +274,7 @@
               </el-form>
               <template #footer>
                 <span class="dialog-footer">
-                  <el-button @click="scope.row.openLabeling = false"
+                  <el-button @click="cancelQueryProjData(scope.row)"
                     >取消</el-button
                   >
                   <el-button
@@ -317,7 +315,6 @@
   }
   // dialogAddItem
   const dialogFormVisible = ref(false)
-  const openLabeling = ref(false)
   const formLabelWidth = "100px"
   // ruleForm
   const ruleFormRef = ref<FormInstance>()
@@ -352,7 +349,9 @@
   const cancel = () => {
     dialogFormVisible.value = false
   }
-
+  const cancelQueryProjData = (row) => {
+    row.openQueryProjData = false
+  }
   // 新增廠商
   const ruleForm = reactive({
     EmplSeri: "",
@@ -469,12 +468,12 @@
     },
   ]
 
-  interface QueryProjData {
-    $forceUpdate(): void
-  }
+  // interface QueryProjData {
+  //   $forceUpdate(): void
+  // }
 
-  const QueryProjData = ref("")
-
+  const QueryProjData = ref<string[]>([])
+  const openQueryProjData = ref()
   const optionsProjIdStr = ref()
   const tableData = ref()
   onMounted(() => {
@@ -486,12 +485,31 @@
       .then((res) => {
         tableData.value = res.data
         loading.value = false
-        console.log(res.data[0].rigH_STAT_DESC)
+        // console.log(res.data[0].useR_ID)
       })
       .catch(function (error) {
         // handle error
         console.log(error)
       })
+
+    // //讀取標號維護已有標號
+    openQueryProjData.value = (row) => {
+      row.openQueryProjData = true
+      const urlQueryProjData = url + "QueryProjData?UserId=" + row["useR_ID"]
+      console.log(urlQueryProjData)
+      axios
+        .get(urlQueryProjData)
+        .then((res) => {
+          // console.log(res.data.length)
+          for (let i = 0; i < res.data.length; i++) {
+            QueryProjData.value[i] = res.data[i].proJ_ID
+          }
+          console.log(QueryProjData)
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    }
 
     // 讀標號資料
     const urlLoadProj = url + "LoadProj"
@@ -503,21 +521,6 @@
       })
       .catch(function (error) {
         // handle error
-        console.log(error)
-      })
-
-    //讀取標號維護已有標號
-    const UserId = "D0002636"
-    const urlQueryProjData = url + "QueryProjData?UserId=" + UserId
-    console.log(urlQueryProjData)
-    axios
-      .get(urlQueryProjData)
-      .then((res) => {
-        // console.log(res.data[0].proJ_ID)
-        QueryProjData.value = res.data[0].proJ_ID
-        // console.log(QueryProjData.value)
-      })
-      .catch(function (error) {
         console.log(error)
       })
   })

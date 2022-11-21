@@ -9,10 +9,23 @@
       <p>蘇家淇(11548)</p>
     </el-header>
     <el-main>
-      <el-menu :default-active="activeIndex" class="el-menu-demo index_row" mode="horizontal" @select="handleSelect">
-        <el-menu-item index="1"><a href="../access_setting/index.html">權限設定</a></el-menu-item>
-        <el-menu-item index="2"><a href="../individual_words/index.html">個人使用詞彙</a></el-menu-item>
-        <el-menu-item index="3"><a href="../item_codes/index.html">系統資料維護</a></el-menu-item>
+      <el-menu
+        :default-active="activeIndex"
+        class="el-menu-demo index_row"
+        mode="horizontal"
+        @select="handleSelect"
+      >
+        <el-menu-item index="1"
+          ><a href="../access_setting/index.html">權限設定</a></el-menu-item
+        >
+        <el-menu-item index="2"
+          ><a href="../individual_words/index.html"
+            >個人使用詞彙</a
+          ></el-menu-item
+        >
+        <el-menu-item index="3"
+          ><a href="../item_codes/index.html">系統資料維護</a></el-menu-item
+        >
         <!-- <el-menu-item index="3"
           ><a href="../item_codes/index.html">送審項目代碼</a></el-menu-item
         >
@@ -34,20 +47,41 @@
         <div class="select_box_wrap">
           <div class="select_h3">兼任其他單位聯絡窗口</div>
           <div class="select_box">
-            <el-select v-model="valueContact" filterable default-first-option :reserve-keyword="false"
-              placeholder="請選擇">
-              <el-option v-for="item in optionsContact" :key="item.depA_CODE" :label="item.depA_NAME"
-                :value="item.depA_CODE" @click="openContactInfo(item.depA_CODE)" />
+            <el-select
+              v-model="valueContact"
+              filterable
+              default-first-option
+              :reserve-keyword="false"
+              placeholder="請選擇"
+            >
+              <el-option
+                v-for="item in optionsContact"
+                :key="item.depA_CODE"
+                :label="item.depA_NAME"
+                :value="item.depA_CODE"
+                @click="openContactInfo(item.depA_CODE)"
+              />
             </el-select>
           </div>
         </div>
         <div class="select_box_wrap">
           <div class="select_h3">代理人設定</div>
           <div class="select_box">
-            <el-select v-model="valueSetting" @change="changeSelect" multiple filterable default-first-option
-              :reserve-keyword="false" placeholder="請選擇">
-              <el-option v-for="(item, index) in optionsSettingLabel" :key="index" :label="item.empL_NAME_AGENT"
-                :value="item.empL_SERI_AGENT" />
+            <el-select
+              v-model="valueSetting"
+              @change="change"
+              multiple
+              filterable
+              default-first-option
+              :reserve-keyword="false"
+              placeholder="請選擇"
+            >
+              <el-option
+                v-for="(item, index) in optionsSettingLabel"
+                :key="item"
+                :label="item.empL_NAME_AGENT"
+                :value="item.empL_NAME_AGENT + ';' + item.empL_SERI_AGENT"
+              />
             </el-select>
           </div>
         </div>
@@ -57,24 +91,55 @@
           <a href="../index_maintenance/index.html">離開</a>
         </div>
         <div class="access_button_save access_button">
-          <el-button @click="onSubmitSetting(valueSetting)">儲存</el-button>
+          <el-button @click="onSubmitSetting">儲存</el-button>
         </div>
       </div>
 
       <el-form :model="contactInfo">
         <el-dialog v-model="dialogTableVisible" title="現有聯絡窗口資訊">
           <el-descriptions :column="1" border>
-            <el-descriptions-item label="單位名稱" label-align="right" align="center" label-class-name="my-label"
-              class-name="my-content" v-for="item in contactInfo" :key="item.depT_NO">{{ item.depT_NO }}
+            <el-descriptions-item
+              label="單位名稱"
+              label-align="right"
+              align="center"
+              label-class-name="my-label"
+              class-name="my-content"
+              v-for="item in contactInfo"
+              :key="item.depT_NO"
+              >{{ item.depT_NO }}
             </el-descriptions-item>
-            <el-descriptions-item label="員工編號" label-align="right" align="center" v-for="item in contactInfo"
-              :key="item.empL_SERI">{{ item.empL_SERI }}</el-descriptions-item>
-            <el-descriptions-item label="員工姓名" label-align="right" align="center" v-for="item in contactInfo"
-              :key="item.empL_NAME">{{ item.empL_NAME }}</el-descriptions-item>
-            <el-descriptions-item label="建立日期" label-align="right" align="center" v-for="item in contactInfo"
-              :key="item.iN_DATE">{{ item.iN_DATE }}</el-descriptions-item>
-            <el-descriptions-item label="使用狀態" label-align="right" align="center" v-for="item in contactInfo"
-              :key="item.status">{{ item.status }}</el-descriptions-item>
+            <el-descriptions-item
+              label="員工編號"
+              label-align="right"
+              align="center"
+              v-for="item in contactInfo"
+              :key="item.empL_SERI"
+              >{{ item.empL_SERI }}</el-descriptions-item
+            >
+            <el-descriptions-item
+              label="員工姓名"
+              label-align="right"
+              align="center"
+              v-for="item in contactInfo"
+              :key="item.empL_NAME"
+              >{{ item.empL_NAME }}</el-descriptions-item
+            >
+            <el-descriptions-item
+              label="建立日期"
+              label-align="right"
+              align="center"
+              v-for="item in contactInfo"
+              :key="item.iN_DATE"
+              >{{ item.iN_DATE }}</el-descriptions-item
+            >
+            <el-descriptions-item
+              label="使用狀態"
+              label-align="right"
+              align="center"
+              v-for="item in contactInfo"
+              :key="item.status"
+              >{{ item.status }}</el-descriptions-item
+            >
           </el-descriptions>
           <template #footer>
             <span class="dialog-footer">
@@ -90,197 +155,200 @@
   </el-container>
 </template>
 <script lang="ts" setup>
-import { computed, reactive, ref, onMounted } from "vue"
-import zhTw from "element-plus/dist/locale/zh-tw"
-import en from "element-plus/es/locale/lang/en"
-import axios from "axios"
+  import { computed, reactive, ref, onMounted } from "vue"
+  import zhTw from "element-plus/dist/locale/zh-tw"
+  import en from "element-plus/es/locale/lang/en"
+  import axios from "axios"
 
-const language = ref("zh-tw")
-const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
-const dialogTableVisible = ref(false)
-// navbar
-const activeIndex = ref("1")
-const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+  const language = ref("zh-tw")
+  const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
+  const dialogTableVisible = ref(false)
+  // navbar
+  const activeIndex = ref("1")
+  const handleSelect = (key: string, keyPath: string[]) => {
+    console.log(key, keyPath)
+  }
 
-// session
-sessionStorage.setItem("UserId", "11695")
-sessionStorage.setItem("UserName", "唐經魁")
-sessionStorage.setItem("DeptNo1", "1")
-sessionStorage.setItem("DeptNo2", "J8")
-const UserId = sessionStorage.getItem("UserId")
-const UserName = sessionStorage.getItem("UserName")
-const DeptNo1 = sessionStorage.getItem("DeptNo1")
-const DeptNo2 = sessionStorage.getItem("DeptNo2")
-const url = "https://127.0.0.1:7227/api/DeptChargOtherDept/"
-// const url = "https://127.0.0.1:7227/api/Test/"
+  // session
+  sessionStorage.setItem("UserId", "11695")
+  sessionStorage.setItem("UserName", "唐經魁")
+  sessionStorage.setItem("DeptNo1", "1")
+  sessionStorage.setItem("DeptNo2", "J8")
+  const UserId = sessionStorage.getItem("UserId")
+  const UserName = sessionStorage.getItem("UserName")
+  const DeptNo1 = sessionStorage.getItem("DeptNo1")
+  const DeptNo2 = sessionStorage.getItem("DeptNo2")
+  const url = "https://127.0.0.1:7227/api/DeptChargOtherDept/"
+  // const url = "https://127.0.0.1:7227/api/Test/"
 
-// 單位聯絡窗口選項
-const valueContact = ref<string[]>([])
-const optionsContact = ref()
-// 代理人設定
-const valueSetting = ref<string[]>([])
-const optionsSettingLabel = ref({})
-const optionsSettingValue = ref()
-const test1 = reactive({})
-const test2 = ref()
-// axios請求選單資料
-onMounted(() => {
   // 單位聯絡窗口選項
-  const urlOptionsContact =
-    url + "LoadDeptNo?UserId=" + UserId + "&DeptNo=" + DeptNo1
-  // console.log(urlOptionsContact)
-  axios
-    .get(urlOptionsContact)
-    .then((res) => {
-      const statusCode = res.data[0].statusCode //儲存狀態代碼
-      const message = res.data[0].message //儲存狀態訊息
-      // console.log(res.data)
-      optionsContact.value = res.data
-      if (statusCode == "1002") {
-        // console.log(message)
-      } else {
-      }
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error)
-    })
-
-  // 讀取代理人
-  const urlLoadStuffAll =
-    url + "LoadStuffAll?UserId=" + UserId + "&UserName=" + UserName
-  // console.log(urlLoadStuffAll)
-  axios
-    .get(urlLoadStuffAll)
-    .then((res) => {
-      // valueSetting.value = res.data
-      for (let i = 0; i < res.data.length; i++) {
-        valueSetting.value[i] = res.data[i].empL_NAME_AGENT
-      }
-      console.log(valueSetting)
-      // console.log(res.data)
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error)
-    })
-
+  const valueContact = ref<string[]>([])
+  const optionsContact = ref()
   // 代理人設定
-  const urlOptionsSetting =
-    url +
-    "LoadDropDownList?UserId=" +
-    UserId +
-    "&UserName=" +
-    UserName +
-    "&DeptNo=" +
-    DeptNo2
-  console.log(urlOptionsSetting)
-  axios
-    .get(urlOptionsSetting)
-    .then((res) => {
-      const re = /\s*(?:;|$)\s*/ // 符號分割
-      const empL_NAME_AGENT = res.data[0].empL_NAME_AGENT.split(re)
-      const empL_SERI_AGENT = res.data[0].empL_SERI_AGENT.split(re)
-      // console.log(empL_NAME_AGENT.length)
-      for (let i = 0; i < empL_NAME_AGENT.length; i++) {
-        test1[i] = {
-          empL_SERI_AGENT: empL_SERI_AGENT[i],
-          empL_NAME_AGENT: empL_NAME_AGENT[i],
+  const valueSetting = ref<string[]>([])
+  const optionsSettingLabel = ref({})
+  const optionsSettingValue = ref()
+  const test1 = reactive({})
+  const test2 = ref()
+  // axios請求選單資料
+  onMounted(() => {
+    // 單位聯絡窗口選項
+    const urlOptionsContact =
+      url + "LoadDeptNo?UserId=" + UserId + "&DeptNo=" + DeptNo1
+    // console.log(urlOptionsContact)
+    axios
+      .get(urlOptionsContact)
+      .then((res) => {
+        const statusCode = res.data[0].statusCode //儲存狀態代碼
+        const message = res.data[0].message //儲存狀態訊息
+        // console.log(res.data)
+        optionsContact.value = res.data
+        if (statusCode == "1002") {
+          // console.log(message)
+        } else {
         }
-        optionsSettingLabel.value = test1
-      }
-      // console.log(optionsSettingLabel.value)
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error)
-    })
-})
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error)
+      })
 
-// 聯絡資訊
-const contactInfo = ref()
-// 單位聯絡窗口彈跳視窗
-const openContactInfo = (DeptNo) => {
-  dialogTableVisible.value = true
-  // console.log(row)
-  // console.log(optionsContact.value[row].depA_CODE)
-  const urlOptionsContact =
-    url + "LoadDeptChargData?UserId=" + UserId + "&DeptNo=" + DeptNo
-  console.log(urlOptionsContact)
-  axios
-    .get(urlOptionsContact)
-    .then((res) => {
-      console.log(res.data)
-      contactInfo.value = res.data
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error)
-    })
-}
+    // 讀取代理人
+    const urlLoadStuffAll =
+      url + "LoadStuffAll?UserId=" + UserId + "&UserName=" + UserName
+    // console.log(urlLoadStuffAll)
+    axios
+      .get(urlLoadStuffAll)
+      .then((res) => {
+        // valueSetting.value = res.data
+        for (let i = 0; i < res.data.length; i++) {
+          valueSetting.value[i] = res.data[i].empL_NAME_AGENT
+        }
+        // console.log(valueSetting)
+        // console.log(res.data)
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error)
+      })
 
-const onSubmitContact = (DeptNo) => {
-  const urlSubmitContact =
-    url + "ChargDataSavingNew?UserId=" + UserId + "&DeptNo=" + DeptNo
-  axios
-    .get(urlSubmitContact)
-    .then((res) => {
-      const statusCode = res.data[0].statusCode //儲存狀態代碼
-      const message = res.data[0].message //儲存狀態訊息
-      console.log(res.data)
-      if (statusCode == "1002") {
-        alert(message)
-        // window.location.reload() //重整頁面
-      } else {
-      }
-      //console.log(res.data);
-      console.log(statusCode + "Add") //狀態代碼為新增
-      //console.log(tableData.value[0].statusCode);
-      dialogTableVisible.value = false
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
-}
+    // 代理人設定
+    const urlOptionsSetting =
+      url +
+      "LoadDropDownList?UserId=" +
+      UserId +
+      "&UserName=" +
+      UserName +
+      "&DeptNo=" +
+      DeptNo2
+    // console.log(urlOptionsSetting)
+    axios
+      .get(urlOptionsSetting)
+      .then((res) => {
+        const re = /\s*(?:;|$)\s*/ // 符號分割
+        const empL_NAME_AGENT = res.data[0].empL_NAME_AGENT.split(re)
+        const empL_SERI_AGENT = res.data[0].empL_SERI_AGENT.split(re)
+        // console.log(empL_NAME_AGENT.length)
+        for (let i = 0; i < empL_NAME_AGENT.length; i++) {
+          test1[i] = {
+            empL_SERI_AGENT: empL_SERI_AGENT[i],
+            empL_NAME_AGENT: empL_NAME_AGENT[i],
+          }
+          optionsSettingLabel.value = test1
+        }
+        // console.log(optionsSettingLabel.value)
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error)
+      })
+  })
 
-const changeSelect = (event, item) => { }
+  // 聯絡資訊
+  const contactInfo = ref()
+  // 單位聯絡窗口彈跳視窗
+  const openContactInfo = (DeptNo) => {
+    dialogTableVisible.value = true
+    // console.log(row)
+    // console.log(optionsContact.value[row].depA_CODE)
+    const urlOptionsContact =
+      url + "LoadDeptChargData?UserId=" + UserId + "&DeptNo=" + DeptNo
+    console.log(urlOptionsContact)
+    axios
+      .get(urlOptionsContact)
+      .then((res) => {
+        console.log(res.data)
+        contactInfo.value = res.data
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error)
+      })
+  }
 
-const onSubmitSetting = (val) => {
-  // console.log(optionsSettingLabel.value)
-  // const urlSubmitContact =
-  //   url +
-  //   "AgentDataSavingNew?UserId=" +
-  //   UserId +
-  //   "&UserName=" +
-  //   UserName +
-  //   "&EmpId=" +
-  //   EmpId +
-  //   "&EmpName=" +
-  //   EmpName
-  // console.log(urlSubmitContact)
-  console.log(val)
-  // axios
-  //   .get(urlSubmitContact)
-  //   .then((res) => {
-  //     const statusCode = res.data[0].statusCode //儲存狀態代碼
-  //     const message = res.data[0].message //儲存狀態訊息
-  //     console.log(res.data)
-  //     if (statusCode == "1002") {
-  //       alert(message)
-  //       // window.location.reload() //重整頁面
-  //     } else {
-  //     }
-  //     //console.log(res.data);
-  //     console.log(statusCode + "Add") //狀態代碼為新增
-  //     //console.log(tableData.value[0].statusCode);
-  //     dialogTableVisible.value = false
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error)
-  //   })
-}
+  const onSubmitContact = (DeptNo) => {
+    const urlSubmitContact =
+      url + "ChargDataSavingNew?UserId=" + UserId + "&DeptNo=" + DeptNo
+    axios
+      .get(urlSubmitContact)
+      .then((res) => {
+        const statusCode = res.data[0].statusCode //儲存狀態代碼
+        const message = res.data[0].message //儲存狀態訊息
+        console.log(res.data)
+        if (statusCode == "1002") {
+          alert(message)
+          // window.location.reload() //重整頁面
+        } else {
+        }
+        //console.log(res.data);
+        console.log(statusCode + "Add") //狀態代碼為新增
+        //console.log(tableData.value[0].statusCode);
+        dialogTableVisible.value = false
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
+  const change = () => {}
+  const onSubmitSetting = () => {
+    const re = /\s*(?:;|$)\s*/ // 符號分割
+    for (let i = 0; i < valueSetting.value.length; i++) {
+      const value = valueSetting.value[i].split(re)
+      const empL_NAME_AGENT = value[0]
+      const empL_SERI_AGENT = value[1]
+      const urlSubmitContact =
+        url +
+        "AgentDataSavingNew?UserId=" +
+        UserId +
+        "&UserName=" +
+        UserName +
+        "&EmpId=" +
+        empL_SERI_AGENT +
+        "&EmpName=" +
+        empL_NAME_AGENT
+      // console.log(urlSubmitContact)
+    }
+
+    // axios
+    //   .get(urlSubmitContact)
+    //   .then((res) => {
+    //     const statusCode = res.data[0].statusCode //儲存狀態代碼
+    //     const message = res.data[0].message //儲存狀態訊息
+    //     console.log(res.data)
+    //     if (statusCode == "1002") {
+    //       alert(message)
+    //       // window.location.reload() //重整頁面
+    //     } else {
+    //     }
+    //     //console.log(res.data);
+    //     console.log(statusCode + "Add") //狀態代碼為新增
+    //     //console.log(tableData.value[0].statusCode);
+    //     dialogTableVisible.value = false
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error)
+    //   })
+  }
 
   // const selectOptionsSetting = (selectedValue) => {
   //       console.log(selectedValue);
@@ -288,33 +356,4 @@ const onSubmitSetting = (val) => {
   //         case 'HTML':
   //       }
   //     }
-
-//   // el-select遍历方法，在el-select中有个@change，如@change=“pickRoleName”
-
-//           <el-select
-//             @change="pickRoleName"
-//             v-model="ToviewForm.deptId"
-//             placeholder="请选择"
-//             class="optionsone"
-//             clearable
-//           >
-//             <el-option
-//               v-for="item in optionsone" // optionsone数组
-//               :key="item.id"
-//               :label="item.deptName"
-//               :value="item.id"  //拿到optionsone中的id
-//             ></el-option>
-//           </el-select>
-
-// // js中调用@change="pickRoleName"方法
-
-//     pickRoleName(e) {
-//       this.optionsone.map((item, i) => {
-//         if (item.id == e) {
-//           this.ToviewForm.deptName = item.deptName; //传值
-//           this.ToviewForm.deptId = item.id;//传值
-//         }
-//       });
-//     },
-
 </script>
