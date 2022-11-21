@@ -118,7 +118,7 @@
               @confirm="deleteRow(scope.row)"
             >
               <template #reference>
-                <el-button v-show="ShowButton(scope.row)">
+                <el-button v-show="CodeUsed(scope.row)">
                   <img
                     src="../../assets/icon06.png"
                     style="width: 24px; vertical-align: bottom"
@@ -127,32 +127,34 @@
                 </el-button>
               </template>
             </el-popconfirm>
-            <el-button
-              link
-              size="small"
-              v-show="!scope.row.editable"
-              @click="handleEdit(scope.row)"
-              class="button_edit"
-            >
-              <img
-                src="../../assets/icon04.png"
-                style="width: 24px; vertical-align: bottom"
-                alt=""
-              />
-            </el-button>
-            <el-button
-              link
-              size="small"
-              v-show="scope.row.editable"
-              @click="handleSave(scope.row)"
-              class="button_edit"
-            >
-              <img
-                src="../../assets/icon05.png"
-                style="width: 24px; vertical-align: bottom"
-                alt=""
-              />
-            </el-button>
+            <div class="Save&Edit" v-show="CodeUsed(scope.row)">
+              <el-button
+                link
+                size="small"
+                v-show="!scope.row.editable"
+                @click="handleEdit(scope.row)"
+                class="button_edit"
+              >
+                <img
+                  src="../../assets/icon04.png"
+                  style="width: 24px; vertical-align: bottom"
+                  alt=""
+                />
+              </el-button>
+              <el-button
+                link
+                size="small"
+                v-show="scope.row.editable"
+                @click="handleSave(scope.row)"
+                class="button_edit"
+              >
+                <img
+                  src="../../assets/icon05.png"
+                  style="width: 24px; vertical-align: bottom"
+                  alt=""
+                />
+              </el-button>
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -203,6 +205,27 @@
   const AplyItemCodeOrg = ref("") //更改資料變數
   // 顯示或隱藏按鍵
   const ShowButton = ref(true)
+  const CodeUsed = (row) => {
+    const urlTableData = url + "GetAplyItemBasc" //接收API + session
+    axios
+      .get(urlTableData)
+      .then((res) => {
+        // console.log(res.data)
+        for (let i = 0; i < res.data.length; i++) {
+          const codE_USED = res.data[i].codE_USED
+          if (codE_USED == "0") {
+            row.ShowButton.value = true
+          } else {
+            row.ShowButton.value = false
+          }
+          console.log(ShowButton.value)
+        }
+      })
+      // 錯誤API提示
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
 
   // axios取得API中的JSON
   onMounted(() => {
@@ -215,15 +238,6 @@
         tableData.value = res.data
         loading.value = false
         // console.log(tableData.value[0].statusCode) //印JSON陣列第零項後台傳送的訊息判斷1001、1002
-        for (let i = 0; i < res.data.length; i++) {
-          const codE_USED = res.data[i].codE_USED
-          if (codE_USED == "0") {
-            ShowButton.value = true
-          } else {
-            ShowButton.value = false
-          }
-          console.log(ShowButton.value)
-        }
       })
       // 錯誤API提示
       .catch(function (error) {

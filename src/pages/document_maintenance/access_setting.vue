@@ -78,7 +78,7 @@
             >
               <el-option
                 v-for="(item, index) in optionsSettingLabel"
-                :key="item"
+                :key="index"
                 :label="item.empL_NAME_AGENT"
                 :value="item.empL_NAME_AGENT + ';' + item.empL_SERI_AGENT"
               />
@@ -178,24 +178,28 @@
   const UserName = sessionStorage.getItem("UserName")
   const DeptNo1 = sessionStorage.getItem("DeptNo1")
   const DeptNo2 = sessionStorage.getItem("DeptNo2")
-  const url = "https://127.0.0.1:7227/api/DeptChargOtherDept/"
-  // const url = "https://127.0.0.1:7227/api/Test/"
+  // const url = "https://127.0.0.1:7227/api/DeptChargOtherDept/"
+  const url = "https://127.0.0.1:7227/api/Test/"
 
   // 單位聯絡窗口選項
   const valueContact = ref<string[]>([])
   const optionsContact = ref()
   // 代理人設定
   const valueSetting = ref<string[]>([])
-  const optionsSettingLabel = ref({})
+  interface valueFace {
+    empL_SERI_AGENT: string
+    empL_NAME_AGENT: string
+  }
+  const optionsSettingLabel = ref<valueFace[]>([])
   const optionsSettingValue = ref()
-  const test1 = reactive({})
-  const test2 = ref()
+  const storageValue1 = reactive([])
+  const storageValue2 = ref()
   // axios請求選單資料
   onMounted(() => {
     // 單位聯絡窗口選項
     const urlOptionsContact =
       url + "LoadDeptNo?UserId=" + UserId + "&DeptNo=" + DeptNo1
-    // console.log(urlOptionsContact)
+    console.log(urlOptionsContact)
     axios
       .get(urlOptionsContact)
       .then((res) => {
@@ -216,15 +220,16 @@
     // 讀取代理人
     const urlLoadStuffAll =
       url + "LoadStuffAll?UserId=" + UserId + "&UserName=" + UserName
-    // console.log(urlLoadStuffAll)
+    console.log(urlLoadStuffAll)
     axios
       .get(urlLoadStuffAll)
       .then((res) => {
         // valueSetting.value = res.data
         for (let i = 0; i < res.data.length; i++) {
-          valueSetting.value[i] = res.data[i].empL_NAME_AGENT
+          valueSetting.value[i] =
+            res.data[i].empL_NAME_AGENT + ";" + res.data[i].empL_SERI_AGENT
         }
-        // console.log(valueSetting)
+        console.log(valueSetting)
         // console.log(res.data)
       })
       .catch(function (error) {
@@ -250,11 +255,12 @@
         const empL_SERI_AGENT = res.data[0].empL_SERI_AGENT.split(re)
         // console.log(empL_NAME_AGENT.length)
         for (let i = 0; i < empL_NAME_AGENT.length; i++) {
-          test1[i] = {
+          storageValue1[i] = {
             empL_SERI_AGENT: empL_SERI_AGENT[i],
             empL_NAME_AGENT: empL_NAME_AGENT[i],
           }
-          optionsSettingLabel.value = test1
+
+          optionsSettingLabel.value = storageValue1
         }
         // console.log(optionsSettingLabel.value)
       })
@@ -312,48 +318,40 @@
   const change = () => {}
   const onSubmitSetting = () => {
     const re = /\s*(?:;|$)\s*/ // 符號分割
+    const value = reactive([])
+    const EmpName = reactive([])
+    const EmpId = reactive([])
     for (let i = 0; i < valueSetting.value.length; i++) {
-      const value = valueSetting.value[i].split(re)
-      const empL_NAME_AGENT = value[0]
-      const empL_SERI_AGENT = value[1]
-      const urlSubmitContact =
-        url +
-        "AgentDataSavingNew?UserId=" +
-        UserId +
-        "&UserName=" +
-        UserName +
-        "&EmpId=" +
-        empL_SERI_AGENT +
-        "&EmpName=" +
-        empL_NAME_AGENT
-      // console.log(urlSubmitContact)
+      value[i] = valueSetting.value[i].split(re)
+      EmpName[i] = value[i][0]
+      EmpId[i] = value[i][1]
     }
-
-    // axios
-    //   .get(urlSubmitContact)
-    //   .then((res) => {
-    //     const statusCode = res.data[0].statusCode //儲存狀態代碼
-    //     const message = res.data[0].message //儲存狀態訊息
-    //     console.log(res.data)
-    //     if (statusCode == "1002") {
-    //       alert(message)
-    //       // window.location.reload() //重整頁面
-    //     } else {
-    //     }
-    //     //console.log(res.data);
-    //     console.log(statusCode + "Add") //狀態代碼為新增
-    //     //console.log(tableData.value[0].statusCode);
-    //     dialogTableVisible.value = false
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error)
-    //   })
+    const urlSubmitContact =
+      url +
+      "AgentDataSavingNew?UserId=" +
+      UserId +
+      "&UserName=" +
+      UserName +
+      "&EmpId=" +
+      EmpId.join(";") +
+      "&EmpName=" +
+      EmpName.join(";")
+    axios
+      .get(urlSubmitContact)
+      .then((res) => {
+        const statusCode = res.data[0].statusCode //儲存狀態代碼
+        const message = res.data[0].message //儲存狀態訊息
+        console.log(res.data)
+        if (statusCode == "1002") {
+          alert(message)
+          // window.location.reload() //重整頁面
+        } else {
+        }
+        console.log(statusCode + "Add") //狀態代碼為新增
+        alert(message)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
   }
-
-  // const selectOptionsSetting = (selectedValue) => {
-  //       console.log(selectedValue);
-  //       switch (selectedValue) {
-  //         case 'HTML':
-  //       }
-  //     }
 </script>

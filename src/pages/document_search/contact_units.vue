@@ -69,18 +69,18 @@
             ><template #header>
               <p>單位</p>
               <el-select
-                v-model="selectDepT_NAME"
+                v-model="searchDepT_NAME"
                 filterable
                 default-first-option
                 :reserve-keyword="false"
-                placeholder="請選擇"
-              />
-              <el-option
-                v-for="item in optionsDepT_NAME"
-                :key="item.DepT_NAME"
-                :label="item.DepT_NAME"
-                :value="item.DepT_NAME"
-              /> </template
+                placeholder="選擇搜尋單位"
+              >
+                <el-option
+                  v-for="item in optionsDepT_NAME"
+                  :key="item.depT_NAME"
+                  :label="item.depT_NAME"
+                  :value="item.depT_NAME"
+                /> </el-select></template
           ></el-table-column>
           <el-table-column
             prop="empL_NAME"
@@ -93,7 +93,7 @@
                 v-model="searchEmpL_NAME"
                 class="w-50 m-2"
                 size="default"
-                placeholder="搜尋"
+                placeholder="搜尋姓名"
                 :suffix-icon="Search"
                 @keypress="stopEnter"
                 @click.stop.prevent="stopSortable"
@@ -112,7 +112,7 @@
   </el-container>
 </template>
 <script lang="ts" setup>
-  import { ref, onMounted, computed } from "vue"
+  import { ref, onMounted, computed, reactive } from "vue"
   import { Search } from "@element-plus/icons-vue"
   import axios from "axios"
   import zhTw from "element-plus/dist/locale/zh-tw"
@@ -138,12 +138,14 @@
     ofF_TEL: string
   }
 
-  const DepT_NAME = ref()
+  const searchDepT_NAME = ref("")
   const searchEmpL_NAME = ref("")
   const filterTableData = computed<User[]>(() => {
     return tabledata.value.filter(
       (data) =>
-        !searchEmpL_NAME.value ||
+        data.depT_NAME
+          .toLowerCase()
+          .includes(searchDepT_NAME.value.toLowerCase()) &&
         data.empL_NAME
           .toLowerCase()
           .includes(searchEmpL_NAME.value.toLowerCase())
@@ -161,8 +163,8 @@
 
   // axios
   //各單位窗口資訊查詢
-  const url = "https://127.0.0.1:7227/api/ContactInfoQuery/GetDeptChargQuery"
-  // const url = "https://127.0.0.1:7227/api/test/GetDeptChargQuery"
+  // const url = "https://127.0.0.1:7227/api/ContactInfoQuery/GetDeptChargQuery"
+  const url = "https://127.0.0.1:7227/api/test/GetDeptChargQuery"
   // const url = "http://tarf.grp.com.tw/api/Test/GetDeptChargQuery"
 
   const tabledata = ref<User[]>([])
@@ -172,8 +174,16 @@
     axios
       .get(url)
       .then((res) => {
+        const noSpace = reactive([])
+        for (let i = 0; i < res.data.length; i++) {
+          noSpace[i] = {
+            depT_NAME: res.data[i].depT_NAME.replace(/\s*/g, ""),
+            empL_NAME: res.data[i].empL_NAME.replace(/\s*/g, ""),
+            ofF_TEL: res.data[i].ofF_TEL.replace(/\s*/g, ""),
+          }
+        }
+        tabledata.value = noSpace
         console.log(res.data)
-        tabledata.value = res.data
         loading.value = false
       })
       .catch(function (error) {
@@ -201,38 +211,36 @@
     //   })
   })
 
-  const selectDepT_NAME = ref("")
   const optionsDepT_NAME = [
     {
-      DepT_NAME: "一區工程處",
+      depT_NAME: "綜規處",
     },
     {
-      DepT_NAME: "綜　規　處",
+      depT_NAME: "土建處",
     },
     {
-      DepT_NAME: "土　建　處",
+      depT_NAME: "機設處",
     },
     {
-      DepT_NAME: "機　設　處",
+      depT_NAME: "工管處",
     },
     {
-      DepT_NAME: "工　管　處",
+      depT_NAME: "技術處",
     },
     {
-      DepT_NAME: "技　術　處",
+      depT_NAME: "秘書室",
     },
     {
-      DepT_NAME: "秘　書　室",
+      depT_NAME: "會計室",
     },
     {
-      DepT_NAME: "會　計　室",
+      depT_NAME: "一區工程處",
     },
     {
-      DepT_NAME: "二區工程處",
+      depT_NAME: "二區工程處",
     },
     {
-      DepT_NAME: "機電工程處",
+      depT_NAME: "機電工程處",
     },
   ]
-  console.log(optionsDepT_NAME)
 </script>

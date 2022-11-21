@@ -640,10 +640,10 @@
       })
   }
   const SubmitHandleCountValue = () => {
-    const CountYear = dayjs(new Date(HandleCountValue.value["0"])).format(
+    const CountYear = dayjs(new Date(HandleCountYearValue.value["0"])).format(
       "YYYY-MM-DD"
     )
-    const CountMonth = dayjs(new Date(HandleCountValue.value["1"])).format(
+    const CountMonth = dayjs(new Date(HandleCountMonthValue.value["1"])).format(
       "YYYY-MM-DD"
     )
     console.log(CountYear + ";" + CountMonth)
