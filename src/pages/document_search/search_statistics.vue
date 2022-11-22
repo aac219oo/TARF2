@@ -600,11 +600,9 @@
   // submit
   const SubmitBascDateValue = () => {
     const StartDate = dayjs(new Date(BascDateValue.value["0"])).format(
-      "YYYY-MM-DD"
+      "YYYYMMDD"
     )
-    const EndDate = dayjs(new Date(BascDateValue.value["1"])).format(
-      "YYYY-MM-DD"
-    )
+    const EndDate = dayjs(new Date(BascDateValue.value["1"])).format("YYYYMMDD")
     console.log(StartDate + ";" + EndDate)
     const urlBascDateValue =
       url + "GetCaseBascDate?StartDate=" + StartDate + "&EndDate=" + EndDate
@@ -613,6 +611,7 @@
       .get(urlBascDateValue)
       .then((res) => {
         tableDataBasc.value = res.data
+        console.log(res.data)
       })
       .catch(function (error) {
         console.log(error)

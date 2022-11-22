@@ -78,7 +78,7 @@
                 <el-option
                   v-for="item in optionsDepT_NAME"
                   :key="item.depT_NAME"
-                  :label="item.depT_NAME"
+                  :label="item.label"
                   :value="item.depT_NAME"
                 /> </el-select></template
           ></el-table-column>
@@ -163,9 +163,8 @@
 
   // axios
   //各單位窗口資訊查詢
-  // const url = "https://127.0.0.1:7227/api/ContactInfoQuery/GetDeptChargQuery"
-  const url = "https://127.0.0.1:7227/api/test/GetDeptChargQuery"
-  // const url = "http://tarf.grp.com.tw/api/Test/GetDeptChargQuery"
+  const url = "https://127.0.0.1:7227/api/ContactInfoQuery/GetDeptChargQuery"
+  // const url = "https://127.0.0.1:7227/api/test/GetDeptChargQuery"
 
   const tabledata = ref<User[]>([])
 
@@ -213,34 +212,48 @@
 
   const optionsDepT_NAME = [
     {
+      depT_NAME: "",
+      label: "全部",
+    },
+    {
       depT_NAME: "綜規處",
+      label: "綜規處",
     },
     {
       depT_NAME: "土建處",
+      label: "土建處",
     },
     {
       depT_NAME: "機設處",
+      label: "機設處",
     },
     {
       depT_NAME: "工管處",
+      label: "工管處",
     },
     {
       depT_NAME: "技術處",
+      label: "技術處",
     },
     {
       depT_NAME: "秘書室",
+      label: "秘書室",
     },
     {
       depT_NAME: "會計室",
+      label: "會計室",
     },
     {
       depT_NAME: "一區工程處",
+      label: "一區工程處",
     },
     {
       depT_NAME: "二區工程處",
+      label: "二區工程處",
     },
     {
       depT_NAME: "機電工程處",
+      label: "機電工程處",
     },
   ]
 </script>
