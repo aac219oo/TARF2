@@ -231,6 +231,7 @@
               :active-value="1"
               :inactive-value="0"
               @change="changeStatus($event, scope.row, scope.$index)"
+              @click="SubmitRevokE_FLAG(scope.row)"
             />
           </template>
         </el-table-column>
@@ -325,30 +326,35 @@
   // 註銷開關
   // const deleteOn = ref(true)
   const revokE_FLAG = ref(true)
+  const RighStat = ref()
   const changeStatus = (e, row, index) => {
     // console.log(e, row, index) // e返回狀態，row當前行數據，index下標
     // console.log(row["rigH_STAT"] == e)
-    // if (e == true) {
-    //   revokE_FLAG.value = row["rigH_STAT"] == "Y"
-    // } else {
-    //   revokE_FLAG.value = row["rigH_STAT"] == "N"
-    // }
-    // const urlRevokeNetUserRigh =
-    //   url +
-    //   "RevokeNetUserRigh?UserId=" +
-    //   row["useR_ID"] +
-    //   "&UserName=" +
-    //   row['useR_NAME'] +
-    //   "&RighStat=" +
-    //   RighStat
-    // axios
-    //   .get(urlRevokeNetUserRigh)
-    //   .then((res) => {
-    //     // console.log(res.data)
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error)
-    //   })
+    if (e == true) {
+      RighStat.value = "Y"
+    } else {
+      RighStat.value = "N"
+    }
+    // console.log(RighStat.value)
+  }
+  const SubmitRevokE_FLAG = (row) => {
+    const urlRevokeNetUserRigh =
+      url +
+      "RevokeNetUserRigh?UserId=" +
+      row["useR_ID"] +
+      "&UserName=" +
+      row["useR_NAME"] +
+      "&RighStat=" +
+      RighStat.value
+    console.log(urlRevokeNetUserRigh)
+    axios
+      .get(urlRevokeNetUserRigh)
+      .then((res) => {
+        console.log(res.data)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
   }
 
   const cancel = () => {
