@@ -213,7 +213,7 @@
   const optionsDepT_NAME = [
     {
       depT_NAME: "",
-      label: "全部",
+      label: "選擇搜尋單位",
     },
     {
       depT_NAME: "綜規處",

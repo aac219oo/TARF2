@@ -50,10 +50,12 @@
                 placeholder="請選擇送審項目"
                 :size="size"
               >
-                <el-option label="project1" value="project1" />
-                <el-option label="project2" value="project2" />
-                <el-option label="project3" value="project3" />
-                <el-option label="project4" value="project4" />
+                <el-option
+                  v-for="(item, index) in optionAplyItemCode"
+                  :key="index"
+                  label="item.value"
+                  value="item.value"
+                />
               </el-select>
             </el-form-item>
             <el-form-item label="標號">
@@ -62,10 +64,12 @@
                 placeholder="請選擇標號"
                 :size="size"
               >
-                <el-option label="CF620" value="CF620" />
-                <el-option label="CF621" value="CF621" />
-                <el-option label="CF622" value="CF622" />
-                <el-option label="CF623" value="CF623" />
+                <el-option
+                  v-for="(item, index) in optionProjId"
+                  :key="index"
+                  label="item.value"
+                  value="item.value"
+                />
               </el-select>
             </el-form-item>
             <el-form-item label=" ">
@@ -102,20 +106,10 @@
                 :size="size"
               >
                 <el-option
-                  label="技術發展處 蘇嘉淇"
-                  value="技術發展處 蘇嘉淇"
-                />
-                <el-option
-                  label="技術發展處 蘇嘉淇"
-                  value="技術發展處 蘇嘉淇"
-                />
-                <el-option
-                  label="技術發展處 蘇嘉淇"
-                  value="技術發展處 蘇嘉淇"
-                />
-                <el-option
-                  label="技術發展處 蘇嘉淇"
-                  value="技術發展處 蘇嘉淇"
+                  v-for="(item, index) in optionCaseDeptNo"
+                  :key="index"
+                  label="item.value"
+                  value="item.value"
                 />
               </el-select>
             </el-form-item>
@@ -125,10 +119,12 @@
                 placeholder="請選擇辦理情形"
                 :size="size"
               >
-                <el-option label="如期結案(會審/受文案件)" value="如期結案" />
-                <el-option label="會審中" value="會審中" />
-                <el-option label="簽收結案" value="簽收結案" />
-                <el-option label="退件" value="退件" />
+                <el-option
+                  v-for="(item, index) in optionHandleTypeDesc"
+                  :key="index"
+                  label="item.value"
+                  value="item.value"
+                />
               </el-select>
             </el-form-item>
             <el-form-item label="承辦人">
@@ -138,20 +134,10 @@
                 :size="size"
               >
                 <el-option
-                  label="技術發展處 蘇嘉淇"
-                  value="技術發展處 蘇嘉淇"
-                />
-                <el-option
-                  label="技術發展處 蘇嘉淇"
-                  value="技術發展處 蘇嘉淇"
-                />
-                <el-option
-                  label="技術發展處 蘇嘉淇"
-                  value="技術發展處 蘇嘉淇"
-                />
-                <el-option
-                  label="技術發展處 蘇嘉淇"
-                  value="技術發展處 蘇嘉淇"
+                  v-for="(item, index) in optionCaseEmplSeri"
+                  :key="index"
+                  label="item.value"
+                  value="item.value"
                 />
               </el-select>
             </el-form-item>
@@ -195,7 +181,12 @@
           <!-- .slice((currentPage - 1) * pageSize, currentPage * pageSize) -->
           <el-table
             border
-            :data="tables"
+            :data="
+              tables.newsdata.slice(
+                (currentPage - 1) * pageSize,
+                currentPage * pageSize
+              )
+            "
             v-loading="loading"
             :stripe="true"
             :header-cell-style="{
@@ -288,11 +279,11 @@
         </el-col>
         <el-col>
           <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
+            @update:size-change="handleSizeChange"
+            @update:current-change="handleCurrentChange"
             v-model:current-page="currentPage"
             :disabled="disabled"
-            :page-sizes="[5, 10, 15, 20]"
+            :page-sizes="pageSizes"
             v-model:page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
             :total="files_count"
@@ -320,17 +311,22 @@
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
   const url = "https://127.0.0.1:7227/api/CaseBascQueryDept/"
   const size = ref("default")
-  const tables = ref()
+  const tables = reactive({
+    newsdata: "",
+  })
   const loading = ref(true)
   const pageSize = ref(5)
+  const pageSizes = [5, 10, 15, 20]
   const currentPage = ref(1)
   const files_count = ref()
   const disabled = ref(false)
   const handleSizeChange = (val: number) => {
-    return pageSize.value
+    console.log(`${val} items per page`)
+    // return pageSize.value
   }
   const handleCurrentChange = (val: number) => {
-    return currentPage.value
+    console.log(`current page: ${val}`)
+    // return currentPage.value
   }
   // console.log(pageSize.value)
   // const handleSizeChange = ref()
@@ -365,11 +361,7 @@
     axios
       .get(urlLoadQueryData)
       .then((res) => {
-        // console.log(res.data)
-        tables.value = res.data.slice(
-          (currentPage.value - 1) * pageSize.value,
-          currentPage.value * pageSize.value
-        )
+        tables.newsdata = res.data
         loading.value = false
         files_count.value = res.data.length
       })
@@ -430,6 +422,7 @@
       .get(urlGetReviewCases)
       .then((res) => {
         console.log(res.data)
+        tables.newsdata = res.data
         loading.value = false
       })
       .catch(function (error) {

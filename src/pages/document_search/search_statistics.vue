@@ -289,7 +289,7 @@
                       <el-date-picker
                         v-model="HandleCountMonthValue"
                         type="month"
-                        placeholder="請選擇月份"
+                        placeholder="請選擇年份及月份"
                       />
                     </el-form-item>
                     <el-form-item class="button-items">

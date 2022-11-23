@@ -227,9 +227,7 @@
         <el-table-column label="註銷" width="89" :resizable="false">
           <template #default="scope">
             <el-switch
-              v-model="scope.row.revokE_FLAG"
-              :active-value="1"
-              :inactive-value="0"
+              v-model="scope.row.rigH_STAT"
               @change="changeStatus($event, scope.row, scope.$index)"
               @click="SubmitRevokE_FLAG(scope.row)"
             />
@@ -254,7 +252,7 @@
               center
               align-center
               :close-on-click-modal="false"
-              :destroy-on-close="scope.row.destroyOnClose"
+              @update:destroy-on-close="scope.row.destroyOnClose"
               title="標號維護"
             >
               <el-form :model="QueryProjData">
@@ -306,8 +304,8 @@
   import en from "element-plus/es/locale/lang/en"
 
   sessionStorage.setItem("UserId", "11695") //儲存session
-  const url = "https://127.0.0.1:7227/api/UserRigh/" // 連到API
-  // const url = "https://127.0.0.1:7227/api/test/"
+  // const url = "https://127.0.0.1:7227/api/UserRigh/" // 連到API
+  const url = "https://127.0.0.1:7227/api/test/"
   const UserId = sessionStorage.getItem("UserId") // 儲存UserId
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
@@ -323,39 +321,6 @@
   const formLabelWidth = "100px"
   // ruleForm
   const ruleFormRef = ref<FormInstance>()
-  // 註銷開關
-  // const deleteOn = ref(true)
-  const revokE_FLAG = ref(true)
-  const RighStat = ref()
-  const changeStatus = (e, row, index) => {
-    // console.log(e, row, index) // e返回狀態，row當前行數據，index下標
-    // console.log(row["rigH_STAT"] == e)
-    if (e == true) {
-      RighStat.value = "Y"
-    } else {
-      RighStat.value = "N"
-    }
-    // console.log(RighStat.value)
-  }
-  const SubmitRevokE_FLAG = (row) => {
-    const urlRevokeNetUserRigh =
-      url +
-      "RevokeNetUserRigh?UserId=" +
-      row["useR_ID"] +
-      "&UserName=" +
-      row["useR_NAME"] +
-      "&RighStat=" +
-      RighStat.value
-    console.log(urlRevokeNetUserRigh)
-    axios
-      .get(urlRevokeNetUserRigh)
-      .then((res) => {
-        console.log(res.data)
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-  }
 
   const cancel = () => {
     dialogFormVisible.value = false
@@ -445,10 +410,22 @@
   interface ValueUpdate {
     $forceUpdate(): void //重新渲染
   }
+  interface tableDataFace {
+    depT_NAME: string
+    message: string
+    rigH_ITEM_DESC: string
+    rigH_STAT: boolean
+    rigH_STAT_DESC: string
+    statusCode: string
+    useR_ID: string
+    useR_NAME: string
+  }
   const QueryProjData = ref<ValueUpdate[]>([])
   const openQueryProjData = ref()
   const optionsProjIdStr = ref()
-  const tableData = ref()
+  const tableData = ref<tableDataFace[]>([])
+  const storageRigH_STAT = reactive([])
+  const storageData = reactive([])
   onMounted(() => {
     // 讀table資料
     const urlLoadNetUserRigh = url + "LoadNetUserRigh"
@@ -456,14 +433,42 @@
     axios
       .get(urlLoadNetUserRigh)
       .then((res) => {
-        tableData.value = res.data
+        console.log(res.data)
         loading.value = false
-        // console.log(res.data)
+        for (let i = 0; i < res.data.length; i++) {
+          const trueOrFalse = ref()
+          const booleanRigH_STAT = res.data[i].rigH_STAT
+          const depT_NAME = res.data[i].depT_NAME
+          const message = res.data[i].message
+          const rigH_ITEM_DESC = res.data[i].rigH_ITEM_DESC
+          const rigH_STAT_DESC = res.data[i].rigH_STAT_DESC
+          const statusCode = res.data[i].statusCode
+          const useR_ID = res.data[i].useR_ID
+          const useR_NAME = res.data[i].useR_NAME
+          // console.log(useR_NAME)
+          if (booleanRigH_STAT === "Y") {
+            trueOrFalse.value = true
+          } else {
+            trueOrFalse.value = false
+          }
+          storageData[i] = {
+            depT_NAME: depT_NAME,
+            message: message,
+            rigH_ITEM_DESC: rigH_ITEM_DESC,
+            rigH_STAT_DESC: rigH_STAT_DESC,
+            statusCode: statusCode,
+            useR_ID: useR_ID,
+            useR_NAME: useR_NAME,
+            rigH_STAT: trueOrFalse.value,
+          }
+        }
+        tableData.value = storageData
       })
       .catch(function (error) {
         // handle error
         console.log(error)
       })
+    console.log(storageData)
 
     // //讀取標號維護已有標號
     openQueryProjData.value = (row) => {
@@ -535,6 +540,38 @@
         dialogFormVisible.value = true
       }
     })
+  }
+
+  // 註銷開關
+  const RighStat = ref()
+  const changeStatus = (e, row, index) => {
+    // console.log(e, row, index) // e返回狀態，row當前行數據，index下標
+    // console.log(rigH_STAT[4].rigH_STAT)
+    if (e == true) {
+      RighStat.value = "Y"
+    } else {
+      RighStat.value = "N"
+    }
+    // console.log(row["rigH_STAT"])
+  }
+  const SubmitRevokE_FLAG = (row) => {
+    // const urlRevokeNetUserRigh =
+    //   url +
+    //   "RevokeNetUserRigh?UserId=" +
+    //   row["useR_ID"] +
+    //   "&UserName=" +
+    //   row["useR_NAME"] +
+    //   "&RighStat=" +
+    //   RighStat.value
+    // console.log(urlRevokeNetUserRigh)
+    // axios
+    //   .get(urlRevokeNetUserRigh)
+    //   .then((res) => {
+    //     console.log(res.data)
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error)
+    //   })
   }
 
   // 送出標號維護
