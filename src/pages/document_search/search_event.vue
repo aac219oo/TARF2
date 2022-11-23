@@ -192,11 +192,11 @@
       </div>
       <el-row class="tableForm">
         <el-col>
+          <!-- .slice((currentPage - 1) * pageSize, currentPage * pageSize) -->
           <el-table
             border
-            :data="
-              tables.slice((currentPage - 1) * pageSize, currentPage * pageSize)
-            "
+            :data="tables"
+            v-loading="loading"
             :stripe="true"
             :header-cell-style="{
               background: '#ebf4f9',
@@ -204,23 +204,23 @@
               textAlign: 'center',
             }"
           >
+            <!-- :index="indexMethoud" -->
             <el-table-column
               type="index"
-              :index="indexMethoud"
               label="序號"
               width="57"
               :resizable="false"
             />
             <el-table-column
               label="案號"
-              prop="e_number"
+              prop="casE_ID_VER"
               sortable
               :min-width="25"
               :resizable="false"
             ></el-table-column>
             <el-table-column
               label="標號"
-              prop="labelNumber"
+              prop="proJ_ID"
               sortable
               align="center"
               :min-width="20"
@@ -229,13 +229,13 @@
             </el-table-column>
             <el-table-column
               label="主旨"
-              prop="title"
+              prop="casE_SUBJECT"
               sortable
               :resizable="false"
             ></el-table-column>
             <el-table-column
               label="申請日期"
-              prop="apply_date"
+              prop="aplY_DATE_DESC"
               sortable
               align="center"
               :min-width="21"
@@ -244,33 +244,34 @@
             </el-table-column>
             <el-table-column
               label="案件承辦人"
-              prop="agency"
+              prop="casE_EMPL"
               sortable
               :min-width="25"
               :resizable="false"
             ></el-table-column>
             <el-table-column
               label="狀態"
-              prop="condition"
+              prop="casE_STATUS_DESC"
               sortable
               :min-width="20"
               :resizable="false"
             ></el-table-column>
             <el-table-column
               label="狀態日期"
-              prop="condition_date"
+              prop="statuS_DATE_DESC"
               sortable
               align="center"
               :min-width="21"
               :resizable="false"
             ></el-table-column>
             <el-table-column :min-width="15" :resizable="false">
-              <a href="../detail_info/index.html"
+              <a href="ediT_LINK"
                 ><img
                   src="../../assets/icon02.png"
                   style="width: 25px; vertical-align: bottom"
                   alt=""
               /></a>
+              <!--  @click="prN_LINK" -->
               <el-button type="print"
                 ><img
                   src="../../assets/icon03.png"
@@ -288,7 +289,7 @@
             :page-sizes="[5, 10, 15, 20]"
             v-model:page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="50"
+            :total="files_count"
           >
           </el-pagination>
         </el-col>
@@ -298,26 +299,29 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, reactive, ref } from "vue"
+  import { computed, reactive, ref, onMounted } from "vue"
   import { ElementPlus, Printer, Search, Edit } from "@element-plus/icons-vue"
   import zhTw from "element-plus/dist/locale/zh-tw"
   import en from "element-plus/es/locale/lang/en"
   import { paginationEmits } from "element-plus"
+  import axios from "axios"
 
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
   const size = ref("default")
+  const loading = ref(true)
   const currentPage = ref(1)
   const pageSize = ref(5)
+  const files_count = ref()
   const handleSizeChange = (val: number) => {
     console.log(`${val} items per page`)
   }
   const handleCurrentChange = (val: number) => {
     console.log(`current page: ${val}`)
   }
-  const indexMethoud = (index: number) => {
-    return (currentPage.value - 1) * pageSize.value + index + 1
-  }
+  // const indexMethoud = (index: number) => {
+  //   return (currentPage.value - 1) * pageSize.value + index + 1
+  // }
   // do not use same name with ref
   const form = reactive({
     date1: "",
@@ -336,506 +340,21 @@
     console.log("submit!")
   }
 
-  const tables = [
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.01",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "退件(已簽收結案)",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.04",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "會審中",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF624G-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF624G",
-      title:
-        "檢送「台北都會區大眾捷運系統環狀線北環段CF624G施工邊拳北環段及南環段之間控與建築物管系統工程111年六月施工日誌」正本一式乙份，詳細如附件，請查照",
-      apply_date: "111.07.03",
-      agency: "二區工程處水二所/陳聖哲",
-      condition: "簽收結案",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF680C-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF680C",
-      title:
-        "有關貴所111年6月24日稽查工地安位環保缺失改善，本所已改善完成，詳如說明，請查照",
-      apply_date: "111.07.01",
-      agency: "二區工程處土十二所/于國璋",
-      condition: "窗口分案",
-      condition_date: "111.07.01",
-    },
-    {
-      e_number: "CF680C-PL-02210-0006-0",
-      labelNumber: "CF680C",
-      title:
-        "檢送本工程-台北都會區大眾捷運系統環狀線北環段CF680C區標工程-CF680C標補工地質調查計畫書(核定0版)，一式2份，如附件，請准予備查",
-      apply_date: "111.07.03",
-      agency: "二區工程處土十二所/王明裕",
-      condition: "簽收結案",
-      condition_date: "111.07.05",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.02",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "退件(已簽收結案)",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.04",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "會審中",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF624G-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF624G",
-      title:
-        "檢送「台北都會區大眾捷運系統環狀線北環段CF624G施工邊拳北環段及南環段之間控與建築物管系統工程111年六月施工日誌」正本一式乙份，詳細如附件，請查照",
-      apply_date: "111.07.01",
-      agency: "二區工程處水二所/陳聖哲",
-      condition: "簽收結案",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF680C-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF680C",
-      title:
-        "有關貴所111年6月24日稽查工地安位環保缺失改善，本所已改善完成，詳如說明，請查照",
-      apply_date: "111.07.01",
-      agency: "二區工程處土十二所/于國璋",
-      condition: "窗口分案",
-      condition_date: "111.07.01",
-    },
-    {
-      e_number: "CF680C-PL-02210-0006-0",
-      labelNumber: "CF680C",
-      title:
-        "檢送本工程-台北都會區大眾捷運系統環狀線北環段CF680C區標工程-CF680C標補工地質調查計畫書(核定0版)，一式2份，如附件，請准予備查",
-      apply_date: "111.07.01",
-      agency: "二區工程處土十二所/王明裕",
-      condition: "簽收結案",
-      condition_date: "111.07.05",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.02",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "退件(已簽收結案)",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.04",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "會審中",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF624G-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF624G",
-      title:
-        "檢送「台北都會區大眾捷運系統環狀線北環段CF624G施工邊拳北環段及南環段之間控與建築物管系統工程111年六月施工日誌」正本一式乙份，詳細如附件，請查照",
-      apply_date: "111.07.03",
-      agency: "二區工程處水二所/陳聖哲",
-      condition: "簽收結案",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF680C-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF680C",
-      title:
-        "有關貴所111年6月24日稽查工地安位環保缺失改善，本所已改善完成，詳如說明，請查照",
-      apply_date: "111.07.01",
-      agency: "二區工程處土十二所/于國璋",
-      condition: "窗口分案",
-      condition_date: "111.07.01",
-    },
-    {
-      e_number: "CF680C-PL-02210-0006-0",
-      labelNumber: "CF680C",
-      title:
-        "檢送本工程-台北都會區大眾捷運系統環狀線北環段CF680C區標工程-CF680C標補工地質調查計畫書(核定0版)，一式2份，如附件，請准予備查",
-      apply_date: "111.07.01",
-      agency: "二區工程處土十二所/王明裕",
-      condition: "簽收結案",
-      condition_date: "111.07.05",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.01",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "退件(已簽收結案)",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.04",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "會審中",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF624G-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF624G",
-      title:
-        "檢送「台北都會區大眾捷運系統環狀線北環段CF624G施工邊拳北環段及南環段之間控與建築物管系統工程111年六月施工日誌」正本一式乙份，詳細如附件，請查照",
-      apply_date: "111.07.02",
-      agency: "二區工程處水二所/陳聖哲",
-      condition: "簽收結案",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF680C-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF680C",
-      title:
-        "有關貴所111年6月24日稽查工地安位環保缺失改善，本所已改善完成，詳如說明，請查照",
-      apply_date: "111.07.01",
-      agency: "二區工程處土十二所/于國璋",
-      condition: "窗口分案",
-      condition_date: "111.07.03",
-    },
-    {
-      e_number: "CF680C-PL-02210-0006-0",
-      labelNumber: "CF680C",
-      title:
-        "檢送本工程-台北都會區大眾捷運系統環狀線北環段CF680C區標工程-CF680C標補工地質調查計畫書(核定0版)，一式2份，如附件，請准予備查",
-      apply_date: "111.07.01",
-      agency: "二區工程處土十二所/王明裕",
-      condition: "簽收結案",
-      condition_date: "111.07.05",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.02",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "退件(已簽收結案)",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.04",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "會審中",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF624G-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF624G",
-      title:
-        "檢送「台北都會區大眾捷運系統環狀線北環段CF624G施工邊拳北環段及南環段之間控與建築物管系統工程111年六月施工日誌」正本一式乙份，詳細如附件，請查照",
-      apply_date: "111.07.01",
-      agency: "二區工程處水二所/陳聖哲",
-      condition: "簽收結案",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF680C-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF680C",
-      title:
-        "有關貴所111年6月24日稽查工地安位環保缺失改善，本所已改善完成，詳如說明，請查照",
-      apply_date: "111.07.01",
-      agency: "二區工程處土十二所/于國璋",
-      condition: "窗口分案",
-      condition_date: "111.07.01",
-    },
-    {
-      e_number: "CF680C-PL-02210-0006-0",
-      labelNumber: "CF680C",
-      title:
-        "檢送本工程-台北都會區大眾捷運系統環狀線北環段CF680C區標工程-CF680C標補工地質調查計畫書(核定0版)，一式2份，如附件，請准予備查",
-      apply_date: "111.07.02",
-      agency: "二區工程處土十二所/王明裕",
-      condition: "簽收結案",
-      condition_date: "111.07.05",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.01",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "退件(已簽收結案)",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.04",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "會審中",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF624G-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF624G",
-      title:
-        "檢送「台北都會區大眾捷運系統環狀線北環段CF624G施工邊拳北環段及南環段之間控與建築物管系統工程111年六月施工日誌」正本一式乙份，詳細如附件，請查照",
-      apply_date: "111.07.03",
-      agency: "二區工程處水二所/陳聖哲",
-      condition: "簽收結案",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF680C-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF680C",
-      title:
-        "有關貴所111年6月24日稽查工地安位環保缺失改善，本所已改善完成，詳如說明，請查照",
-      apply_date: "111.07.01",
-      agency: "二區工程處土十二所/于國璋",
-      condition: "窗口分案",
-      condition_date: "111.07.01",
-    },
-    {
-      e_number: "CF680C-PL-02210-0006-0",
-      labelNumber: "CF680C",
-      title:
-        "檢送本工程-台北都會區大眾捷運系統環狀線北環段CF680C區標工程-CF680C標補工地質調查計畫書(核定0版)，一式2份，如附件，請准予備查",
-      apply_date: "111.07.01",
-      agency: "二區工程處土十二所/王明裕",
-      condition: "簽收結案",
-      condition_date: "111.07.05",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.01",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "退件(已簽收結案)",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.04",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "會審中",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF624G-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF624G",
-      title:
-        "檢送「台北都會區大眾捷運系統環狀線北環段CF624G施工邊拳北環段及南環段之間控與建築物管系統工程111年六月施工日誌」正本一式乙份，詳細如附件，請查照",
-      apply_date: "111.07.02",
-      agency: "二區工程處水二所/陳聖哲",
-      condition: "簽收結案",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF680C-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF680C",
-      title:
-        "有關貴所111年6月24日稽查工地安位環保缺失改善，本所已改善完成，詳如說明，請查照",
-      apply_date: "111.07.01",
-      agency: "二區工程處土十二所/于國璋",
-      condition: "窗口分案",
-      condition_date: "111.07.01",
-    },
-    {
-      e_number: "CF680C-PL-02210-0006-0",
-      labelNumber: "CF680C",
-      title:
-        "檢送本工程-台北都會區大眾捷運系統環狀線北環段CF680C區標工程-CF680C標補工地質調查計畫書(核定0版)，一式2份，如附件，請准予備查",
-      apply_date: "111.07.03",
-      agency: "二區工程處土十二所/王明裕",
-      condition: "簽收結案",
-      condition_date: "111.07.05",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.01",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "退件(已簽收結案)",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.04",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "會審中",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF624G-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF624G",
-      title:
-        "檢送「台北都會區大眾捷運系統環狀線北環段CF624G施工邊拳北環段及南環段之間控與建築物管系統工程111年六月施工日誌」正本一式乙份，詳細如附件，請查照",
-      apply_date: "111.07.01",
-      agency: "二區工程處水二所/陳聖哲",
-      condition: "簽收結案",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF680C-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF680C",
-      title:
-        "有關貴所111年6月24日稽查工地安位環保缺失改善，本所已改善完成，詳如說明，請查照",
-      apply_date: "111.07.01",
-      agency: "二區工程處土十二所/于國璋",
-      condition: "窗口分案",
-      condition_date: "111.07.02",
-    },
-    {
-      e_number: "CF680C-PL-02210-0006-0",
-      labelNumber: "CF680C",
-      title:
-        "檢送本工程-台北都會區大眾捷運系統環狀線北環段CF680C區標工程-CF680C標補工地質調查計畫書(核定0版)，一式2份，如附件，請准予備查",
-      apply_date: "111.07.02",
-      agency: "二區工程處土十二所/王明裕",
-      condition: "簽收結案",
-      condition_date: "111.07.05",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.01",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "退件(已簽收結案)",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.04",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "會審中",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF624G-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF624G",
-      title:
-        "檢送「台北都會區大眾捷運系統環狀線北環段CF624G施工邊拳北環段及南環段之間控與建築物管系統工程111年六月施工日誌」正本一式乙份，詳細如附件，請查照",
-      apply_date: "111.07.03",
-      agency: "二區工程處水二所/陳聖哲",
-      condition: "簽收結案",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF680C-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF680C",
-      title:
-        "有關貴所111年6月24日稽查工地安位環保缺失改善，本所已改善完成，詳如說明，請查照",
-      apply_date: "111.07.01",
-      agency: "二區工程處土十二所/于國璋",
-      condition: "窗口分案",
-      condition_date: "111.07.01",
-    },
-    {
-      e_number: "CF680C-PL-02210-0006-0",
-      labelNumber: "CF680C",
-      title:
-        "檢送本工程-台北都會區大眾捷運系統環狀線北環段CF680C區標工程-CF680C標補工地質調查計畫書(核定0版)，一式2份，如附件，請准予備查",
-      apply_date: "111.07.01",
-      agency: "二區工程處土十二所/王明裕",
-      condition: "簽收結案",
-      condition_date: "111.07.05",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.01",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "退件(已簽收結案)",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF620-SIG-TD-YC-OCS-CD-GR-0018-A",
-      labelNumber: "CF620",
-      title:
-        "檢送台北捷運環狀線北環段及南環段機電系統、自動收費系統及軌道工程採購案CF620/CF627/CF621標行車監控子系統「系統架構說明」A版，詳細如附件，請查照",
-      apply_date: "111.07.04",
-      agency: "機電工程處系統第一所/楊政南",
-      condition: "會審中",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF624G-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF624G",
-      title:
-        "檢送「台北都會區大眾捷運系統環狀線北環段CF624G施工邊拳北環段及南環段之間控與建築物管系統工程111年六月施工日誌」正本一式乙份，詳細如附件，請查照",
-      apply_date: "111.07.02",
-      agency: "二區工程處水二所/陳聖哲",
-      condition: "簽收結案",
-      condition_date: "111.07.04",
-    },
-    {
-      e_number: "CF680C-MEMO-TWE210L-22-D70004-A",
-      labelNumber: "CF680C",
-      title:
-        "有關貴所111年6月24日稽查工地安位環保缺失改善，本所已改善完成，詳如說明，請查照",
-      apply_date: "111.07.01",
-      agency: "二區工程處土十二所/于國璋",
-      condition: "窗口分案",
-      condition_date: "111.07.01",
-    },
-    {
-      e_number: "CF680C-PL-02210-0006-0",
-      labelNumber: "CF680C",
-      title:
-        "檢送本工程-台北都會區大眾捷運系統環狀線北環段CF680C區標工程-CF680C標補工地質調查計畫書(核定0版)，一式2份，如附件，請准予備查",
-      apply_date: "111.07.04",
-      agency: "二區工程處土十二所/王明裕",
-      condition: "簽收結案",
-      condition_date: "111.07.05",
-    },
-  ]
+  const tables = ref()
+  onMounted(() => {
+    const url =
+      "https://localhost:7227/api/CaseBascQueryDept/LoadQueryData?UserId=11695"
+    loading.value = true
+    axios
+      .get(url)
+      .then((res) => {
+        // console.log(res.data)
+        tables.value = res.data
+        loading.value = false
+        files_count.value = res.data.length
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  })
 </script>

@@ -33,11 +33,11 @@
                     <el-form-item class="datepicker" label="統計月份">
                       <el-date-picker
                         v-model="BascDateValue"
-                        type="daterange"
+                        type="monthrange"
                         unlink-panels
                         range-separator="~"
-                        start-placeholder="請選擇日期"
-                        end-placeholder="請選擇日期"
+                        start-placeholder="請選擇月份"
+                        end-placeholder="請選擇月份"
                         :size="size"
                       />
                     </el-form-item>
@@ -85,6 +85,7 @@
             <el-table
               class="tableForm"
               :data="tableDataBasc"
+              v-loading="loading"
               border
               stripe
               show-summary
@@ -97,9 +98,10 @@
               }"
             >
               <el-table-column
-                prop="PROJ_ID"
+                prop="proJ_ID"
                 label="&ensp;&ensp;線別&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;標別"
                 width="150"
+                v-loading="loading"
                 :resizable="false"
               />
               <!-- <el-table-column prop="TuchengDingpu" label="土城頂埔段" :resizable="false"/>
@@ -111,43 +113,43 @@
     <el-table-column prop="ring" label="環狀縣" :resizable="false"/>
     <el-table-column prop="Xinyi" label="信義線" :resizable="false"/> -->
               <el-table-column
-                prop="CUNT_1"
-                label="CUNT_1"
+                prop="cunT_1"
+                label="土城頂埔段"
                 :resizable="false"
               />
               <el-table-column
-                prop="CUNT_A"
-                label="CUNT_A"
+                prop="cunT_A"
+                label="機場線"
                 :resizable="false"
               />
               <el-table-column
-                prop="CUNT_E"
-                label="CUNT_E"
+                prop="cunT_E"
+                label="萬大線"
                 :resizable="false"
               />
               <el-table-column
-                prop="CUNT_G"
-                label="CUNT_G"
+                prop="cunT_G"
+                label="松山線"
                 :resizable="false"
               />
               <el-table-column
-                prop="CUNT_J"
-                label="CUNT_J"
+                prop="cunT_J"
+                label="台中綠線"
                 :resizable="false"
               />
               <el-table-column
-                prop="CUNT_K"
-                label="CUNT_K"
+                prop="cunT_K"
+                label="新莊線"
                 :resizable="false"
               />
               <el-table-column
-                prop="CUNT_Q"
-                label="CUNT_Q"
+                prop="cunT_Q"
+                label="環狀線"
                 :resizable="false"
               />
               <el-table-column
-                prop="CUNT_R"
-                label="CUNT_R"
+                prop="cunT_R"
+                label="信義線"
                 :resizable="false"
               />
             </el-table>
@@ -171,8 +173,8 @@
                         type="daterange"
                         unlink-panels
                         range-separator="~"
-                        start-placeholder="請選擇日期"
-                        end-placeholder="請選擇日期"
+                        start-placeholder="請選擇月份"
+                        end-placeholder="請選擇月份"
                         :size="size"
                       />
                     </el-form-item>
@@ -221,6 +223,7 @@
             <el-table
               class="tableForm"
               :data="tableDataCaseTotle"
+              v-loading="loading"
               border
               stripe
               style="width: 100%"
@@ -231,25 +234,25 @@
               }"
             >
               <el-table-column
-                prop="YEARS"
+                prop="years"
                 label="年份"
                 width="100"
                 :resizable="false"
               />
-              <el-table-column prop="CUNT_01" label="1月" :resizable="false" />
-              <el-table-column prop="CUNT_02" label="2月" :resizable="false" />
-              <el-table-column prop="CUNT_03" label="3月" :resizable="false" />
-              <el-table-column prop="CUNT_04" label="4月" :resizable="false" />
-              <el-table-column prop="CUNT_05" label="5月" :resizable="false" />
-              <el-table-column prop="CUNT_06" label="6月" :resizable="false" />
-              <el-table-column prop="CUNT_07" label="7月" :resizable="false" />
-              <el-table-column prop="CUNT_08" label="8月" :resizable="false" />
-              <el-table-column prop="CUNT_09" label="9月" :resizable="false" />
-              <el-table-column prop="CUNT_10" label="10月" :resizable="false" />
-              <el-table-column prop="CUNT_11" label="11月" :resizable="false" />
-              <el-table-column prop="CUNT_12" label="12月" :resizable="false" />
+              <el-table-column prop="cunT_01" label="1月" :resizable="false" />
+              <el-table-column prop="cunT_02" label="2月" :resizable="false" />
+              <el-table-column prop="cunT_03" label="3月" :resizable="false" />
+              <el-table-column prop="cunT_04" label="4月" :resizable="false" />
+              <el-table-column prop="cunT_05" label="5月" :resizable="false" />
+              <el-table-column prop="cunT_06" label="6月" :resizable="false" />
+              <el-table-column prop="cunT_07" label="7月" :resizable="false" />
+              <el-table-column prop="cunT_08" label="8月" :resizable="false" />
+              <el-table-column prop="cunT_09" label="9月" :resizable="false" />
+              <el-table-column prop="cunT_10" label="10月" :resizable="false" />
+              <el-table-column prop="cunT_11" label="11月" :resizable="false" />
+              <el-table-column prop="cunT_12" label="12月" :resizable="false" />
               <el-table-column
-                prop="CUNT_ALL"
+                prop="cunT_ALL"
                 label="合計"
                 :resizable="false"
               />
@@ -278,11 +281,11 @@
                         end-placeholder="請選擇日期"
                         :size="size"
                       /> -->
-                      <el-date-picker
+                      <!-- <el-date-picker
                         v-model="HandleCountYearValue"
                         type="year"
                         placeholder="請選擇年份"
-                      />
+                      /> -->
                       <el-date-picker
                         v-model="HandleCountMonthValue"
                         type="month"
@@ -333,6 +336,7 @@
             <el-table
               class="tableForm tableSearchCondition"
               :data="tableDataHandleCount"
+              v-loading="loading"
               row-key="id"
               border
               stripe
@@ -348,43 +352,43 @@
               }"
             >
               <el-table-column
-                prop="DEPT_NAME"
+                prop="depT_NAME"
                 label="單位"
                 width="180"
                 :resizable="false"
               />
               <el-table-column
-                prop="TOTLE_COUNT"
+                prop="totlE_COUNT"
                 label="案件總數(1)"
                 :resizable="false"
               />
               <el-table-column
-                prop="SCHEDULED_COUNT"
+                prop="scheduleD_COUNT"
                 label="如期結案(2)"
                 :resizable="false"
               />
               <el-table-column
-                prop="LATE_CLOSE_COUNT"
+                prop="latE_CLOSE_COUNT"
                 label="逾期結案(3)"
                 :resizable="false"
               />
               <el-table-column
-                prop="NOT_CLOSE_COUNT"
+                prop="noT_CLOSE_COUNT"
                 label="未結案(4)"
                 :resizable="false"
               />
               <el-table-column
-                prop="NOT_CLOSE_SCHEDULED_COUNT"
+                prop="noT_CLOSE_SCHEDULED_COUNT"
                 label="如期未結案(5)"
                 :resizable="false"
               />
               <el-table-column
-                prop="NOT_CLOSE_LATE_COUNT"
+                prop="noT_CLOSE_LATE_COUNT"
                 label="逾期未結案(6)"
                 :resizable="false"
               />
               <el-table-column
-                prop="LATE_RATE"
+                prop="latE_RATE"
                 label="逾期比例(7)"
                 :resizable="false"
               />
@@ -419,12 +423,13 @@
                         range-separator="~"
                         start-placeholder="請選擇日期"
                         end-placeholder="請選擇日期"
+                        disabled
                         :size="size"
                       />
                     </el-form-item>
                     <el-form-item class="button-items">
                       <div class="button-items-search">
-                        <el-button @click="SubmitTotleCountsValue"
+                        <el-button disabled
                           ><img
                             src="../../assets/icon01.png"
                             style="width: 26px; vertical-align: bottom"
@@ -447,7 +452,20 @@
                       <h4>訊息</h4>
                     </div>
                     <div class="msg_content">
-                      <h3>{{ item }}</h3>
+                      <h3>
+                        <span>{{ "總計:" + totaL_COUNT }}</span>
+                        <span>{{
+                          msgYear + "年" + msgPreMounth + "月合計:" + prE_COUNT
+                        }}</span>
+                        <span>{{
+                          "本月(" +
+                          msgYear +
+                          "/" +
+                          msgNowMounth +
+                          ")合計:" +
+                          noW_COUNT
+                        }}</span>
+                      </h3>
                     </div>
                   </div>
                 </div>
@@ -459,11 +477,10 @@
             <el-table
               class="tableForm"
               :data="tableDataTotleCounts"
+              v-loading="loading"
               row-key="id"
               border
               stripe
-              show-summary
-              :summary-method="getSummaries"
               style="width: 100%"
               :header-cell-style="{
                 background: '#ebf4f9',
@@ -472,23 +489,23 @@
               }"
             >
               <el-table-column
-                prop="DEPT_NAME"
+                prop="depT_NAME"
                 label="單位名稱"
                 min-width="120"
                 :resizable="false"
               />
               <el-table-column
-                prop="TOTLE_COUNT"
+                prop="cunT_ALL"
                 label="全部數量"
                 :resizable="false"
               />
               <el-table-column
-                prop="SCHEDULED_COUNT"
+                prop="cunT_PRE"
                 label="111年6月數量"
                 :resizable="false"
               />
               <el-table-column
-                prop="LATE_CLOSE_COUNT"
+                prop="cunT_NOW"
                 label="本月數量"
                 :resizable="false"
               />
@@ -500,7 +517,7 @@
   </el-container>
 </template>
 <script lang="ts" setup>
-  import { computed, reactive, ref } from "vue"
+  import { computed, onMounted, reactive, ref } from "vue"
   import type { TableColumnCtx } from "element-plus/es/components/table/src/table-column/defaults"
   import { ElementPlus, Search } from "@element-plus/icons-vue"
   import zhTw from "element-plus/dist/locale/zh-tw"
@@ -514,6 +531,8 @@
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
   const url = "https://localhost:7227/api/StatisticsProjidCount/"
+  // loading
+  const loading = ref(true)
   // 統計圖表
   interface Product {
     id: string
@@ -572,7 +591,7 @@
   // DateValue
   const BascDateValue = ref("")
   const CaseTotleValue = ref("")
-  const HandleCountYearValue = ref("")
+  // const HandleCountYearValue = ref("")
   const HandleCountMonthValue = ref("")
   const TotleCountsValue = ref("")
   // tableData
@@ -580,6 +599,9 @@
   const tableDataCaseTotle = ref()
   const tableDataHandleCount = ref()
   const tableDataTotleCounts = ref()
+  const totaL_COUNT = ref()
+  const prE_COUNT = ref()
+  const noW_COUNT = ref()
 
   // children展開只盞開一行
   const expands = ref()
@@ -600,18 +622,20 @@
   // submit
   const SubmitBascDateValue = () => {
     const StartDate = dayjs(new Date(BascDateValue.value["0"])).format(
-      "YYYYMMDD"
+      "YYYY-MM"
     )
-    const EndDate = dayjs(new Date(BascDateValue.value["1"])).format("YYYYMMDD")
+    const EndDate = dayjs(new Date(BascDateValue.value["1"])).format("YYYY-MM")
     console.log(StartDate + ";" + EndDate)
     const urlBascDateValue =
       url + "GetCaseBascDate?StartDate=" + StartDate + "&EndDate=" + EndDate
     console.log(urlBascDateValue)
+    loading.value = true
     axios
       .get(urlBascDateValue)
       .then((res) => {
         tableDataBasc.value = res.data
         console.log(res.data)
+        loading.value = false
       })
       .catch(function (error) {
         console.log(error)
@@ -639,16 +663,15 @@
       })
   }
   const SubmitHandleCountValue = () => {
-    const CountYear = dayjs(new Date(HandleCountYearValue.value["0"])).format(
-      "YYYY-MM-DD"
+    // const CountYear = dayjs(new Date(HandleCountYearValue.value)).format("YYYY")
+    const CountYear = dayjs(new Date(HandleCountMonthValue.value)).format(
+      "YYYY"
     )
-    const CountMonth = dayjs(new Date(HandleCountMonthValue.value["1"])).format(
-      "YYYY-MM-DD"
-    )
+    const CountMonth = dayjs(new Date(HandleCountMonthValue.value)).format("MM")
     console.log(CountYear + ";" + CountMonth)
     const urlBascDateValue =
       url +
-      "GetCaseBascDate?CountYear=" +
+      "GetStatisticsCaseHandleCount?CountYear=" +
       CountYear +
       "&CountMonth=" +
       CountMonth
@@ -662,28 +685,26 @@
         console.log(error)
       })
   }
-  const SubmitTotleCountsValue = () => {
-    const CountDate = {}
-    const DeptNo = {}
-    const CountTarget = {}
-    const urlTotleCountsValue =
-      url +
-      "GetCaseBascDate?CountDate=" +
-      CountDate +
-      "&DeptNo=" +
-      DeptNo +
-      "&CountTarget=" +
-      CountTarget
-    console.log(urlTotleCountsValue)
+
+  onMounted(() => {
+    loading.value = true
+    const urlTotleCountsValue = url + "GetStatisticsTotleCounts"
+    // console.log(urlTotleCountsValue)
     axios
       .get(urlTotleCountsValue)
       .then((res) => {
+        console.log(res.data[0])
         tableDataTotleCounts.value = res.data
+        loading.value = false
+        totaL_COUNT.value = res.data[0].totaL_COUNT
+        prE_COUNT.value = res.data[0].prE_COUNT
+        noW_COUNT.value = res.data[0].noW_COUNT
+        // console.log(tableDataTotleCounts.value[0])
       })
       .catch(function (error) {
         console.log(error)
       })
-  }
+  })
 
   // 資料匯出
   const getBascDate = () => {
@@ -699,6 +720,16 @@
     console.log("匯出主辦單位審查文件數量統計")
   }
   // msg
-  const item =
-    "總計：229,253筆　　　111年06月合計：2,249筆 　　　本月(111/07)合計：685筆"
+  // function formatTime(data = new Date(), type = "YYYY-MM-DD") {
+  //   return dayjs(data).format(type)
+  // }
+  // console.log(formatTime())
+  const year = dayjs(new Date()).year()
+  const msgPreMounth = dayjs(new Date()).month()
+  const msgNowMounth = dayjs(new Date()).format("MM")
+  const TaiwanYear = 1911
+  const msgYear = year - TaiwanYear
+  // console.log(year - Tyear)
+
+  //   "總計：229,253筆　　　111年06月合計：2,249筆 　　　本月(111/07)合計：685筆"
 </script>
