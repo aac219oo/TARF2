@@ -118,7 +118,7 @@
               @confirm="deleteRow(scope.row)"
             >
               <template #reference>
-                <el-button v-show="CodeUsed(scope.row)">
+                <el-button v-if="scope.row.codE_USED">
                   <img
                     src="../../assets/icon06.png"
                     style="width: 24px; vertical-align: bottom"
@@ -127,10 +127,11 @@
                 </el-button>
               </template>
             </el-popconfirm>
-            <div class="Save&Edit" v-show="CodeUsed(scope.row)">
+            <div class="Save&Edit">
               <el-button
                 link
                 size="small"
+                v-if="scope.row.codE_USED"
                 v-show="!scope.row.editable"
                 @click="handleEdit(scope.row)"
                 class="button_edit"
@@ -144,6 +145,7 @@
               <el-button
                 link
                 size="small"
+                v-if="scope.row.codE_USED"
                 v-show="scope.row.editable"
                 @click="handleSave(scope.row)"
                 class="button_edit"
@@ -163,7 +165,7 @@
   </el-container>
 </template>
 <script lang="ts" setup>
-  import { ref, onMounted, computed } from "vue"
+  import { ref, onMounted, computed, reactive } from "vue"
   import { Search } from "@element-plus/icons-vue"
   import axios from "axios"
   import zhTw from "element-plus/dist/locale/zh-tw"
@@ -181,6 +183,10 @@
   interface User {
     aplY_ITEM_CODE: string
     aplY_ITEM_NAME: string
+    message: string
+    codE_USED: boolean
+    statusCode: string
+    editable: boolean
   }
   const search = ref("")
   const filterTableData = computed<User[]>(() => {
@@ -203,29 +209,7 @@
   // 編輯表格功能
   const AddorEdit = ref(true) //新增編輯變數 新增:true 編輯:false
   const AplyItemCodeOrg = ref("") //更改資料變數
-  // 顯示或隱藏按鍵
-  const ShowButton = ref(true)
-  const CodeUsed = (row) => {
-    const urlTableData = url + "GetAplyItemBasc" //接收API + session
-    axios
-      .get(urlTableData)
-      .then((res) => {
-        // console.log(res.data)
-        for (let i = 0; i < res.data.length; i++) {
-          const codE_USED = res.data[i].codE_USED
-          if (codE_USED == "0") {
-            row.ShowButton.value = true
-          } else {
-            row.ShowButton.value = false
-          }
-          console.log(ShowButton.value)
-        }
-      })
-      // 錯誤API提示
-      .catch(function (error) {
-        console.log(error)
-      })
-  }
+  const storageData = reactive([]) //儲存資料
 
   // axios取得API中的JSON
   onMounted(() => {
@@ -235,7 +219,28 @@
       .get(urlTableData)
       .then((res) => {
         // console.log(res.data)
-        tableData.value = res.data
+        for (let i = 0; i < res.data.length; i++) {
+          const trueOrFalse = ref()
+          const codE_USED = res.data[i].codE_USED
+          const message = res.data[i].message
+          const aplY_ITEM_CODE = res.data[i].aplY_ITEM_CODE
+          const aplY_ITEM_NAME = res.data[i].aplY_ITEM_NAME
+          const statusCode = res.data[i].statusCode
+          if (codE_USED === "1") {
+            trueOrFalse.value = true
+          } else {
+            trueOrFalse.value = false
+          }
+          storageData[i] = {
+            codE_USED: trueOrFalse.value,
+            message: message,
+            aplY_ITEM_CODE: aplY_ITEM_CODE,
+            aplY_ITEM_NAME: aplY_ITEM_NAME,
+            statusCode: statusCode,
+          }
+          tableData.value = storageData
+        }
+        // tableData.value = res.data
         loading.value = false
         // console.log(tableData.value[0].statusCode) //印JSON陣列第零項後台傳送的訊息判斷1001、1002
       })
@@ -333,7 +338,10 @@
     const item = {
       aplY_ITEM_CODE: "",
       aplY_ITEM_NAME: "",
+      codE_USED: true,
       editable: true,
+      message: "",
+      statusCode: "",
     }
     tableData.value.splice(index, 0, item)
     // console.log("AddorEdit：" + AddorEdit.value); //印確認編輯或新增變數

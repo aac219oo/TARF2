@@ -310,6 +310,7 @@
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
   const url = "https://127.0.0.1:7227/api/CaseBascQueryDept/"
+  // const url = "https://localhost:7227/api/test/"
   const size = ref("default")
   const tables = reactive({
     newsdata: "",
@@ -354,9 +355,7 @@
   const optionHandleTypeDesc = ref()
 
   onMounted(() => {
-    // const urlLoadQueryData = url + "LoadQueryData?UserId=" + UserId
-    const urlLoadQueryData =
-      "https://localhost:7227/api/test/LoadQueryData?UserId=11695"
+    const urlLoadQueryData = url + "LoadQueryData?UserId=" + UserId
     loading.value = true
     axios
       .get(urlLoadQueryData)

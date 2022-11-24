@@ -118,7 +118,7 @@
               @confirm="deleteRow(scope.row)"
             >
               <template #reference>
-                <el-button>
+                <el-button v-if="scope.row.codE_USED">
                   <img
                     src="../../assets/icon06.png"
                     style="width: 24px; vertical-align: bottom"
@@ -130,6 +130,7 @@
             <el-button
               link
               size="small"
+              v-if="scope.row.codE_USED"
               v-show="!scope.row.editable"
               @click="handleEdit(scope.row)"
               class="button_edit"
@@ -143,6 +144,7 @@
             <el-button
               link
               size="small"
+              v-if="scope.row.codE_USED"
               v-show="scope.row.editable"
               @click="handleSave(scope.row)"
               class="button_edit"
@@ -161,8 +163,8 @@
   </el-container>
 </template>
 <script lang="ts" setup>
-  import { ref, onMounted, computed } from "vue"
-  import { Search, Edit, Delete } from "@element-plus/icons-vue"
+  import { ref, onMounted, computed, reactive } from "vue"
+  import { Search } from "@element-plus/icons-vue"
   import axios from "axios"
   import zhTw from "element-plus/dist/locale/zh-tw"
   import en from "element-plus/es/locale/lang/en"
@@ -179,6 +181,10 @@
   interface User {
     casE_STATUS: string
     statuS_DESC: string
+    message: string
+    codE_USED: boolean
+    statusCode: string
+    editable: boolean
   }
   const search = ref("")
   const filterTableData = computed<User[]>(() => {
@@ -199,7 +205,7 @@
   // 編輯表格功能
   const AddorEdit = ref(true) //新增編輯變數 新增:true 編輯:false
   const StatusCodeOrg = ref("") //更改資料變數
-  // 顯示隱藏功能鍵
+  const storageData = reactive([]) //儲存資料
 
   // axios取得API中的JSON
   onMounted(() => {
@@ -209,12 +215,30 @@
       .get(urlTableData)
       .then((res) => {
         //console.log(res.data);
-        tableData.value = res.data
+        for (let i = 0; i <= tableData.value.length; i++) {
+          const trueOrFalse = ref()
+          const codE_USED = res.data[i].codE_USED
+          const message = res.data[i].message
+          const casE_STATUS = res.data[i].casE_STATUS
+          const statuS_DESC = res.data[i].statuS_DESC
+          const statusCode = res.data[i].statusCode
+          if (codE_USED === "1") {
+            trueOrFalse.value = true
+          } else {
+            trueOrFalse.value = false
+          }
+          storageData[i] = {
+            codE_USED: trueOrFalse.value,
+            message: message,
+            casE_STATUS: casE_STATUS,
+            statuS_DESC: statuS_DESC,
+            statusCode: statusCode,
+          }
+          tableData.value = storageData
+        }
+        // tableData.value = res.data
         loading.value = false
         //console.log(res.data);
-        for (let i = 0; i <= tableData.value.length; i++) {
-          // console.log(tableData.value[i].codE_USED)
-        }
       })
       .catch(function (error) {
         // handle error
@@ -309,7 +333,10 @@
     const item = {
       casE_STATUS: "",
       statuS_DESC: "",
+      codE_USED: true,
       editable: true,
+      message: "",
+      statusCode: "",
     }
     tableData.value.splice(index, 0, item)
     // console.log("AddorEdit：" + AddorEdit.value); //印確認編輯或新增變數

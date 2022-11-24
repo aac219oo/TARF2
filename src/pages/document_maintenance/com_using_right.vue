@@ -58,7 +58,7 @@
             v-model="dialogFormVisible"
             center
             align-center
-            :close-on-click-modal="false"
+            :close-on-click-modal="closeOnClickModal"
             @close="cancel"
             :before-close="cancel"
             title="新增帳號"
@@ -251,8 +251,7 @@
               :append-to-body="true"
               center
               align-center
-              :close-on-click-modal="false"
-              @update:destroy-on-close="scope.row.destroyOnClose"
+              :close-on-click-modal="cancelQueryProjData"
               title="標號維護"
             >
               <el-form :model="QueryProjData">
@@ -311,6 +310,8 @@
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
   const loading = ref(true)
   const search = ref("")
+  const closeOnClickModal = ref(false)
+  const closeOnClickModal2 = ref(false)
   // navbar
   const activeIndex = ref("1")
   const handleSelect = (key: string, keyPath: string[]) => {
@@ -325,6 +326,7 @@
   const cancel = () => {
     dialogFormVisible.value = false
   }
+
   const cancelQueryProjData = (row) => {
     row.openQueryProjData = false
   }
@@ -471,6 +473,7 @@
     console.log(storageData)
 
     // //讀取標號維護已有標號
+
     openQueryProjData.value = (row) => {
       row.openQueryProjData = true
       const urlQueryProjData = url + "QueryProjData?UserId=" + row["useR_ID"]
