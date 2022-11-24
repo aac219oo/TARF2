@@ -222,7 +222,7 @@
           const casE_STATUS = res.data[i].casE_STATUS
           const statuS_DESC = res.data[i].statuS_DESC
           const statusCode = res.data[i].statusCode
-          if (codE_USED === "1") {
+          if (codE_USED === "0") {
             trueOrFalse.value = true
           } else {
             trueOrFalse.value = false
@@ -235,6 +235,7 @@
             statusCode: statusCode,
           }
           tableData.value = storageData
+          loading.value = false
         }
         // tableData.value = res.data
         loading.value = false
@@ -282,10 +283,11 @@
           // 傳送值狀態錯誤並顯示訊息
           if (statusCode == "1002") {
             alert(message)
-            window.location.reload()
+            tableData.value = storageData
           } else {
+            alert(message)
+            tableData.value = storageData
           }
-          tableData.value = res.data
           //console.log(res.data);
           console.log(statusCode + "Add") //狀態代碼為新增
           //console.log(tableData.value[0].statusCode);
@@ -312,10 +314,11 @@
           //顯示錯誤警告
           if (statusCode == "1002") {
             alert(message)
-            window.location.reload()
+            tableData.value = storageData
           } else {
           }
-          tableData.value = res.data
+          alert(message)
+          tableData.value = storageData
           //console.log(res.data);
           console.log(statusCode + "Edit") //狀態代碼為編輯
           //console.log(tableData.value[0].statusCode);
@@ -336,7 +339,7 @@
       codE_USED: true,
       editable: true,
       message: "",
-      statusCode: "",
+      statusCode: "1001",
     }
     tableData.value.splice(index, 0, item)
     // console.log("AddorEdit：" + AddorEdit.value); //印確認編輯或新增變數
@@ -371,14 +374,14 @@
         // 錯誤訊息顯示
         if (statusCode == "1002") {
           alert(message)
+          tableData.value = storageData
           // window.location.reload() //重整頁面
         } else {
           alert(message)
-          tableData.value = res.data
+          tableData.value = storageData.splice(index, res.data.length)
         }
         //console.log(res.data);
-        console.log(statusCode)
-
+        // console.log(statusCode)
         //console.log(tableData.value[0].statusCode);
       })
       .catch(function (error) {

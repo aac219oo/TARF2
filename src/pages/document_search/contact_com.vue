@@ -72,7 +72,7 @@
                 v-model="searchProJ_ID"
                 class="w-50 m-2"
                 size="default"
-                placeholder="搜尋"
+                placeholder="搜尋標號"
                 :suffix-icon="Search"
                 @keypress="stopEnter"
                 @click.stop.prevent="stopSortable"
@@ -88,7 +88,7 @@
                 v-model="searchDepT_NAME"
                 class="w-50 m-2"
                 size="default"
-                placeholder="搜尋"
+                placeholder="搜尋單位"
                 :suffix-icon="Search"
                 @keypress="stopEnter"
                 @click.stop.prevent="stopSortable"
@@ -104,7 +104,7 @@
                 v-model="searchUseR_NAME"
                 class="w-50 m-2"
                 size="default"
-                placeholder="搜尋"
+                placeholder="搜尋姓名"
                 :suffix-icon="Search"
                 @keypress="stopEnter"
                 @click.stop.prevent="stopSortable"
@@ -178,8 +178,8 @@
 
   // axios
   //各標號廠商窗口資訊
-  // const url = "https://127.0.0.1:7227/api/ContactInfoQuery/GetOtherChargQuery"
-  const url = "https://127.0.0.1:7227/api/test/GetOtherChargQuery"
+  const url = "https://127.0.0.1:7227/api/ContactInfoQuery/GetOtherChargQuery"
+  // const url = "https://127.0.0.1:7227/api/test/GetOtherChargQuery"
   // const url = "http://tarf.grp.com.tw/api/Test/GetDeptChargQuery"
 
   const tabledata = ref<User[]>([])

@@ -87,6 +87,7 @@
                   v-model="scope.row[item.prop]"
                   :placeholder="`請輸入${item.label}`"
                   @change="handleAdd(scope.row)"
+                  @keyup="this.value = this.value.toUpperCase()"
                 />
               </template>
             </div>
@@ -226,7 +227,7 @@
           const aplY_ITEM_CODE = res.data[i].aplY_ITEM_CODE
           const aplY_ITEM_NAME = res.data[i].aplY_ITEM_NAME
           const statusCode = res.data[i].statusCode
-          if (codE_USED === "1") {
+          if (codE_USED === "0") {
             trueOrFalse.value = true
           } else {
             trueOrFalse.value = false
@@ -287,10 +288,12 @@
           // 傳送值狀態錯誤並顯示訊息
           if (statusCode == "1002") {
             alert(message)
-            window.location.reload() //重整頁面
+            // window.location.reload() //重整頁面
+            tableData.value = storageData
           } else {
+            tableData.value = storageData
           }
-          tableData.value = res.data
+          // tableData.value = res.data
           //console.log(res.data);
           console.log(statusCode + "Add") //狀態代碼為新增
           //console.log(tableData.value[0].statusCode);
@@ -318,10 +321,12 @@
           //顯示錯誤警告
           if (statusCode == "1002") {
             alert(message)
-            window.location.reload()
+            tableData.value = storageData
+            // window.location.reload()
           } else {
+            tableData.value = storageData
           }
-          tableData.value = res.data
+          // tableData.value = res.data
           //console.log(res.data);
           console.log(statusCode + "Edit") //狀態代碼為編輯
           //console.log(tableData.value[0].statusCode);
@@ -380,10 +385,12 @@
         // 錯誤訊息顯示
         if (statusCode == "1002") {
           alert(message)
+          tableData.value = storageData
           // window.location.reload()
         } else {
           alert(message)
-          tableData.value = res.data
+          tableData.value = storageData.splice(index, res.data.length)
+          // tableData.value = res.data
         }
         //console.log(res.data);
         // console.log(statusCode)

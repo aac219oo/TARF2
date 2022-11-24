@@ -176,11 +176,12 @@
                         start-placeholder="請選擇月份"
                         end-placeholder="請選擇月份"
                         :size="size"
+                        disabled
                       />
                     </el-form-item>
                     <el-form-item class="button-items">
                       <div class="button-items-search">
-                        <el-button @click="SubmitCaseTotleValue"
+                        <el-button disabled
                           ><img
                             src="../../assets/icon01.png"
                             style="width: 26px; vertical-align: bottom"
@@ -289,6 +290,7 @@
                       <el-date-picker
                         v-model="HandleCountMonthValue"
                         type="month"
+                        :size="size"
                         placeholder="請選擇年份及月份"
                       />
                     </el-form-item>
@@ -527,7 +529,11 @@
   import type { FormInstance, FormRules } from "element-plus"
 
   sessionStorage.setItem("UserId", "11695")
+  sessionStorage.setItem("QueryRole", "A")
+  sessionStorage.setItem("DeptNo", "J8")
   const UserId = sessionStorage.getItem("UserId")
+  const QueryRole = sessionStorage.getItem("QueryRole")
+  const DeptNo = sessionStorage.getItem("DeptNo")
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
   const url = "https://localhost:7227/api/StatisticsProjidCount/"
@@ -569,7 +575,6 @@
         sums[index] = "N/A"
       }
     })
-
     return sums
   }
 
@@ -641,27 +646,6 @@
         console.log(error)
       })
   }
-  const SubmitCaseTotleValue = () => {
-    const QueryRole = {}
-    const DeptNo = {}
-    const urlCaseTotleValue =
-      url +
-      "GetStatisticsDeptCaseTotle?UserId=" +
-      UserId +
-      "&QueryRole=" +
-      QueryRole +
-      "&DeptNo=" +
-      DeptNo
-    console.log(urlCaseTotleValue)
-    axios
-      .get(urlCaseTotleValue)
-      .then((res) => {
-        tableDataCaseTotle.value = res.data
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-  }
   const SubmitHandleCountValue = () => {
     // const CountYear = dayjs(new Date(HandleCountYearValue.value)).format("YYYY")
     const CountYear = dayjs(new Date(HandleCountMonthValue.value)).format(
@@ -676,10 +660,12 @@
       "&CountMonth=" +
       CountMonth
     console.log(urlBascDateValue)
+    loading.value = true
     axios
       .get(urlBascDateValue)
       .then((res) => {
         tableDataHandleCount.value = res.data
+        loading.value = false
       })
       .catch(function (error) {
         console.log(error)
@@ -704,6 +690,25 @@
       .catch(function (error) {
         console.log(error)
       })
+
+    const urlCaseTotleValue =
+      url +
+      "GetStatisticsDeptCaseTotle?UserId=" +
+      UserId +
+      "&QueryRole=" +
+      QueryRole +
+      "&DeptNo=" +
+      DeptNo
+    console.log(urlCaseTotleValue)
+    axios
+      .get(urlCaseTotleValue)
+      .then((res) => {
+        tableDataCaseTotle.value = res.data
+        loading.value = false
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
   })
 
   // 資料匯出
@@ -719,10 +724,8 @@
   const getCountDetail = () => {
     console.log("匯出主辦單位審查文件數量統計")
   }
+
   // msg
-  // function formatTime(data = new Date(), type = "YYYY-MM-DD") {
-  //   return dayjs(data).format(type)
-  // }
   // console.log(formatTime())
   const year = dayjs(new Date()).year()
   const msgPreMounth = dayjs(new Date()).month()
@@ -730,6 +733,4 @@
   const TaiwanYear = 1911
   const msgYear = year - TaiwanYear
   // console.log(year - Tyear)
-
-  //   "總計：229,253筆　　　111年06月合計：2,249筆 　　　本月(111/07)合計：685筆"
 </script>

@@ -300,10 +300,11 @@
   import zhTw from "element-plus/dist/locale/zh-tw"
   import en from "element-plus/es/locale/lang/en"
   import axios from "axios"
+  import dayjs from "dayjs"
 
   sessionStorage.setItem("UserId", "11695") //儲存session
-  sessionStorage.setItem("QueryRole", "11695") //儲存session
-  sessionStorage.setItem("DeptNo", "11695") //儲存session
+  sessionStorage.setItem("QueryRole", "") //儲存session
+  sessionStorage.setItem("DeptNo", "") //儲存session
   const UserId = sessionStorage.getItem("UserId") // 儲存UserId
   const QueryRole = sessionStorage.getItem("QueryRole") // 儲存QueryRole
   const DeptNo = sessionStorage.getItem("DeptNo") // 儲存DeptNo
@@ -392,18 +393,20 @@
   })
 
   const onSubmit = (value) => {
+    const DateFrom = dayjs(new Date(form.DateFrom)).format("YYYY-MM-DD")
+    const DateTo = dayjs(new Date(form.DateTo)).format("YYYY-MM-DD")
     const urlGetReviewCases =
       url +
       "GetReviewCases?UserId=" +
       UserId +
-      "?QueryRole=" +
+      "&QueryRole=" +
       QueryRole +
-      "?DeptNo=" +
+      "&DeptNo=" +
       DeptNo +
       "&DateFrom=" +
-      form.DateFrom +
+      DateFrom +
       "&DateTo=" +
-      form.DateTo +
+      DateTo +
       "&AplyItemCode=" +
       form.AplyItemCode +
       "&ProjId=" +

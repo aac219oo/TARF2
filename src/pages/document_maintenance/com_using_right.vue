@@ -172,7 +172,7 @@
       </div>
 
       <el-table
-        :data="tableData"
+        :data="filterTableData"
         class="tableComUsing"
         v-loading="loading"
         border
@@ -227,7 +227,7 @@
         <el-table-column label="註銷" width="89" :resizable="false">
           <template #default="scope">
             <el-switch
-              v-model="scope.row.rigH_STAT"
+              v-model="scope.row.booleanRigH_STAT_DESC"
               @change="changeStatus($event, scope.row, scope.$index)"
               @click="SubmitRevokE_FLAG(scope.row)"
             />
@@ -251,7 +251,7 @@
               :append-to-body="true"
               center
               align-center
-              :close-on-click-modal="cancelQueryProjData"
+              :close-on-click-modal="false"
               title="標號維護"
             >
               <el-form :model="QueryProjData">
@@ -303,13 +303,23 @@
   import en from "element-plus/es/locale/lang/en"
 
   sessionStorage.setItem("UserId", "11695") //儲存session
-  // const url = "https://127.0.0.1:7227/api/UserRigh/" // 連到API
-  const url = "https://127.0.0.1:7227/api/test/"
+  const url = "https://127.0.0.1:7227/api/UserRigh/" // 連到API
+  // const url = "https://127.0.0.1:7227/api/test/"
   const UserId = sessionStorage.getItem("UserId") // 儲存UserId
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
   const loading = ref(true)
+  interface User {
+    depT_NAME: string
+  }
   const search = ref("")
+  const filterTableData = computed<User[]>(() => {
+    return tableData.value.filter(
+      (data) =>
+        !search.value ||
+        data.depT_NAME.toLowerCase().includes(search.value.toLowerCase())
+    )
+  })
   const closeOnClickModal = ref(false)
   const closeOnClickModal2 = ref(false)
   // navbar
@@ -380,7 +390,7 @@
       },
     ],
   })
-
+  const ProjIdStr = ref()
   // 權限種類
   const optionsRighItem = [
     {
@@ -416,17 +426,17 @@
     depT_NAME: string
     message: string
     rigH_ITEM_DESC: string
-    rigH_STAT: boolean
-    rigH_STAT_DESC: string
-    statusCode: string
+    // rigH_STAT: boolean
+    rigH_STAT_DESC: boolean
     useR_ID: string
     useR_NAME: string
+    booleanRigH_STAT_DESC: string
   }
   const QueryProjData = ref<ValueUpdate[]>([])
   const openQueryProjData = ref()
   const optionsProjIdStr = ref()
   const tableData = ref<tableDataFace[]>([])
-  const storageRigH_STAT = reactive([])
+  const storageRigH_STAT_DESC = reactive([])
   const storageData = reactive([])
   onMounted(() => {
     // 讀table資料
@@ -435,33 +445,33 @@
     axios
       .get(urlLoadNetUserRigh)
       .then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
         loading.value = false
         for (let i = 0; i < res.data.length; i++) {
           const trueOrFalse = ref()
-          const booleanRigH_STAT = res.data[i].rigH_STAT
+          // const booleanRigH_STAT = res.data[i].rigH_STAT
           const depT_NAME = res.data[i].depT_NAME
           const message = res.data[i].message
           const rigH_ITEM_DESC = res.data[i].rigH_ITEM_DESC
-          const rigH_STAT_DESC = res.data[i].rigH_STAT_DESC
+          storageRigH_STAT_DESC[i] = res.data[i].rigH_STAT_DESC
           const statusCode = res.data[i].statusCode
           const useR_ID = res.data[i].useR_ID
           const useR_NAME = res.data[i].useR_NAME
           // console.log(useR_NAME)
-          if (booleanRigH_STAT === "Y") {
-            trueOrFalse.value = true
-          } else {
+          if (storageRigH_STAT_DESC[i] === "有效") {
             trueOrFalse.value = false
+          } else {
+            trueOrFalse.value = true
           }
           storageData[i] = {
             depT_NAME: depT_NAME,
             message: message,
             rigH_ITEM_DESC: rigH_ITEM_DESC,
-            rigH_STAT_DESC: rigH_STAT_DESC,
             statusCode: statusCode,
             useR_ID: useR_ID,
             useR_NAME: useR_NAME,
-            rigH_STAT: trueOrFalse.value,
+            booleanRigH_STAT_DESC: trueOrFalse.value,
+            rigH_STAT_DESC: storageRigH_STAT_DESC[i],
           }
         }
         tableData.value = storageData
@@ -470,10 +480,8 @@
         // handle error
         console.log(error)
       })
-    console.log(storageData)
 
     // //讀取標號維護已有標號
-
     openQueryProjData.value = (row) => {
       row.openQueryProjData = true
       const urlQueryProjData = url + "QueryProjData?UserId=" + row["useR_ID"]
@@ -513,6 +521,7 @@
       if (valid) {
         console.log(ruleForm)
         dialogFormVisible.value = false
+        ProjIdStr.value = ruleForm.ProjIdStr
         const urlSavingNew =
           url +
           "SavingNew?EmplSeri=" +
@@ -528,11 +537,20 @@
           "&CustUnifNo=" +
           ruleForm.CustUnifNo +
           "&ProjIdStr=" +
-          ruleForm.ProjIdStr
+          ProjIdStr.value.join(";")
+        console.log(urlSavingNew)
         axios
           .get(urlSavingNew)
           .then((res) => {
-            tableData.value = res.data
+            const statusCode = res.data[0].statusCode
+            const message = res.data[0].message
+            if (statusCode == "1002") {
+              alert(message)
+              tableData.value = storageData
+            } else {
+              alert(message)
+              tableData.value = storageData
+            }
           })
           .catch(function (error) {
             // handle error
@@ -550,31 +568,43 @@
   const changeStatus = (e, row, index) => {
     // console.log(e, row, index) // e返回狀態，row當前行數據，index下標
     // console.log(rigH_STAT[4].rigH_STAT)
+    // for (let i = 0; i < storageRigH_STAT_DESC.length; i++) {
     if (e == true) {
       RighStat.value = "Y"
     } else {
       RighStat.value = "N"
     }
-    // console.log(row["rigH_STAT"])
+    console.log(storageRigH_STAT_DESC)
+    // }
   }
   const SubmitRevokE_FLAG = (row) => {
-    // const urlRevokeNetUserRigh =
-    //   url +
-    //   "RevokeNetUserRigh?UserId=" +
-    //   row["useR_ID"] +
-    //   "&UserName=" +
-    //   row["useR_NAME"] +
-    //   "&RighStat=" +
-    //   RighStat.value
+    const urlRevokeNetUserRigh =
+      url +
+      "RevokeNetUserRigh?UserId=" +
+      row["useR_ID"] +
+      "&UserName=" +
+      row["useR_NAME"] +
+      "&RighStat=" +
+      RighStat.value
     // console.log(urlRevokeNetUserRigh)
-    // axios
-    //   .get(urlRevokeNetUserRigh)
-    //   .then((res) => {
-    //     console.log(res.data)
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error)
-    //   })
+    axios
+      .get(urlRevokeNetUserRigh)
+      .then((res) => {
+        // console.log(res.data)
+        const statusCode = res.data[0].statusCode
+        const message = res.data[0].message
+        if (statusCode == "1002") {
+          alert(message)
+          tableData.value = storageData
+        } else {
+          alert(message)
+          tableData.value = storageData
+        }
+        // console.log(storageData)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
   }
 
   // 送出標號維護

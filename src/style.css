@@ -402,6 +402,14 @@ div.el-tabs__item {
   width: 100%;
 }
 
+#search_statistics .el-form-item__content .el-date-editor.el-input {
+  width: 100%;
+}
+
+#search_statistics .el-input__wrapper {
+  width: 100%;
+}
+
 .el-select--large {
   width: 100%;
 }
@@ -716,6 +724,12 @@ div.el-tabs__item {
 #condition_codes .maintenance_tool_wrap,
 #individual_words .maintenance_tool_wrap {
   max-width: 800px;
+}
+
+#item_codes .el-input--small .el-input__inner,
+#resualt_codes .el-input--small .el-input__inner,
+#condition_codes .el-input--small .el-input__inner {
+  text-transform: uppercase;
 }
 
 .maintenance_search {
