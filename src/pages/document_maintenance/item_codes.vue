@@ -206,7 +206,7 @@
   // loading
   const loading = ref(true)
   const tableData = ref<User[]>([]) //渲染結果在畫面上
-  const url = "https://127.0.0.1:7227/api/AplyItemCode/" // 連到API
+  const url = "https://localhost:7227/api/AplyItemCode/" // 連到API
   const UserId = ref(() => {
     sessionStorage.getItem("UserId")
   }) // 儲存UserId

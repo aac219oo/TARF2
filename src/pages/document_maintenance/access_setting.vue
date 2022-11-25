@@ -178,8 +178,8 @@
   const UserName = sessionStorage.getItem("UserName")
   const DeptNo1 = sessionStorage.getItem("DeptNo1")
   const DeptNo2 = sessionStorage.getItem("DeptNo2")
-  const url = "https://127.0.0.1:7227/api/DeptChargOtherDept/"
-  // const url = "https://127.0.0.1:7227/api/Test/"
+  const url = "https://localhost:7227/api/DeptChargOtherDept/"
+  // const url = "https://localhost:7227/api/Test/"
 
   // 單位聯絡窗口選項
   const valueContact = ref<string[]>([])

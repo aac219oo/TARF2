@@ -310,7 +310,7 @@
   const DeptNo = sessionStorage.getItem("DeptNo") // 儲存DeptNo
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
-  const url = "https://127.0.0.1:7227/api/CaseBascQueryDept/"
+  const url = "https://localhost:7227/api/CaseBascQueryDept/"
   // const url = "https://localhost:7227/api/test/"
   const size = ref("default")
   const tables = reactive({

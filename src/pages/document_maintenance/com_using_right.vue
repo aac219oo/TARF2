@@ -59,7 +59,7 @@
             center
             align-center
             :close-on-click-modal="closeOnClickModal"
-            @close="cancel"
+            @close="cancel(ruleFormRef)"
             :before-close="cancel"
             title="新增帳號"
             :destroy-on-close="true"
@@ -157,7 +157,7 @@
             </el-form>
             <template #footer>
               <span class="dialog-footer">
-                <el-button @click="cancel">取消</el-button>
+                <el-button @click="cancel(ruleFormRef)">取消</el-button>
                 <el-button
                   native-type="submit"
                   type="primary"
@@ -309,8 +309,8 @@
   import en from "element-plus/es/locale/lang/en"
 
   sessionStorage.setItem("UserId", "11695") //儲存session
-  const url = "https://127.0.0.1:7227/api/UserRigh/" // 連到API
-  // const url = "https://127.0.0.1:7227/api/test/"
+  // const url = "https://localhost:7227/api/UserRigh/" // 連到API
+  const url = "https://localhost:7227/api/test/"
   const UserId = sessionStorage.getItem("UserId") // 儲存UserId
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
@@ -339,30 +339,6 @@
   // ruleForm
   const ruleFormRef = ref<FormInstance>()
 
-  const cancel = () => {
-    dialogFormVisible.value = false
-  }
-  const destroyOnClose = ref(true)
-  const ad = ref(null)
-  const cancelQueryProjData = (row) => {
-    row.destroyOnClose = true
-    row.openQueryProjData = false
-    // console.log(row.useR_ID)
-    // const urlQueryProjData = url + "QueryProjData?UserId=" + row["useR_ID"]
-    // // console.log(urlQueryProjData)
-    // axios
-    //   .get(urlQueryProjData)
-    //   .then((res) => {
-    //     console.log(res.data)
-    //     for (let i = 0; i < res.data.length; i++) {
-    //       QueryProjData.value[i] = res.data[i].proJ_ID
-    //     }
-    //     // console.log(QueryProjData)
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error)
-    //   })
-  }
   const changetest = (row) => {}
   // 新增廠商
   const ruleForm = reactive({
@@ -457,6 +433,7 @@
     booleanRigH_STAT_DESC: boolean
   }
   const QueryProjData = ref<ValueUpdate[]>([])
+  const QueryProjDataOrg = reactive([])
   const openQueryProjData = ref()
   const optionsProjIdStr = ref()
   const tableData = ref<tableDataFace[]>([])
@@ -516,7 +493,7 @@
           console.log(res.data)
           for (let i = 0; i < res.data.length; i++) {
             QueryProjData.value[i] = res.data[i].proJ_ID
-            console.log(QueryProjData)
+            // console.log(QueryProjData)
           }
           // console.log(QueryProjData)
         })
@@ -649,16 +626,42 @@
     axios
       .get(urlSaveProj)
       .then((res) => {
-        // const statusCode = res.data[0].statusCode //儲存狀態代碼
-        // const message = res.data[0].message //儲存狀態訊息
+        const statusCode = res.data[0].statusCode //儲存狀態代碼
+        const message = res.data[0].message //儲存狀態訊息
         console.log(res)
-        // if (statusCode == "1002") {
-        //   alert(message)
-        //   // window.location.reload() //重整頁面
-        // } else {
-        //   alert(message)
-        // }
+        if (statusCode == "1002") {
+          alert(message)
+        } else {
+          alert(message)
+          window.location.reload() //重整頁面
+        }
         // console.log(statusCode + "Save") //狀態代碼為新增
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
+
+  // 關掉對話框並清除表格
+  const cancel = (formEl: FormInstance | undefined) => {
+    dialogFormVisible.value = false
+    if (!formEl) return
+    formEl.resetFields()
+  }
+  const cancelQueryProjData = (row) => {
+    row.openQueryProjData = false
+    // console.log(row.useR_ID)
+    const urlQueryProjData = url + "QueryProjData?UserId=" + row["useR_ID"]
+    // console.log(urlQueryProjData)
+    axios
+      .get(urlQueryProjData)
+      .then((res) => {
+        // console.log(res.data)
+        for (let i = 0; i < res.data.length; i++) {
+          QueryProjDataOrg[i] = res.data[i].proJ_ID
+        }
+        QueryProjData.value = QueryProjDataOrg
+        console.log(QueryProjData.value)
       })
       .catch(function (error) {
         console.log(error)

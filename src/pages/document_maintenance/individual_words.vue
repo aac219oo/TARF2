@@ -197,8 +197,8 @@
   // loading
   const loading = ref(true)
   const tableData = ref<User[]>([]) //渲染結果在畫面上
-  const url = "https://127.0.0.1:7227/api/PhraseRecd/" // 連到API
-  // const url = "https://127.0.0.1:7227/api/test/" // 連到test API
+  const url = "https://localhost:7227/api/PhraseRecd/" // 連到API
+  // const url = "https://localhost:7227/api/test/" // 連到test API
   const UserId = sessionStorage.getItem("UserId") // 儲存UserId
   // 編輯表格功能
   const AddorEdit = ref(true) //新增編輯變數 新增:true 編輯:false
