@@ -236,7 +236,37 @@
   ])
 
   // 儲存表格內容到API
-  const handleAdd = (row) => {
+  const handleAdd = (row) => {}
+
+  // 新增表格
+  const onAddItem = (index) => {
+    AddorEdit.value = true //判斷為新增表格
+    // 定義新增表格
+    const item = {
+      statusCode: "1001",
+      phrasE_DESC: "",
+      editable: true,
+    }
+    tableData.value.splice(index, 0, item) //自第一行新增表格
+    console.log("AddorEdit：" + AddorEdit.value) //印確認編輯或新增變數
+  }
+
+  // 編輯表格
+  const handleEdit = (row) => {
+    AddorEdit.value = false //編輯
+    row.editable = true
+    argPhraseDescDB.value = row["phrasE_DESC"]
+    console.log(
+      "AddorEdit：" +
+        AddorEdit.value +
+        "argPhraseDescDB：" +
+        argPhraseDescDB.value
+    ) //印編輯值
+  }
+
+  // 儲存表格
+  const handleSave = (row) => {
+    row.editable = false
     //console.log(row["phrasE_DESC"]); //印JSON中需獲取的值 //row['需要的值']
     // 判斷編輯新增
     if (AddorEdit.value) {
@@ -260,6 +290,7 @@
             alert(message)
             window.location.reload() //重整頁面
           } else {
+            alert(message)
             console.log(statusCode + "Add")
           }
           tableData.value = res.data
@@ -293,6 +324,7 @@
             alert(message)
             window.location.reload()
           } else {
+            alert(message)
           }
           tableData.value = res.data
           //console.log(res.data);
@@ -304,37 +336,6 @@
           console.log(error)
         })
     }
-  }
-
-  // 新增表格
-  const onAddItem = (index) => {
-    AddorEdit.value = true //判斷為新增表格
-    // 定義新增表格
-    const item = {
-      statusCode: "1001",
-      phrasE_DESC: "",
-      editable: true,
-    }
-    tableData.value.splice(index, 0, item) //自第一行新增表格
-    console.log("AddorEdit：" + AddorEdit.value) //印確認編輯或新增變數
-  }
-
-  // 編輯表格
-  const handleEdit = (row) => {
-    AddorEdit.value = false //編輯
-    row.editable = true
-    argPhraseDescDB.value = row["phrasE_DESC"]
-    console.log(
-      "AddorEdit：" +
-        AddorEdit.value +
-        "argPhraseDescDB：" +
-        argPhraseDescDB.value
-    ) //印編輯值
-  }
-
-  // 儲存表格
-  const handleSave = (row) => {
-    row.editable = false
   }
 
   //刪除表格

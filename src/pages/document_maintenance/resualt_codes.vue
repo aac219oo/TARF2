@@ -87,6 +87,9 @@
                   v-model="scope.row[item.prop]"
                   :placeholder="`請輸入${item.label}`"
                   @change="handleAdd(scope.row)"
+                  @keyup="
+                    scope.row[item.prop] = scope.row[item.prop].toUpperCase()
+                  "
                 />
               </template>
             </div>
@@ -265,7 +268,38 @@
   ])
 
   // 儲存表格到API
-  const handleAdd = (row) => {
+  const handleAdd = (row) => {}
+
+  const onAddItem = (index) => {
+    AddorEdit.value = true //判斷為新增表格
+    const item = {
+      resulT_CODE: "",
+      resulT_NAME: "",
+      codE_USED: true,
+      editable: true,
+      message: "",
+      statusCode: "",
+    }
+    tableData.value.splice(index, 0, item) //自第一行新增表格
+    // console.log("AddorEdit：" + AddorEdit.value); //印確認編輯或新增變數
+  }
+
+  // 編輯表格
+  const handleEdit = (row) => {
+    AddorEdit.value = false //編輯
+    row.editable = true
+    ;(ResultCodeOrg.value = row["resulT_CODE"]), row["resulT_NAME"]
+    console.log(
+      "AddorEdit：" +
+        AddorEdit.value +
+        "argPhraseDescDB：" +
+        ResultCodeOrg.value
+    ) //印編輯值
+  }
+
+  // 儲存表格
+  const handleSave = (row) => {
+    row.editable = false
     //console.log(row["phrasE_DESC"]); //印JSON中需獲取的值 //row['需要的值']
     // 判斷編輯新增
     if (AddorEdit.value) {
@@ -337,38 +371,6 @@
     }
   }
 
-  const onAddItem = (index) => {
-    AddorEdit.value = true //判斷為新增表格
-    const item = {
-      resulT_CODE: "",
-      resulT_NAME: "",
-      codE_USED: true,
-      editable: true,
-      message: "",
-      statusCode: "",
-    }
-    tableData.value.splice(index, 0, item) //自第一行新增表格
-    // console.log("AddorEdit：" + AddorEdit.value); //印確認編輯或新增變數
-  }
-
-  // 編輯表格
-  const handleEdit = (row) => {
-    AddorEdit.value = false //編輯
-    row.editable = true
-    ;(ResultCodeOrg.value = row["resulT_CODE"]), row["resulT_NAME"]
-    console.log(
-      "AddorEdit：" +
-        AddorEdit.value +
-        "argPhraseDescDB：" +
-        ResultCodeOrg.value
-    ) //印編輯值
-  }
-
-  // 儲存表格
-  const handleSave = (row) => {
-    row.editable = false
-  }
-
   const deleteRow = (index: number) => {
     tableData.value.splice(index, 1)
     const urlDelete =
@@ -383,10 +385,11 @@
         if (statusCode == "1002") {
           alert(message)
           tableData.value = storageData
-          // window.location.reload()
+          window.location.reload()
         } else {
           alert(message)
           tableData.value = storageData.splice(index, res.data.length)
+          window.location.reload()
         }
         //console.log(res.data);
         // console.log(statusCode)

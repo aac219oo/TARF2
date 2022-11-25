@@ -87,7 +87,9 @@
                   v-model="scope.row[item.prop]"
                   :placeholder="`請輸入${item.label}`"
                   @change="handleAdd(scope.row)"
-                  @keyup="this.value = this.value.toUpperCase()"
+                  @keyup="
+                    scope.row[item.prop] = scope.row[item.prop].toUpperCase()
+                  "
                 />
               </template>
             </div>
@@ -171,6 +173,7 @@
   import axios from "axios"
   import zhTw from "element-plus/dist/locale/zh-tw"
   import en from "element-plus/es/locale/lang/en"
+  import { Console } from "console"
 
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
@@ -194,9 +197,9 @@
     return tableData.value.filter(
       (data) =>
         data.aplY_ITEM_CODE
-          .toLowerCase()
-          .includes(search.value.toLowerCase()) ||
-        data.aplY_ITEM_NAME.toLowerCase().includes(search.value.toLowerCase())
+          .toUpperCase()
+          .includes(search.value.toUpperCase()) ||
+        data.aplY_ITEM_NAME.toUpperCase().includes(search.value.toUpperCase())
     )
     // return tabledata.value
   })
@@ -211,6 +214,7 @@
   const AddorEdit = ref(true) //新增編輯變數 新增:true 編輯:false
   const AplyItemCodeOrg = ref("") //更改資料變數
   const storageData = reactive([]) //儲存資料
+  console.log(tableData)
 
   // axios取得API中的JSON
   onMounted(() => {
@@ -235,12 +239,13 @@
           storageData[i] = {
             codE_USED: trueOrFalse.value,
             message: message,
-            aplY_ITEM_CODE: aplY_ITEM_CODE,
-            aplY_ITEM_NAME: aplY_ITEM_NAME,
+            aplY_ITEM_CODE: aplY_ITEM_CODE.toUpperCase(),
+            aplY_ITEM_NAME: aplY_ITEM_NAME.toUpperCase(),
             statusCode: statusCode,
           }
           tableData.value = storageData
         }
+        console.log(res.data)
         // tableData.value = res.data
         loading.value = false
         // console.log(tableData.value[0].statusCode) //印JSON陣列第零項後台傳送的訊息判斷1001、1002
@@ -268,7 +273,38 @@
   ])
 
   // 儲存表格到API //row['需要的值']
-  const handleAdd = (row) => {
+  const handleAdd = (row) => {}
+
+  const onAddItem = (index) => {
+    AddorEdit.value = true //判斷為新增表格
+    const item = {
+      aplY_ITEM_CODE: "",
+      aplY_ITEM_NAME: "",
+      codE_USED: true,
+      editable: true,
+      message: "",
+      statusCode: "",
+    }
+    tableData.value.splice(index, 0, item)
+    // console.log("AddorEdit：" + AddorEdit.value); //印確認編輯或新增變數
+  }
+
+  // 編輯表格
+  const handleEdit = (row) => {
+    AddorEdit.value = false //編輯
+    row.editable = true
+    AplyItemCodeOrg.value = row.aplY_ITEM_CODE //原本的值
+    console.log(
+      "AddorEdit：" +
+        AddorEdit.value +
+        "&AplyItemCodeOrg=" +
+        AplyItemCodeOrg.value
+    ) //印編輯值
+  }
+
+  // 儲存表格
+  const handleSave = (row) => {
+    row.editable = false
     if (AddorEdit.value) {
       //執行新增
       // console.log(row.aplY_ITEM_CODE, row.aplY_ITEM_NAME)
@@ -291,6 +327,7 @@
             // window.location.reload() //重整頁面
             tableData.value = storageData
           } else {
+            alert(message)
             tableData.value = storageData
           }
           // tableData.value = res.data
@@ -324,8 +361,10 @@
             tableData.value = storageData
             // window.location.reload()
           } else {
+            alert(message)
             tableData.value = storageData
           }
+          row.editable = true
           // tableData.value = res.data
           //console.log(res.data);
           console.log(statusCode + "Edit") //狀態代碼為編輯
@@ -338,44 +377,12 @@
     }
   }
 
-  const onAddItem = (index) => {
-    AddorEdit.value = true //判斷為新增表格
-    const item = {
-      aplY_ITEM_CODE: "",
-      aplY_ITEM_NAME: "",
-      codE_USED: true,
-      editable: true,
-      message: "",
-      statusCode: "",
-    }
-    tableData.value.splice(index, 0, item)
-    // console.log("AddorEdit：" + AddorEdit.value); //印確認編輯或新增變數
-  }
-
-  // 編輯表格
-  const handleEdit = (row) => {
-    AddorEdit.value = false //編輯
-    row.editable = true
-    AplyItemCodeOrg.value = row.aplY_ITEM_CODE //原本的值
-    console.log(
-      "AddorEdit：" +
-        AddorEdit.value +
-        "&AplyItemCodeOrg=" +
-        AplyItemCodeOrg.value
-    ) //印編輯值
-  }
-
-  // 儲存表格
-  const handleSave = (row) => {
-    row.editable = false
-  }
-
   //刪除表格
   const deleteRow = (index: number) => {
     tableData.value.splice(index, 1)
     const urlDelete =
       url + "DeleteAplyItemCode?AplyItemCode=" + index["aplY_ITEM_CODE"] // 連api刪除功能
-    // console.log(urlDelete)
+    console.log(urlDelete)
     axios
       .get(urlDelete)
       .then((res) => {
@@ -385,13 +392,11 @@
         // 錯誤訊息顯示
         if (statusCode == "1002") {
           alert(message)
-          tableData.value = storageData
-          // window.location.reload()
         } else {
           alert(message)
-          tableData.value = storageData.splice(index, res.data.length)
           // tableData.value = res.data
         }
+        window.location.reload()
         //console.log(res.data);
         // console.log(statusCode)
         //console.log(tableData.value[0].statusCode);

@@ -87,6 +87,9 @@
                   v-model="scope.row[item.prop]"
                   :placeholder="`請輸入${item.label}`"
                   @change="handleAdd(scope.row)"
+                  @keyup="
+                    scope.row[item.prop] = scope.row[item.prop].toUpperCase()
+                  "
                 />
               </template>
             </div>
@@ -263,7 +266,36 @@
     },
   ])
 
-  const handleAdd = (row) => {
+  const handleAdd = (row) => {}
+
+  const onAddItem = (index) => {
+    AddorEdit.value = true //判斷為新增表格
+    // 定義新增表格
+    const item = {
+      casE_STATUS: "",
+      statuS_DESC: "",
+      codE_USED: true,
+      editable: true,
+      message: "",
+      statusCode: "1001",
+    }
+    tableData.value.splice(index, 0, item)
+    // console.log("AddorEdit：" + AddorEdit.value); //印確認編輯或新增變數
+  }
+
+  // 編輯表格
+  const handleEdit = (row) => {
+    AddorEdit.value = false //編輯
+    row.editable = true
+    StatusCodeOrg.value = row.casE_STATUS
+    console.log(
+      "AddorEdit:" + AddorEdit.value + ";StatusCodeOrg:" + StatusCodeOrg.value
+    ) //印編輯值
+  }
+
+  // 儲存表格
+  const handleSave = (row) => {
+    row.editable = false
     //console.log(row["phrasE_DESC"]); //印JSON中需獲取的值 //row['需要的值']
     // 判斷編輯新增
     if (AddorEdit.value) {
@@ -316,9 +348,9 @@
             alert(message)
             tableData.value = storageData
           } else {
+            alert(message)
+            tableData.value = storageData
           }
-          alert(message)
-          tableData.value = storageData
           //console.log(res.data);
           console.log(statusCode + "Edit") //狀態代碼為編輯
           //console.log(tableData.value[0].statusCode);
@@ -328,36 +360,6 @@
           console.log(error)
         })
     }
-  }
-
-  const onAddItem = (index) => {
-    AddorEdit.value = true //判斷為新增表格
-    // 定義新增表格
-    const item = {
-      casE_STATUS: "",
-      statuS_DESC: "",
-      codE_USED: true,
-      editable: true,
-      message: "",
-      statusCode: "1001",
-    }
-    tableData.value.splice(index, 0, item)
-    // console.log("AddorEdit：" + AddorEdit.value); //印確認編輯或新增變數
-  }
-
-  // 編輯表格
-  const handleEdit = (row) => {
-    AddorEdit.value = false //編輯
-    row.editable = true
-    StatusCodeOrg.value = row.casE_STATUS
-    console.log(
-      "AddorEdit:" + AddorEdit.value + ";StatusCodeOrg:" + StatusCodeOrg.value
-    ) //印編輯值
-  }
-
-  // 儲存表格
-  const handleSave = (row) => {
-    row.editable = false
   }
 
   //刪除表格
@@ -375,10 +377,12 @@
         if (statusCode == "1002") {
           alert(message)
           tableData.value = storageData
-          // window.location.reload() //重整頁面
+          window.location.reload() //重整頁面
         } else {
           alert(message)
-          tableData.value = storageData.splice(index, res.data.length)
+          tableData.value = storageData
+          window.location.reload() //重整頁面
+          // .splice(index, row.)
         }
         //console.log(res.data);
         // console.log(statusCode)

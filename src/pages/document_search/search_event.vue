@@ -19,11 +19,11 @@
             <div class="searchDate">
               <div class="labelRadio">
                 <span class="label">送審日期*</span>
-                <el-radio-group v-model="form.DateRange">
-                  <el-radio label="三日" value="0" />
-                  <el-radio label="一周" value="1" />
-                  <el-radio label="一個月" value="2" />
-                  <el-radio label="一年" value="3" />
+                <el-radio-group v-model="form.DateRange" @change="dayjsChange">
+                  <el-radio :label="0">三日</el-radio>
+                  <el-radio :label="1">一周</el-radio>
+                  <el-radio :label="2">一個月</el-radio>
+                  <el-radio :label="3">一年</el-radio>
                 </el-radio-group>
               </div>
               <el-form-item class="label-left">
@@ -48,13 +48,15 @@
               <el-select
                 v-model="form.AplyItemCode"
                 placeholder="請選擇送審項目"
+                clearable
+                filterable
                 :size="size"
               >
                 <el-option
                   v-for="(item, index) in optionAplyItemCode"
                   :key="index"
-                  label="item.value"
-                  value="item.value"
+                  :label="item"
+                  :value="item"
                 />
               </el-select>
             </el-form-item>
@@ -62,40 +64,20 @@
               <el-select
                 v-model="form.ProjId"
                 placeholder="請選擇標號"
+                clearable
+                filterable
                 :size="size"
               >
                 <el-option
                   v-for="(item, index) in optionProjId"
                   :key="index"
-                  label="item.value"
-                  value="item.value"
+                  :label="item"
+                  :value="item"
                 />
               </el-select>
             </el-form-item>
             <el-form-item label=" ">
               <div class="fillEmpty"></div>
-              <!-- <el-select
-                v-model="form.agency"
-                placeholder="請選擇承辦人"
-                :size="size"
-              >
-                <el-option
-                  label="技術發展處 蘇嘉淇"
-                  value="技術發展處 蘇嘉淇"
-                />
-                <el-option
-                  label="技術發展處 蘇嘉淇"
-                  value="技術發展處 蘇嘉淇"
-                />
-                <el-option
-                  label="技術發展處 蘇嘉淇"
-                  value="技術發展處 蘇嘉淇"
-                />
-                <el-option
-                  label="技術發展處 蘇嘉淇"
-                  value="技術發展處 蘇嘉淇"
-                />
-              </el-select> -->
             </el-form-item>
           </div>
           <div class="searchSelectBottom">
@@ -103,13 +85,15 @@
               <el-select
                 v-model="form.CaseDeptNo"
                 placeholder="請選擇審查單位"
+                clearable
+                filterable
                 :size="size"
               >
                 <el-option
                   v-for="(item, index) in optionCaseDeptNo"
                   :key="index"
-                  label="item.value"
-                  value="item.value"
+                  :label="item"
+                  :value="item"
                 />
               </el-select>
             </el-form-item>
@@ -117,13 +101,15 @@
               <el-select
                 v-model="form.HandleTypeDesc"
                 placeholder="請選擇辦理情形"
+                clearable
+                filterable
                 :size="size"
               >
                 <el-option
                   v-for="(item, index) in optionHandleTypeDesc"
                   :key="index"
-                  label="item.value"
-                  value="item.value"
+                  :label="item"
+                  :value="item"
                 />
               </el-select>
             </el-form-item>
@@ -131,13 +117,15 @@
               <el-select
                 v-model="form.CaseEmplSeri"
                 placeholder="請選擇承辦人"
+                clearable
+                filterable
                 :size="size"
               >
                 <el-option
                   v-for="(item, index) in optionCaseEmplSeri"
                   :key="index"
-                  label="item.value"
-                  value="item.value"
+                  :label="item"
+                  :value="item"
                 />
               </el-select>
             </el-form-item>
@@ -260,20 +248,32 @@
               :resizable="false"
             ></el-table-column>
             <el-table-column :min-width="15" :resizable="false">
-              <a href="ediT_LINK"
-                ><img
-                  src="../../assets/icon02.png"
-                  style="width: 25px; vertical-align: bottom"
-                  alt=""
-              /></a>
-              <!--  @click="prN_LINK" -->
-              <el-button
-                ><img
-                  src="../../assets/icon03.png"
-                  style="width: 25px; vertical-align: bottom"
-                  alt=""
-                />
-              </el-button>
+              <!-- v-for="(item, index) in ediT_LINK" :key="item"  -->
+              <template #default="scope">
+                <a
+                  :href="
+                    'http://localhost:5173/document_search/detail_info/index.html?v1=' +
+                    scope.row.v1 +
+                    '&v2=' +
+                    scope.row.v2 +
+                    '&v3=' +
+                    scope.row.v3 +
+                    '&t=' +
+                    scope.row.t
+                  "
+                  ><img
+                    src="../../assets/icon02.png"
+                    style="width: 25px; vertical-align: bottom"
+                    alt=""
+                /></a>
+                <!--  @click="prN_LINK" -->
+                <el-button
+                  ><img
+                    src="../../assets/icon03.png"
+                    style="width: 25px; vertical-align: bottom"
+                    alt=""
+                  /> </el-button
+              ></template>
             </el-table-column>
           </el-table>
         </el-col>
@@ -349,6 +349,7 @@
     KeyWord: "",
   })
 
+  const ediT_LINK = reactive([])
   const optionAplyItemCode = ref()
   const optionProjId = ref()
   const optionCaseEmplSeri = ref()
@@ -361,6 +362,7 @@
     axios
       .get(urlLoadQueryData)
       .then((res) => {
+        console.log(res.data)
         tables.newsdata = res.data
         loading.value = false
         files_count.value = res.data.length
@@ -377,57 +379,68 @@
       QueryRole +
       "?DeptNo=" +
       DeptNo
+    // console.log(urlLoadDropDownList)
     axios
       .get(urlLoadDropDownList)
       .then((res) => {
-        console.log(res.data.APLY_ITEM_CODE)
-        optionAplyItemCode.value = res.data.APLY_ITEM_CODE
-        optionProjId.value = res.data.PROJ_ID
-        optionCaseEmplSeri.value = res.data.CASE_DEPT_NO
-        optionCaseDeptNo.value = res.data.CASE_EMPL_SERI
-        optionHandleTypeDesc.value = res.data.STATUS_DESC
+        // console.log(res.data[0].aplY_ITEM_CODE)
+        optionAplyItemCode.value = res.data[0].aplY_ITEM_CODE
+        optionProjId.value = res.data[0].proJ_ID
+        optionCaseEmplSeri.value = res.data[0].casE_EMPL_SERI
+        optionCaseDeptNo.value = res.data[0].casE_DEPT_NO
+        optionHandleTypeDesc.value = res.data[0].statuS_DESC
       })
       .catch(function (error) {
         console.log(error)
       })
   })
 
-  const onSubmit = (value) => {
+  const dayjsChange = ref()
+
+  const onSubmit = (Val) => {
     const DateFrom = dayjs(new Date(form.DateFrom)).format("YYYY-MM-DD")
     const DateTo = dayjs(new Date(form.DateTo)).format("YYYY-MM-DD")
-    const urlGetReviewCases =
-      url +
-      "GetReviewCases?UserId=" +
-      UserId +
-      "&QueryRole=" +
-      QueryRole +
-      "&DeptNo=" +
-      DeptNo +
-      "&DateFrom=" +
-      DateFrom +
-      "&DateTo=" +
-      DateTo +
-      "&AplyItemCode=" +
-      form.AplyItemCode +
-      "&ProjId=" +
-      form.ProjId +
-      "&CaseEmplSeri=" +
-      form.CaseEmplSeri +
-      "&CaseDeptNo=" +
-      form.CaseDeptNo +
-      "&HandleTypeDesc=" +
-      form.HandleTypeDesc +
-      "&KeyWord=" +
-      form.KeyWord
+    const urlGetReviewCases = url + "GetReviewCases"
     loading.value = true
+    //console.log(urlGetReviewCases, ReviewCaseQuery)
+    //const QueryRole = "Test"
+    //const DeptNo = "Test"
     axios
-      .get(urlGetReviewCases)
+      .get(urlGetReviewCases, {
+        params: {
+          UserId: UserId,
+          QueryRole: QueryRole,
+          DeptNo: DeptNo,
+          DateFrom: DateFrom,
+          DateTo: DateTo,
+          AplyItemCode: form.AplyItemCode,
+          ProjId: form.ProjId,
+          CaseEmplSeri: form.CaseEmplSeri,
+          CaseDeptNo: form.CaseDeptNo,
+          HandleTypeDesc: form.HandleTypeDesc,
+          KeyWord: form.KeyWord,
+        },
+      })
       .then((res) => {
         console.log(res.data)
         tables.newsdata = res.data
+        files_count.value = res.data.length
         loading.value = false
       })
       .catch(function (error) {
+        // console.log(
+        //   UserId,
+        //   QueryRole,
+        //   DeptNo,
+        //   DateFrom,
+        //   DateTo,
+        //   form.AplyItemCode,
+        //   form.ProjId,
+        //   form.CaseEmplSeri,
+        //   form.CaseDeptNo,
+        //   form.HandleTypeDesc,
+        //   form.KeyWord
+        // )
         console.log(error)
       })
   }

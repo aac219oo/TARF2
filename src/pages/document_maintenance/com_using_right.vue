@@ -251,7 +251,9 @@
               :append-to-body="true"
               center
               align-center
+              @closed="cancelQueryProjData(scope.row)"
               :close-on-click-modal="false"
+              :destroy-on-close="scope.row.destroyOnClose"
               title="標號維護"
             >
               <el-form :model="QueryProjData">
@@ -260,7 +262,9 @@
                     v-model="QueryProjData"
                     multiple
                     filterable
+                    ref="ad"
                     default-first-option
+                    :destroy-on-close="true"
                     :reserve-keyword="false"
                   >
                     <!-- @change="$forceUpdate()" -->
@@ -275,7 +279,9 @@
               </el-form>
               <template #footer>
                 <span class="dialog-footer">
-                  <el-button @click="cancelQueryProjData(scope.row)"
+                  <el-button
+                    @click="cancelQueryProjData(scope.row)"
+                    @change="changetest(scope.row)"
                     >取消</el-button
                   >
                   <el-button
@@ -336,10 +342,28 @@
   const cancel = () => {
     dialogFormVisible.value = false
   }
-
+  const destroyOnClose = ref(true)
+  const ad = ref(null)
   const cancelQueryProjData = (row) => {
+    row.destroyOnClose = true
     row.openQueryProjData = false
+    // console.log(row.useR_ID)
+    // const urlQueryProjData = url + "QueryProjData?UserId=" + row["useR_ID"]
+    // // console.log(urlQueryProjData)
+    // axios
+    //   .get(urlQueryProjData)
+    //   .then((res) => {
+    //     console.log(res.data)
+    //     for (let i = 0; i < res.data.length; i++) {
+    //       QueryProjData.value[i] = res.data[i].proJ_ID
+    //     }
+    //     // console.log(QueryProjData)
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error)
+    //   })
   }
+  const changetest = (row) => {}
   // 新增廠商
   const ruleForm = reactive({
     EmplSeri: "",
@@ -427,10 +451,10 @@
     message: string
     rigH_ITEM_DESC: string
     // rigH_STAT: boolean
-    rigH_STAT_DESC: boolean
+    rigH_STAT_DESC: string
     useR_ID: string
     useR_NAME: string
-    booleanRigH_STAT_DESC: string
+    booleanRigH_STAT_DESC: boolean
   }
   const QueryProjData = ref<ValueUpdate[]>([])
   const openQueryProjData = ref()
@@ -492,6 +516,7 @@
           console.log(res.data)
           for (let i = 0; i < res.data.length; i++) {
             QueryProjData.value[i] = res.data[i].proJ_ID
+            console.log(QueryProjData)
           }
           // console.log(QueryProjData)
         })
@@ -571,10 +596,12 @@
     // for (let i = 0; i < storageRigH_STAT_DESC.length; i++) {
     if (e == true) {
       RighStat.value = "Y"
+      row.rigH_STAT_DESC = "無效"
     } else {
       RighStat.value = "N"
+      row.rigH_STAT_DESC = "有效"
     }
-    console.log(storageRigH_STAT_DESC)
+    console.log(row.rigH_STAT_DESC)
     // }
   }
   const SubmitRevokE_FLAG = (row) => {

@@ -421,9 +421,13 @@
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
   const url = "https://localhost:7227/api/CaseBascQueryDetail/"
-  const CaseId = "CJ906A-AD-1111105"
-  const CaseVer = "0"
-  const CaseSeqNo = "1"
+  const geturl = window.location.href
+  console.log(geturl)
+  const getqyinfo = geturl.split("?")[1]
+  const getqys = new URLSearchParams("?" + getqyinfo)
+  const CaseId = getqys.get("v1")
+  const CaseVer = getqys.get("v2")
+  const CaseSeqNo = getqys.get("v3")
   const activeName = ref("first")
   const GetReviewCaseBasc = ref()
   const GetReviewExamRecd = ref()
