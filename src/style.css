@@ -229,6 +229,11 @@ i.el-icon svg {
   align-items: flex-end;
 }
 
+.DateGroup {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
 .el-form--default.el-form--label-top
   .el-row
   .el-form-item.label-left

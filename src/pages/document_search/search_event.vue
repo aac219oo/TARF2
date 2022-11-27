@@ -13,40 +13,52 @@
     <el-main>
       <!-- searhForm -->
 
-      <el-form :model="form" label-position="top">
+      <el-form
+        ref="ruleFormRef"
+        :rules="rules"
+        :model="ruleForm"
+        label-position="top"
+      >
         <div class="searchForm">
           <div class="searchSelectTop">
             <div class="searchDate">
               <div class="labelRadio">
                 <span class="label">送審日期*</span>
-                <el-radio-group v-model="form.DateRange" @change="dayjsChange">
+                <el-radio-group
+                  v-model="ruleForm.DateRange"
+                  @change="dayjsChange"
+                >
                   <el-radio :label="0">三日</el-radio>
                   <el-radio :label="1">一周</el-radio>
                   <el-radio :label="2">一個月</el-radio>
                   <el-radio :label="3">一年</el-radio>
                 </el-radio-group>
               </div>
-              <el-form-item class="label-left">
-                <el-date-picker
-                  v-model="form.DateFrom"
-                  type="date"
-                  placeholder="請選擇日期"
-                  :size="size"
-                  for="apply_date1"
-                />
+              <div class="DateGroup">
+                <el-form-item class="label-left" prop="DateFrom">
+                  <el-date-picker
+                    v-model="ruleForm.DateFrom"
+                    type="date"
+                    placeholder="請選擇日期"
+                    :size="size"
+                    for="apply_date1"
+                  />
+                </el-form-item>
                 <span class="decoration">~</span>
-                <el-date-picker
-                  v-model="form.DateTo"
-                  type="date"
-                  placeholder="請選擇日期"
-                  :size="size"
-                  for="apply_date2"
-                />
-              </el-form-item>
+                <el-form-item prop="DateTo">
+                  <el-date-picker
+                    v-model="ruleForm.DateTo"
+                    type="date"
+                    placeholder="請選擇日期"
+                    :size="size"
+                    for="apply_date2"
+                  />
+                </el-form-item>
+              </div>
             </div>
             <el-form-item label="送審項目">
               <el-select
-                v-model="form.AplyItemCode"
+                v-model="ruleForm.AplyItemCode"
                 placeholder="請選擇送審項目"
                 clearable
                 filterable
@@ -62,7 +74,7 @@
             </el-form-item>
             <el-form-item label="標號">
               <el-select
-                v-model="form.ProjId"
+                v-model="ruleForm.ProjId"
                 placeholder="請選擇標號"
                 clearable
                 filterable
@@ -83,7 +95,7 @@
           <div class="searchSelectBottom">
             <el-form-item label="審查單位">
               <el-select
-                v-model="form.CaseDeptNo"
+                v-model="ruleForm.CaseDeptNo"
                 placeholder="請選擇審查單位"
                 clearable
                 filterable
@@ -99,7 +111,7 @@
             </el-form-item>
             <el-form-item label="辦理情形">
               <el-select
-                v-model="form.HandleTypeDesc"
+                v-model="ruleForm.HandleTypeDesc"
                 placeholder="請選擇辦理情形"
                 clearable
                 filterable
@@ -115,7 +127,7 @@
             </el-form-item>
             <el-form-item label="承辦人">
               <el-select
-                v-model="form.CaseEmplSeri"
+                v-model="ruleForm.CaseEmplSeri"
                 placeholder="請選擇承辦人"
                 clearable
                 filterable
@@ -131,29 +143,38 @@
             </el-form-item>
             <el-form-item label="關鍵字" class="searchTitle">
               <el-input
-                v-model="form.KeyWord"
+                v-model="ruleForm.KeyWord"
                 placeholder="(主旨，多組關鍵字請用空白分隔)"
                 :size="size"
               />
             </el-form-item>
             <el-form-item class="button-items">
               <div class="button-items-search">
-                <el-button @click="onSubmit(form)">
+                <el-button @click="onSubmit(ruleFormRef)">
                   <img
                     src="../../assets/icon01.png"
                     style="width: 26px; vertical-align: bottom"
-                    alt=""
+                    alt="搜尋"
+                    title="搜尋"
                   />
                 </el-button>
               </div>
               <div class="button-items-export">
-                <el-button>
+                <a
+                  :href="
+                    'http://localhost:5173/document_search/detail_info/index.html?v1=' +
+                    '&v2=' +
+                    '&v3=' +
+                    '&t='
+                  "
+                >
                   <img
                     src="../../assets/icon02.png"
                     style="width: 26px; vertical-align: bottom"
-                    alt=""
+                    alt="匯出Excel"
+                    title="匯出Excel"
                   />
-                </el-button>
+                </a>
               </div>
             </el-form-item>
           </div>
@@ -248,7 +269,6 @@
               :resizable="false"
             ></el-table-column>
             <el-table-column :min-width="15" :resizable="false">
-              <!-- v-for="(item, index) in ediT_LINK" :key="item"  -->
               <template #default="scope">
                 <a
                   :href="
@@ -264,15 +284,27 @@
                   ><img
                     src="../../assets/icon02.png"
                     style="width: 25px; vertical-align: bottom"
-                    alt=""
+                    alt="詳細資料"
+                    title="詳細資料"
                 /></a>
                 <!--  @click="prN_LINK" -->
-                <el-button
+                <a
+                  :href="
+                    '?v1=' +
+                    scope.row.v1 +
+                    '&v2=' +
+                    scope.row.v2 +
+                    '&v3=' +
+                    scope.row.v3 +
+                    '&t=' +
+                    scope.row.t
+                  "
                   ><img
                     src="../../assets/icon03.png"
                     style="width: 25px; vertical-align: bottom"
-                    alt=""
-                  /> </el-button
+                    alt="列印詳細資料"
+                    title="列印詳細資料"
+                  /> </a
               ></template>
             </el-table-column>
           </el-table>
@@ -299,6 +331,7 @@
   // import { ElementPlus, Printer, Search, Edit } from "@element-plus/icons-vue"
   import zhTw from "element-plus/dist/locale/zh-tw"
   import en from "element-plus/es/locale/lang/en"
+  import type { FormInstance, FormRules } from "element-plus"
   import axios from "axios"
   import dayjs from "dayjs"
 
@@ -337,10 +370,11 @@
     return (currentPage.value - 1) * pageSize.value + index + 1
   }
   // do not use same name with ref
-  const form = reactive({
+  const ruleFormRef = ref<FormInstance>()
+  const ruleForm = reactive({
     DateFrom: "",
     DateTo: "",
-    DateRange: "",
+    DateRange: [],
     AplyItemCode: "",
     ProjId: "",
     CaseEmplSeri: "",
@@ -348,8 +382,24 @@
     HandleTypeDesc: "",
     KeyWord: "",
   })
-
-  const ediT_LINK = reactive([])
+  const rules = reactive<FormRules>({
+    DateFrom: [
+      {
+        type: "date",
+        required: true,
+        message: "",
+        trigger: "change",
+      },
+    ],
+    DateTo: [
+      {
+        type: "date",
+        required: true,
+        message: "",
+        trigger: "change",
+      },
+    ],
+  })
   const optionAplyItemCode = ref()
   const optionProjId = ref()
   const optionCaseEmplSeri = ref()
@@ -395,53 +445,72 @@
       })
   })
 
-  const dayjsChange = ref()
+  const DateFromDay = ref()
+  const DateFromWeek = ref()
+  const DateFromMonth = ref()
+  const DateFromYear = ref()
+  const DateTo = ref(dayjs(new Date()).format("YYYY-MM-DD"))
 
-  const onSubmit = (Val) => {
-    const DateFrom = dayjs(new Date(form.DateFrom)).format("YYYY-MM-DD")
-    const DateTo = dayjs(new Date(form.DateTo)).format("YYYY-MM-DD")
-    const urlGetReviewCases = url + "GetReviewCases"
-    loading.value = true
-    //console.log(urlGetReviewCases, ReviewCaseQuery)
-    //const QueryRole = "Test"
-    //const DeptNo = "Test"
-    axios
-      .get(urlGetReviewCases, {
-        params: {
-          UserId: UserId,
-          QueryRole: QueryRole,
-          DeptNo: DeptNo,
-          DateFrom: DateFrom,
-          DateTo: DateTo,
-          AplyItemCode: form.AplyItemCode,
-          ProjId: form.ProjId,
-          CaseEmplSeri: form.CaseEmplSeri,
-          CaseDeptNo: form.CaseDeptNo,
-          HandleTypeDesc: form.HandleTypeDesc,
-          KeyWord: form.KeyWord,
-        },
-      })
-      .then((res) => {
-        console.log(res.data)
-        tables.newsdata = res.data
-        files_count.value = res.data.length
-        loading.value = false
-      })
-      .catch(function (error) {
-        // console.log(
-        //   UserId,
-        //   QueryRole,
-        //   DeptNo,
-        //   DateFrom,
-        //   DateTo,
-        //   form.AplyItemCode,
-        //   form.ProjId,
-        //   form.CaseEmplSeri,
-        //   form.CaseDeptNo,
-        //   form.HandleTypeDesc,
-        //   form.KeyWord
-        // )
-        console.log(error)
-      })
+  const dayjsChange = ref((val) => {
+    if (val === 0) {
+      DateFromDay.value = dayjs().subtract(2, "day").format("YYYY-MM-DD")
+      ruleForm.DateFrom = DateFromDay.value
+      ruleForm.DateTo = DateTo.value
+    }
+    if (val === 1) {
+      DateFromWeek.value = dayjs().subtract(6, "day").format("YYYY-MM-DD")
+      ruleForm.DateFrom = DateFromWeek.value
+      ruleForm.DateTo = DateTo.value
+    }
+    if (val === 2) {
+      DateFromMonth.value = dayjs().subtract(1, "month").format("YYYY-MM-DD")
+      ruleForm.DateFrom = DateFromMonth.value
+      ruleForm.DateTo = DateTo.value
+    }
+    if (val === 3) {
+      DateFromYear.value = dayjs().subtract(1, "year").format("YYYY-MM-DD")
+      ruleForm.DateFrom = DateFromYear.value
+      ruleForm.DateTo = DateTo.value
+    }
+  })
+
+  ruleForm.DateFrom = dayjs(new Date(ruleForm.DateFrom)).format("YYYY-MM-DD")
+  ruleForm.DateTo = dayjs(new Date(ruleForm.DateTo)).format("YYYY-MM-DD")
+  const onSubmit = async (formEl: FormInstance | undefined) => {
+    if (!formEl) return
+    await formEl.validate((valid, fields) => {
+      if (valid) {
+        const urlGetReviewCases = url + "GetReviewCases"
+        loading.value = true
+        axios
+          .get(urlGetReviewCases, {
+            params: {
+              UserId: UserId,
+              QueryRole: QueryRole,
+              DeptNo: DeptNo,
+              DateFrom: ruleForm.DateFrom,
+              DateTo: ruleForm.DateTo,
+              AplyItemCode: ruleForm.AplyItemCode,
+              ProjId: ruleForm.ProjId,
+              CaseEmplSeri: ruleForm.CaseEmplSeri,
+              CaseDeptNo: ruleForm.CaseDeptNo,
+              HandleTypeDesc: ruleForm.HandleTypeDesc,
+              KeyWord: ruleForm.KeyWord,
+            },
+          })
+          .then((res) => {
+            console.log(res.data)
+            tables.newsdata = res.data
+            files_count.value = res.data.length
+            loading.value = false
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+        // console.log("submit!")
+      } else {
+        // console.log("error submit!", fields)
+      }
+    })
   }
 </script>

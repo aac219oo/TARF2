@@ -309,8 +309,8 @@
   import en from "element-plus/es/locale/lang/en"
 
   sessionStorage.setItem("UserId", "11695") //儲存session
-  // const url = "https://localhost:7227/api/UserRigh/" // 連到API
-  const url = "https://localhost:7227/api/test/"
+  const url = "https://localhost:7227/api/UserRigh/" // 連到API
+  // const url = "https://localhost:7227/api/test/"
   const UserId = sessionStorage.getItem("UserId") // 儲存UserId
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))

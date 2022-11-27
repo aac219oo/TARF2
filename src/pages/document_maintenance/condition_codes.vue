@@ -118,7 +118,7 @@
               cancel-button-text="否"
               confirm-button-type="danger"
               cancel-button-type="primary"
-              @confirm="deleteRow(scope.row)"
+              @confirm="deleteRow(scope.$index)"
             >
               <template #reference>
                 <el-button v-if="scope.row.codE_USED">
@@ -377,11 +377,11 @@
         if (statusCode == "1002") {
           alert(message)
           tableData.value = storageData
-          window.location.reload() //重整頁面
+          // window.location.reload() //重整頁面
         } else {
           alert(message)
-          tableData.value = storageData
-          window.location.reload() //重整頁面
+          tableData.value = storageData.splice(index, 1)
+          // window.location.reload() //重整頁面
           // .splice(index, row.)
         }
         //console.log(res.data);

@@ -118,7 +118,7 @@
               cancel-button-text="否"
               confirm-button-type="danger"
               cancel-button-type="primary"
-              @confirm="deleteRow(scope.row)"
+              @confirm="deleteRow(scope.$index)"
             >
               <template #reference>
                 <el-button v-if="scope.row.codE_USED">
@@ -269,7 +269,7 @@
 
   // 儲存表格到API
   const handleAdd = (row) => {}
-
+  const disabledAdd = () => {}
   const onAddItem = (index) => {
     AddorEdit.value = true //判斷為新增表格
     const item = {
@@ -372,7 +372,7 @@
   }
 
   const deleteRow = (index: number) => {
-    tableData.value.splice(index, 1)
+    // tableData.value.splice(index, 1)
     const urlDelete =
       url + "DeleteResultCode?ResultCode=" + index["resulT_CODE"]
     axios
@@ -385,11 +385,12 @@
         if (statusCode == "1002") {
           alert(message)
           tableData.value = storageData
-          window.location.reload()
+          // window.location.reload()
         } else {
           alert(message)
-          tableData.value = storageData.splice(index, res.data.length)
-          window.location.reload()
+          tableData.value = storageData.splice(index, 1)
+          // window.location.reload()
+          // tableData.value = storageData
         }
         //console.log(res.data);
         // console.log(statusCode)

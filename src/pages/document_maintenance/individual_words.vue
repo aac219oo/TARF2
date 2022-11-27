@@ -123,7 +123,7 @@
               cancel-button-text="否"
               confirm-button-type="danger"
               cancel-button-type="primary"
-              @confirm="deleteRow(scope.row)"
+              @confirm="deleteRow(scope.$index)"
             >
               <template #reference>
                 <el-button>
@@ -340,7 +340,7 @@
 
   //刪除表格
   const deleteRow = (index: number) => {
-    tableData.value.splice(index, 1)
+    // tableData.value.splice(index, 1)
     // 儲存session
     // const UserId = sessionStorage.getItem("UserId")
     const urlDelete =
@@ -358,14 +358,13 @@
         // 錯誤訊息顯示
         if (statusCode == "1002") {
           alert(message)
-          // window.location.reload()
+          tableData.value = res.data
         } else {
           alert(message)
-          tableData.value = res.data
+          tableData.value.splice(index, 1)
+          //console.log(res.data);
+          console.log(statusCode)
         }
-        //console.log(res.data);
-        console.log(statusCode)
-
         //console.log(tableData.value[0].statusCode);
       })
       .catch(function (error) {

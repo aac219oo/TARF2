@@ -118,7 +118,7 @@
               cancel-button-text="否"
               confirm-button-type="danger"
               cancel-button-type="primary"
-              @confirm="deleteRow(scope.row)"
+              @confirm="deleteRow(scope.$index)"
             >
               <template #reference>
                 <el-button v-if="scope.row.codE_USED">
@@ -379,7 +379,7 @@
 
   //刪除表格
   const deleteRow = (index: number) => {
-    tableData.value.splice(index, 1)
+    // tableData.value.splice(index, 1)
     const urlDelete =
       url + "DeleteAplyItemCode?AplyItemCode=" + index["aplY_ITEM_CODE"] // 連api刪除功能
     console.log(urlDelete)
@@ -392,11 +392,12 @@
         // 錯誤訊息顯示
         if (statusCode == "1002") {
           alert(message)
+          tableData.value = res.data
         } else {
           alert(message)
-          // tableData.value = res.data
+          tableData.value = storageData.splice(index, 1)
         }
-        window.location.reload()
+        // window.location.reload()
         //console.log(res.data);
         // console.log(statusCode)
         //console.log(tableData.value[0].statusCode);

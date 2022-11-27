@@ -42,6 +42,8 @@ declare module '@vue/runtime-core' {
     Pagination: typeof import('./src/components/Pagination.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Searchtable: typeof import('./src/components/searchtable.vue')['default']
+    Table: typeof import('./src/components/table.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']
