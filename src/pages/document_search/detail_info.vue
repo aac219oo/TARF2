@@ -411,12 +411,12 @@
   }
 </style>
 <script lang="ts" setup>
-  import { ref, onMounted, computed, watch } from "vue"
+  import { ref, onMounted, computed } from "vue"
   import type { TabsPaneContext } from "element-plus"
   import zhTw from "element-plus/dist/locale/zh-tw"
   import en from "element-plus/es/locale/lang/en"
   import axios from "axios"
-  import router from "../../router"
+  // import router from "../../router"
 
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))

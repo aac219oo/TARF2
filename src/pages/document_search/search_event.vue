@@ -162,7 +162,7 @@
               <div class="button-items-export">
                 <a
                   :href="
-                    'http://localhost:5173/document_search/detail_info/index.html?v1=' +
+                    'http://localhost:7227/document_search/detail_info/index.html?v1=' +
                     '&v2=' +
                     '&v3=' +
                     '&t='
@@ -272,7 +272,7 @@
               <template #default="scope">
                 <a
                   :href="
-                    'http://localhost:5173/document_search/detail_info/index.html?v1=' +
+                    'http://localhost:7227/document_search/detail_info/index.html?v1=' +
                     scope.row.v1 +
                     '&v2=' +
                     scope.row.v2 +
