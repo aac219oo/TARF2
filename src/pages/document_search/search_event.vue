@@ -162,10 +162,7 @@
               <div class="button-items-export">
                 <a
                   :href="
-                    'http://localhost:7227/document_search/detail_info/index.html?v1=' +
-                    '&v2=' +
-                    '&v3=' +
-                    '&t='
+                    '/api/CaseBascQueryDept/GetCaseFile?FileName=' + filE_PATH
                   "
                 >
                   <img
@@ -272,7 +269,7 @@
               <template #default="scope">
                 <a
                   :href="
-                    'http://localhost:7227/document_search/detail_info/index.html?v1=' +
+                    '/document_search/detail_info/index.html?v1=' +
                     scope.row.v1 +
                     '&v2=' +
                     scope.row.v2 +
@@ -288,24 +285,16 @@
                     title="詳細資料"
                 /></a>
                 <!--  @click="prN_LINK" -->
-                <a
-                  :href="
-                    '?v1=' +
-                    scope.row.v1 +
-                    '&v2=' +
-                    scope.row.v2 +
-                    '&v3=' +
-                    scope.row.v3 +
-                    '&t=' +
-                    scope.row.t
-                  "
+                <!-- <a
+                  :href="'https://localhost:7227/'"
                   ><img
                     src="../../assets/icon03.png"
                     style="width: 25px; vertical-align: bottom"
                     alt="列印詳細資料"
                     title="列印詳細資料"
                   /> </a
-              ></template>
+              > -->
+              </template>
             </el-table-column>
           </el-table>
         </el-col>
@@ -343,7 +332,8 @@
   const DeptNo = sessionStorage.getItem("DeptNo") // 儲存DeptNo
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
-  const url = "https://localhost:7227/api/CaseBascQueryDept/"
+  const url = "/api/CaseBascQueryDept/"
+  // const url = "https://localhost:7227/api/CaseBascQueryDept/"
   // const url = "https://localhost:7227/api/test/"
   const size = ref("default")
   const tables = reactive({
@@ -405,6 +395,7 @@
   const optionCaseEmplSeri = ref()
   const optionCaseDeptNo = ref()
   const optionHandleTypeDesc = ref()
+  const filE_PATH = ref()
 
   onMounted(() => {
     const urlLoadQueryData = url + "LoadQueryData?UserId=" + UserId
@@ -416,6 +407,8 @@
         tables.newsdata = res.data
         loading.value = false
         files_count.value = res.data.length
+        filE_PATH.value = res.data[0].filE_PATH
+        console.log(filE_PATH)
       })
       .catch(function (error) {
         console.log(error)
@@ -474,9 +467,10 @@
     }
   })
 
-  ruleForm.DateFrom = dayjs(new Date(ruleForm.DateFrom)).format("YYYY-MM-DD")
-  ruleForm.DateTo = dayjs(new Date(ruleForm.DateTo)).format("YYYY-MM-DD")
   const onSubmit = async (formEl: FormInstance | undefined) => {
+    const DateFrom = dayjs(new Date(ruleForm.DateFrom)).format("YYYY-MM-DD")
+    const DateTo = dayjs(new Date(ruleForm.DateTo)).format("YYYY-MM-DD")
+    console.log(DateFrom + ";" + DateTo)
     if (!formEl) return
     await formEl.validate((valid, fields) => {
       if (valid) {
@@ -488,8 +482,8 @@
               UserId: UserId,
               QueryRole: QueryRole,
               DeptNo: DeptNo,
-              DateFrom: ruleForm.DateFrom,
-              DateTo: ruleForm.DateTo,
+              DateFrom: DateFrom,
+              DateTo: DateTo,
               AplyItemCode: ruleForm.AplyItemCode,
               ProjId: ruleForm.ProjId,
               CaseEmplSeri: ruleForm.CaseEmplSeri,
@@ -507,7 +501,7 @@
           .catch(function (error) {
             console.log(error)
           })
-        // console.log("submit!")
+        console.log("submit!")
       } else {
         // console.log("error submit!", fields)
       }

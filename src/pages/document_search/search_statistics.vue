@@ -536,7 +536,7 @@
   const DeptNo = sessionStorage.getItem("DeptNo")
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
-  const url = "https://localhost:7227/api/StatisticsProjidCount/"
+  const url = "/api/StatisticsProjidCount/"
   // loading
   const loading = ref(true)
   // 統計圖表
@@ -681,11 +681,11 @@
       .then((res) => {
         console.log(res.data[0])
         tableDataTotleCounts.value = res.data
-        loading.value = false
         totaL_COUNT.value = res.data[0].totaL_COUNT
         prE_COUNT.value = res.data[0].prE_COUNT
         noW_COUNT.value = res.data[0].noW_COUNT
-        // console.log(tableDataTotleCounts.value[0])
+        loading.value = false
+        console.log(res.data)
       })
       .catch(function (error) {
         console.log(error)

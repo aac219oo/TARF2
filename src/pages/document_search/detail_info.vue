@@ -420,7 +420,7 @@
 
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
-  const url = "https://localhost:7227/api/CaseBascQueryDetail/"
+  const url = "/api/CaseBascQueryDetail/"
   const geturl = window.location.href
   console.log(geturl)
   const getqyinfo = geturl.split("?")[1]

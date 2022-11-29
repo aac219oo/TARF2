@@ -1,12 +1,12 @@
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import AutoImport from "unplugin-auto-import/vite";
-import Components from "unplugin-vue-components/vite";
-import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
-import ElementPlus from "unplugin-element-plus/vite";
-import zhTw from "element-plus/es/locale/lang/zh-tw";
-import { resolve } from "path";
-import axios from "axios";
+import { defineConfig } from "vite"
+import vue from "@vitejs/plugin-vue"
+import AutoImport from "unplugin-auto-import/vite"
+import Components from "unplugin-vue-components/vite"
+import { ElementPlusResolver } from "unplugin-vue-components/resolvers"
+import ElementPlus from "unplugin-element-plus/vite"
+import zhTw from "element-plus/es/locale/lang/zh-tw"
+import { resolve } from "path"
+import axios from "axios"
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -53,6 +53,7 @@ export default defineConfig({
       useSource: true,
     }),
   ],
+  base: "./",
   build: {
     rollupOptions: {
       input: {
@@ -113,4 +114,4 @@ export default defineConfig({
       },
     },
   },
-});
+})

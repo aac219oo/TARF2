@@ -201,7 +201,7 @@
   //loading
   const loading = ref(true)
   const tableData = ref<User[]>([]) //渲染結果在畫面上
-  const url = "https://localhost:7227/api/ResultCode/" // 連到API
+  const url = "/api/ResultCode/" // 連到API
   // const url = "https://localhost:7227/api/test/" // 連到test API
   const UserId = ref(() => {
     sessionStorage.getItem("UserId")

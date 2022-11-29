@@ -178,9 +178,9 @@
 
   // axios
   //各標號廠商窗口資訊
-  const url = "https://localhost:7227/api/ContactInfoQuery/GetOtherChargQuery"
+  const url = "/api/ContactInfoQuery/GetOtherChargQuery"
   // const url = "https://localhost:7227/api/test/GetOtherChargQuery"
-  // const url = "http://tarf.grp.com.tw/api/Test/GetDeptChargQuery"
+  // const url = "https://tarf.grp.com.tw/api/Test/GetDeptChargQuery"
 
   const tabledata = ref<User[]>([])
 

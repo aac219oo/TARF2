@@ -26,7 +26,7 @@
   import axios from "axios"
   import { onMounted } from "vue"
 
-  const url = "https://localhost:7227/api/PhraseRecd/GetPhraseRecd?UserId=16195"
+  const url = "/api/PhraseRecd/GetPhraseRecd?UserId=16195"
 
   onMounted(() => {
     const user = sessionStorage.getItem("user-info")

@@ -320,7 +320,7 @@ i.el-icon svg {
 }
 
 #search_event .el-table td.el-table_1_column_9.el-table__cell div {
-  justify-content: space-between;
+  justify-content: center;
 }
 
 label.el-radio {
