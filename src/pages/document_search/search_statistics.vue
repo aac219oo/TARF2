@@ -50,7 +50,7 @@
                             alt=""
                         /></el-button>
                       </div>
-                      <div class="button-items-export">
+                      <!-- <div class="button-items-export">
                         <el-button @click="getBascDate">
                           <img
                             src="../../assets/icon02.png"
@@ -58,7 +58,7 @@
                             alt=""
                           />
                         </el-button>
-                      </div>
+                      </div> -->
                     </el-form-item>
                   </div>
                   <div class="msg_position">
@@ -188,7 +188,7 @@
                             alt=""
                         /></el-button>
                       </div>
-                      <div class="button-items-export">
+                      <!-- <div class="button-items-export">
                         <el-button @click="getCaseTotle">
                           <img
                             src="../../assets/icon02.png"
@@ -196,7 +196,7 @@
                             alt=""
                           />
                         </el-button>
-                      </div>
+                      </div> -->
                     </el-form-item>
                   </div>
                   <div class="msg_position">
@@ -303,7 +303,7 @@
                             alt=""
                         /></el-button>
                       </div>
-                      <div class="button-items-export">
+                      <!-- <div class="button-items-export">
                         <el-button @click="getHandleCount">
                           <img
                             src="../../assets/icon02.png"
@@ -311,7 +311,7 @@
                             alt=""
                           />
                         </el-button>
-                      </div>
+                      </div> -->
                     </el-form-item>
                   </div>
                   <div class="msg_position">
@@ -438,7 +438,7 @@
                             alt=""
                         /></el-button>
                       </div>
-                      <div class="button-items-export">
+                      <!-- <div class="button-items-export">
                         <el-button @click="getCountDetail">
                           <img
                             src="../../assets/icon02.png"
@@ -446,7 +446,7 @@
                             alt=""
                           />
                         </el-button>
-                      </div>
+                      </div> -->
                     </el-form-item>
                   </div>
                   <div class="msg_position active">
@@ -536,7 +536,7 @@
   const DeptNo = sessionStorage.getItem("DeptNo")
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
-  const url = "/api/StatisticsProjidCount/"
+  const url = "/tarf6net/api/StatisticsProjidCount/"
   // loading
   const loading = ref(true)
   // 統計圖表
@@ -582,13 +582,14 @@
   const tabPosition = ref("top")
 
   const formInline = reactive({
-    StartDate: "",
-    EndDate: "",
+    CountYear: "",
+    CountMonth: "",
   })
 
   const ruleFormRef = ref<FormInstance>()
   const formDatePicker = reactive({
-    date: "",
+    StartDate: "",
+    EndDate: "",
   })
 
   const size = ref("default")
@@ -596,7 +597,6 @@
   // DateValue
   const BascDateValue = ref("")
   const CaseTotleValue = ref("")
-  // const HandleCountYearValue = ref("")
   const HandleCountMonthValue = ref("")
   const TotleCountsValue = ref("")
   // tableData
@@ -624,12 +624,11 @@
     }
   }
 
-  // submit
-  const SubmitBascDateValue = () => {
-    const StartDate = dayjs(new Date(BascDateValue.value["0"])).format(
-      "YYYY-MM"
-    )
-    const EndDate = dayjs(new Date(BascDateValue.value["1"])).format("YYYY-MM")
+  onMounted(() => {
+    loading.value = true
+    // 各標送審文件統計
+    const StartDate = dayjs().subtract(5, "month").format("YYYY-MM")
+    const EndDate = dayjs(new Date()).format("YYYY-MM")
     console.log(StartDate + ";" + EndDate)
     const urlBascDateValue =
       url + "GetCaseBascDate?StartDate=" + StartDate + "&EndDate=" + EndDate
@@ -645,52 +644,8 @@
       .catch(function (error) {
         console.log(error)
       })
-  }
-  const SubmitHandleCountValue = () => {
-    // const CountYear = dayjs(new Date(HandleCountYearValue.value)).format("YYYY")
-    const CountYear = dayjs(new Date(HandleCountMonthValue.value)).format(
-      "YYYY"
-    )
-    const CountMonth = dayjs(new Date(HandleCountMonthValue.value)).format("MM")
-    console.log(CountYear + ";" + CountMonth)
-    const urlBascDateValue =
-      url +
-      "GetStatisticsCaseHandleCount?CountYear=" +
-      CountYear +
-      "&CountMonth=" +
-      CountMonth
-    console.log(urlBascDateValue)
-    loading.value = true
-    axios
-      .get(urlBascDateValue)
-      .then((res) => {
-        tableDataHandleCount.value = res.data
-        loading.value = false
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-  }
 
-  onMounted(() => {
-    loading.value = true
-    const urlTotleCountsValue = url + "GetStatisticsTotleCounts"
-    // console.log(urlTotleCountsValue)
-    axios
-      .get(urlTotleCountsValue)
-      .then((res) => {
-        console.log(res.data[0])
-        tableDataTotleCounts.value = res.data
-        totaL_COUNT.value = res.data[0].totaL_COUNT
-        prE_COUNT.value = res.data[0].prE_COUNT
-        noW_COUNT.value = res.data[0].noW_COUNT
-        loading.value = false
-        console.log(res.data)
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-
+    //歷年審查案件數量統計
     const urlCaseTotleValue =
       url +
       "GetStatisticsDeptCaseTotle?UserId=" +
@@ -709,7 +664,104 @@
       .catch(function (error) {
         console.log(error)
       })
+
+    //審查案件辦理情形統計
+    // const CountYear = dayjs(new Date(HandleCountYearValue.value)).format("YYYY")
+    const CountYear = dayjs(new Date()).format("YYYY")
+    const CountMonth = dayjs(new Date()).format("MM")
+    console.log(CountYear + ";" + CountMonth)
+    const urlHandleCountMonthValue =
+      url +
+      "GetStatisticsCaseHandleCount?CountYear=" +
+      CountYear +
+      "&CountMonth=" +
+      CountMonth
+    console.log(urlHandleCountMonthValue)
+    loading.value = true
+    axios
+      .get(urlHandleCountMonthValue)
+      .then((res) => {
+        tableDataHandleCount.value = res.data
+        loading.value = false
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+
+    //主辦單位審查文件數量統計
+    const urlTotleCountsValue = url + "GetStatisticsTotleCounts"
+    // console.log(urlTotleCountsValue)
+    axios
+      .get(urlTotleCountsValue)
+      .then((res) => {
+        console.log(res.data[0])
+        tableDataTotleCounts.value = res.data
+        totaL_COUNT.value = res.data[0].totaL_COUNT
+        prE_COUNT.value = res.data[0].prE_COUNT
+        noW_COUNT.value = res.data[0].noW_COUNT
+        loading.value = false
+        console.log(res.data)
+      })
+      .catch(function (error) {
+        console.log(error)
+        loading.value = false
+        totaL_COUNT.value = "暫無資料"
+        prE_COUNT.value = "暫無資料"
+        noW_COUNT.value = "暫無資料"
+      })
   })
+
+  // submit
+  const SubmitBascDateValue = () => {
+    const StartDate = dayjs(new Date(BascDateValue.value["0"])).format(
+      "YYYY-MM"
+    )
+    const EndDate = dayjs(new Date(BascDateValue.value["1"])).format("YYYY-MM")
+    console.log(StartDate + ";" + EndDate)
+    const urlBascDateValue =
+      url + "GetCaseBascDate?StartDate=" + StartDate + "&EndDate=" + EndDate
+    // console.log(urlBascDateValue)
+    loading.value = true
+    axios
+      .get(urlBascDateValue)
+      .then((res) => {
+        tableDataBasc.value = res.data
+        console.log(res.data)
+        loading.value = false
+      })
+      .catch(function (error) {
+        tableDataBasc.value = ""
+        console.log(error)
+        loading.value = false
+      })
+  }
+  const SubmitHandleCountValue = () => {
+    // const CountYear = dayjs(new Date(HandleCountYearValue.value)).format("YYYY")
+    const CountYear = dayjs(new Date(HandleCountMonthValue.value)).format(
+      "YYYY"
+    )
+    const CountMonth = dayjs(new Date(HandleCountMonthValue.value)).format("MM")
+    console.log(CountYear + ";" + CountMonth)
+    const urlHandleCountMonthValue =
+      url +
+      "GetStatisticsCaseHandleCount?CountYear=" +
+      CountYear +
+      "&CountMonth=" +
+      CountMonth
+    // console.log(urlHandleCountMonthValue)
+    loading.value = true
+    axios
+      .get(urlHandleCountMonthValue)
+      .then((res) => {
+        tableDataHandleCount.value = res.data
+        loading.value = false
+      })
+      .catch(function (error) {
+        tableDataHandleCount.value = ""
+        console.log(error)
+        loading.value = false
+      })
+  }
 
   // 資料匯出
   const getBascDate = () => {

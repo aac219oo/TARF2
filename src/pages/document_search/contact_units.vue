@@ -163,8 +163,8 @@
 
   // axios
   //各單位窗口資訊查詢
-  const url = "/api/ContactInfoQuery/GetDeptChargQuery"
-  // const url = "https://localhost:7227/api/test/GetDeptChargQuery"
+  const url = "/tarf6net/api/ContactInfoQuery/GetDeptChargQuery"
+  // const url = "./api/test/GetDeptChargQuery"
 
   const tabledata = ref<User[]>([])
 

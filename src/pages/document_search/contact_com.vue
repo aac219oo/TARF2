@@ -153,7 +153,7 @@
   const searchDepT_NAME = ref("")
   const searchUseR_NAME = ref("")
   const filterTableData = computed<User[]>(() => {
-    return tabledata.value.filter(
+    tabledata.value.filter(
       (data) =>
         data.proJ_ID
           .toLowerCase()
@@ -165,7 +165,7 @@
           .toLowerCase()
           .includes(searchUseR_NAME.value.toLowerCase())
     )
-    // return tabledata.value
+    return tabledata.value
   })
   const stopEnter = (e) => {
     const code = e.keyCode ? e.keyCode : e.which // in case of browser compatibility
@@ -178,9 +178,9 @@
 
   // axios
   //各標號廠商窗口資訊
-  const url = "/api/ContactInfoQuery/GetOtherChargQuery"
+  const url = "/tarf6net/api/ContactInfoQuery/GetOtherChargQuery"
   // const url = "https://localhost:7227/api/test/GetOtherChargQuery"
-  // const url = "https://tarf.grp.com.tw/api/Test/GetDeptChargQuery"
+  // const url = "./api/Test/GetOtherChargQuery"
 
   const tabledata = ref<User[]>([])
 

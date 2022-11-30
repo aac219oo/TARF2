@@ -152,7 +152,7 @@
               link
               size="small"
               v-if="scope.row.editable"
-              @click="handleSave(scope.row)"
+              @click="handleSave(scope.row, scope.$index)"
               class="button_edit"
             >
               <img
@@ -197,7 +197,7 @@
   // loading
   const loading = ref(true)
   const tableData = ref<User[]>([]) //渲染結果在畫面上
-  const url = "/api/PhraseRecd/" // 連到API
+  const url = "/tarf6net/api/PhraseRecd/" // 連到API
   // const url = "https://localhost:7227/api/test/" // 連到test API
   const UserId = sessionStorage.getItem("UserId") // 儲存UserId
   // 編輯表格功能
@@ -222,6 +222,7 @@
       // 錯誤API提示
       .catch(function (error) {
         console.log(error)
+        loading.value = false
       })
   })
 
@@ -265,7 +266,8 @@
   }
 
   // 儲存表格
-  const handleSave = (row) => {
+  const handleSave = (row, index: number) => {
+    localStorage.setItem("obj", JSON.stringify(tableData.value))
     row.editable = false
     //console.log(row["phrasE_DESC"]); //印JSON中需獲取的值 //row['需要的值']
     // 判斷編輯新增
@@ -288,7 +290,8 @@
           // 傳送值狀態錯誤並顯示訊息
           if (statusCode == "1002") {
             alert(message)
-            window.location.reload() //重整頁面
+            tableData.value.splice(index, 1)
+            // window.location.reload() //重整頁面
           } else {
             alert(message)
             console.log(statusCode + "Add")
@@ -322,7 +325,10 @@
           //顯示錯誤警告
           if (statusCode == "1002") {
             alert(message)
-            window.location.reload()
+            row.editable = false
+            const Item = JSON.parse(localStorage.getItem("obj"))
+            tableData.value = Item
+            // window.location.reload()
           } else {
             alert(message)
           }

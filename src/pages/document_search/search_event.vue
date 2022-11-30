@@ -162,7 +162,8 @@
               <div class="button-items-export">
                 <a
                   :href="
-                    '/api/CaseBascQueryDept/GetCaseFile?FileName=' + filE_PATH
+                    '/tarf6net/api/CaseBascQueryDept/GetCaseFile?FileName=' +
+                    filE_PATH
                   "
                 >
                   <img
@@ -269,7 +270,7 @@
               <template #default="scope">
                 <a
                   :href="
-                    '/document_search/detail_info/index.html?v1=' +
+                    '/tarf6net/document_search/detail_info/index.html?v1=' +
                     scope.row.v1 +
                     '&v2=' +
                     scope.row.v2 +
@@ -332,7 +333,7 @@
   const DeptNo = sessionStorage.getItem("DeptNo") // 儲存DeptNo
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
-  const url = "/api/CaseBascQueryDept/"
+  const url = "/tarf6net/api/CaseBascQueryDept/"
   // const url = "https://localhost:7227/api/CaseBascQueryDept/"
   // const url = "https://localhost:7227/api/test/"
   const size = ref("default")
@@ -412,6 +413,7 @@
       })
       .catch(function (error) {
         console.log(error)
+        loading.value = false
       })
 
     const urlLoadDropDownList =
@@ -500,6 +502,7 @@
           })
           .catch(function (error) {
             console.log(error)
+            loading.value = false
           })
         console.log("submit!")
       } else {

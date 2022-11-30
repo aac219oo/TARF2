@@ -150,7 +150,7 @@
                 size="small"
                 v-if="scope.row.codE_USED"
                 v-show="scope.row.editable"
-                @click="handleSave(scope.row)"
+                @click="handleSave(scope.row, scope.$index)"
                 class="button_edit"
               >
                 <img
@@ -206,7 +206,7 @@
   // loading
   const loading = ref(true)
   const tableData = ref<User[]>([]) //渲染結果在畫面上
-  const url = "/api/AplyItemCode/" // 連到API
+  const url = "/tarf6net/api/AplyItemCode/" // 連到API
   const UserId = ref(() => {
     sessionStorage.getItem("UserId")
   }) // 儲存UserId
@@ -253,6 +253,7 @@
       // 錯誤API提示
       .catch(function (error) {
         console.log(error)
+        loading.value = false
       })
   })
 
@@ -303,7 +304,8 @@
   }
 
   // 儲存表格
-  const handleSave = (row) => {
+  const handleSave = (row, index: number) => {
+    localStorage.setItem("obj", JSON.stringify(storageData))
     row.editable = false
     if (AddorEdit.value) {
       //執行新增
@@ -324,8 +326,8 @@
           // 傳送值狀態錯誤並顯示訊息
           if (statusCode == "1002") {
             alert(message)
+            tableData.value.splice(index, 1)
             // window.location.reload() //重整頁面
-            tableData.value = storageData
           } else {
             alert(message)
             tableData.value = storageData
@@ -358,7 +360,9 @@
           //顯示錯誤警告
           if (statusCode == "1002") {
             alert(message)
-            tableData.value = storageData
+            row.editable = false
+            const Item = JSON.parse(localStorage.getItem("obj"))
+            storageData.values = Item
             // window.location.reload()
           } else {
             alert(message)

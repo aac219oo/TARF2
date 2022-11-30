@@ -149,7 +149,7 @@
               size="small"
               v-if="scope.row.codE_USED"
               v-show="scope.row.editable"
-              @click="handleSave(scope.row)"
+              @click="handleSave(scope.row, scope.$index)"
               class="button_edit"
             >
               <img
@@ -201,7 +201,7 @@
   //loading
   const loading = ref(true)
   const tableData = ref<User[]>([]) //渲染結果在畫面上
-  const url = "/api/ResultCode/" // 連到API
+  const url = "/tarf6net/api/ResultCode/" // 連到API
   // const url = "https://localhost:7227/api/test/" // 連到test API
   const UserId = ref(() => {
     sessionStorage.getItem("UserId")
@@ -248,6 +248,7 @@
       .catch(function (error) {
         // handle error
         console.log(error)
+        loading.value = false
       })
   })
 
@@ -298,7 +299,8 @@
   }
 
   // 儲存表格
-  const handleSave = (row) => {
+  const handleSave = (row, index: number) => {
+    localStorage.setItem("obj", JSON.stringify(storageData))
     row.editable = false
     //console.log(row["phrasE_DESC"]); //印JSON中需獲取的值 //row['需要的值']
     // 判斷編輯新增
@@ -320,7 +322,7 @@
           // 傳送值狀態錯誤並顯示訊息
           if (statusCode == "1002") {
             alert(message)
-            tableData.value = storageData
+            tableData.value.splice(index, 1)
             // window.location.reload() //重整頁面
           } else {
             alert(message)
@@ -353,7 +355,9 @@
           //顯示錯誤警告
           if (statusCode == "1002") {
             alert(message)
-            tableData.value = storageData
+            row.editable = false
+            const Item = JSON.parse(localStorage.getItem("obj"))
+            storageData.values = Item
             // window.location.reload()
           } else {
             alert(message)
@@ -393,7 +397,7 @@
           // tableData.value = storageData
         }
         //console.log(res.data);
-        // console.log(statusCode)
+        console.log(storageData)
         //console.log(tableData.value[0].statusCode);
       })
       .catch(function (error) {

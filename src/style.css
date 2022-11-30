@@ -735,11 +735,11 @@ div.el-tabs__item {
   max-width: 800px;
 }
 
-/* #item_codes .el-input--small .el-input__inner,
+#item_codes .el-input--small .el-input__inner,
 #resualt_codes .el-input--small .el-input__inner,
 #condition_codes .el-input--small .el-input__inner {
   text-transform: uppercase;
-} */
+}
 
 .maintenance_search {
   width: 280px;
