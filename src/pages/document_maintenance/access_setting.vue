@@ -179,6 +179,7 @@
   const DeptNo1 = sessionStorage.getItem("DeptNo1")
   const DeptNo2 = sessionStorage.getItem("DeptNo2")
   const url = "/tarf6net/api/DeptChargOtherDept/"
+  // const url = "https://localhost:7227/api/DeptChargOtherDept/"
   // const url = "https://localhost:7227/api/Test/"
 
   // 單位聯絡窗口選項
@@ -337,6 +338,7 @@
       EmpId.join(";") +
       "&EmpName=" +
       EmpName.join(";")
+    console.log(urlSubmitContact)
     axios
       .get(urlSubmitContact)
       .then((res) => {

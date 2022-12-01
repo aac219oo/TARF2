@@ -159,6 +159,8 @@
                   />
                 </el-button>
               </div>
+              <!-- https://localhost:7227/api/CaseBascQueryDept/GetCaseFile?FileName=
+              /tarf6net/api/CaseBascQueryDept/GetCaseFile?FileName= -->
               <div class="button-items-export">
                 <a
                   :href="

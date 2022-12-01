@@ -23,25 +23,25 @@
   </el-container>
 </template>
 <script>
-  import axios from "axios"
-  import { onMounted } from "vue"
+  // import axios from "axios"
+  // import { onMounted } from "vue"
 
-  const url = "/tarf6net/api/PhraseRecd/GetPhraseRecd?UserId=16195"
+  // const url = "/tarf6net/api/PhraseRecd/GetPhraseRecd?UserId=16195"
 
-  onMounted(() => {
-    const user = sessionStorage.getItem("user-info")
-    username.value = JSON.parse(user).username
-    user_id = JSON.parse(user).id
-    axios
-      .get(url)
-      .then((res) => {
-        console.log(res.data)
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error)
-      })
-  })
+  // onMounted(() => {
+  //   const user = sessionStorage.getItem("user-info")
+  //   username.value = JSON.parse(user).username
+  //   user_id = JSON.parse(user).id
+  //   axios
+  //     .get(url)
+  //     .then((res) => {
+  //       console.log(res.data)
+  //     })
+  //     .catch(function (error) {
+  //       // handle error
+  //       console.log(error)
+  //     })
+  // })
 
   // if (JSON && JSON.stringify && JSON.parse)
   //   var Session =

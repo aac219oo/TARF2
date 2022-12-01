@@ -118,7 +118,7 @@
               cancel-button-text="否"
               confirm-button-type="danger"
               cancel-button-type="primary"
-              @confirm="deleteRow(scope.$index)"
+              @confirm="deleteRow(scope.row, scope.$index)"
             >
               <template #reference>
                 <el-button v-if="scope.row.codE_USED">
@@ -202,7 +202,7 @@
   const loading = ref(true)
   const tableData = ref<User[]>([]) //渲染結果在畫面上
   const url = "/tarf6net/api/ResultCode/" // 連到API
-  // const url = "https://localhost:7227/api/test/" // 連到test API
+  // const url = "https://localhost:7227/api/ResultCode/" // 連到test API
   const UserId = ref(() => {
     sessionStorage.getItem("UserId")
   }) // 儲存UserId
@@ -300,7 +300,6 @@
 
   // 儲存表格
   const handleSave = (row, index: number) => {
-    localStorage.setItem("obj", JSON.stringify(storageData))
     row.editable = false
     //console.log(row["phrasE_DESC"]); //印JSON中需獲取的值 //row['需要的值']
     // 判斷編輯新增
@@ -322,6 +321,7 @@
           // 傳送值狀態錯誤並顯示訊息
           if (statusCode == "1002") {
             alert(message)
+            row.editable = false
             tableData.value.splice(index, 1)
             // window.location.reload() //重整頁面
           } else {
@@ -337,6 +337,11 @@
         })
     } else {
       //執行編輯
+      // const storageEdit = localStorage.setItem(
+      //   "obj",
+      //   JSON.stringify(row.editable)
+      // )
+      // console.log(storageEdit)
       const UserId = sessionStorage.getItem("UserId")
       const urlEdit =
         url +
@@ -356,9 +361,9 @@
           if (statusCode == "1002") {
             alert(message)
             row.editable = false
-            const Item = JSON.parse(localStorage.getItem("obj"))
-            storageData.values = Item
-            // window.location.reload()
+            // const Item = JSON.parse(localStorage.getItem("obj"))
+            // storageData.values = Item
+            window.location.reload()
           } else {
             alert(message)
             tableData.value = storageData
@@ -375,10 +380,9 @@
     }
   }
 
-  const deleteRow = (index: number) => {
+  const deleteRow = (row, index: number) => {
     // tableData.value.splice(index, 1)
-    const urlDelete =
-      url + "DeleteResultCode?ResultCode=" + index["resulT_CODE"]
+    const urlDelete = url + "DeleteResultCode?ResultCode=" + row["resulT_CODE"]
     axios
       .get(urlDelete)
       .then((res) => {
@@ -392,7 +396,7 @@
           // window.location.reload()
         } else {
           alert(message)
-          tableData.value = storageData.splice(index, 1)
+          tableData.value.splice(index, 1)
           // window.location.reload()
           // tableData.value = storageData
         }

@@ -123,7 +123,7 @@
               cancel-button-text="否"
               confirm-button-type="danger"
               cancel-button-type="primary"
-              @confirm="deleteRow(scope.$index)"
+              @confirm="deleteRow(scope.row, scope.$index)"
             >
               <template #reference>
                 <el-button>
@@ -198,7 +198,7 @@
   const loading = ref(true)
   const tableData = ref<User[]>([]) //渲染結果在畫面上
   const url = "/tarf6net/api/PhraseRecd/" // 連到API
-  // const url = "https://localhost:7227/api/test/" // 連到test API
+  // const url = "https://localhost:7227/api/PhraseRecd/" // 連到test API
   const UserId = sessionStorage.getItem("UserId") // 儲存UserId
   // 編輯表格功能
   const AddorEdit = ref(true) //新增編輯變數 新增:true 編輯:false
@@ -214,8 +214,12 @@
       .get(urlTableData)
       .then((res) => {
         console.log(res.data) //印API接收到的JSON
-        // const statusCode = res.data[0].statusCode; //後台傳送訊息狀態變數
-        tableData.value = res.data //獲取JSON並處理
+        const statusCode = res.data[0].statusCode //後台傳送訊息狀態變數
+        if (statusCode == "1002") {
+          tableData.value = []
+        } else {
+          tableData.value = res.data //獲取JSON並處理
+        }
         loading.value = false
         // console.log(tableData.value[0].statusCode);  //印JSON陣列第零項後台傳送的訊息判斷1001、1002
       })
@@ -326,11 +330,12 @@
           if (statusCode == "1002") {
             alert(message)
             row.editable = false
-            const Item = JSON.parse(localStorage.getItem("obj"))
-            tableData.value = Item
-            // window.location.reload()
+            // const Item = JSON.parse(localStorage.getItem("obj"))
+            // tableData.value = Item
+            window.location.reload()
           } else {
             alert(message)
+            row.editable = false
           }
           tableData.value = res.data
           //console.log(res.data);
@@ -345,7 +350,7 @@
   }
 
   //刪除表格
-  const deleteRow = (index: number) => {
+  const deleteRow = (row, index: number) => {
     // tableData.value.splice(index, 1)
     // 儲存session
     // const UserId = sessionStorage.getItem("UserId")
@@ -354,7 +359,7 @@
       "DeletePhraseBasc?UserId=" +
       UserId +
       "&argPhraseDesc=" +
-      index["phrasE_DESC"] // 儲存刪除api
+      row["phrasE_DESC"] // 儲存刪除api
     axios
       .get(urlDelete)
       .then((res) => {

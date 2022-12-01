@@ -351,7 +351,8 @@
               />
               <el-table-column :resizable="false">
                 <template #default>
-                  <a href="{{ GetReviewCaseFile.value.detL_LINK }}">查閱</a>
+                  <p>查閱</p>
+                  <!-- <a href="{{ GetReviewCaseFile.value.detL_LINK }}">查閱</a> -->
                 </template>
               </el-table-column>
             </el-table>
@@ -421,6 +422,7 @@
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
   const url = "/tarf6net/api/CaseBascQueryDetail/"
+  // const url = "https://localhost:7227/api/CaseBascQueryDetail/"
   const geturl = window.location.href
   console.log(geturl)
   const getqyinfo = geturl.split("?")[1]

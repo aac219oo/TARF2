@@ -310,7 +310,7 @@
 
   sessionStorage.setItem("UserId", "11695") //儲存session
   const url = "/tarf6net/api/UserRigh/" // 連到API
-  // const url = "https://localhost:7227/api/test/"
+  // const url = "https://localhost:7227/api/UserRigh/"
   const UserId = sessionStorage.getItem("UserId") // 儲存UserId
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
@@ -480,6 +480,7 @@
       .catch(function (error) {
         // handle error
         console.log(error)
+        loading.value = false
       })
 
     // //讀取標號維護已有標號
@@ -626,15 +627,15 @@
     axios
       .get(urlSaveProj)
       .then((res) => {
-        const statusCode = res.data[0].statusCode //儲存狀態代碼
-        const message = res.data[0].message //儲存狀態訊息
-        console.log(res)
-        if (statusCode == "1002") {
-          alert(message)
-        } else {
-          alert(message)
-          window.location.reload() //重整頁面
-        }
+        // const statusCode = res.data[0].statusCode //儲存狀態代碼
+        // const message = res.data[0].message //儲存狀態訊息
+        // console.log(res)
+        // if (statusCode == "1002") {
+        //   alert(message)
+        // } else {
+        //   alert(message)
+        //   window.location.reload() //重整頁面
+        // }
         // console.log(statusCode + "Save") //狀態代碼為新增
       })
       .catch(function (error) {

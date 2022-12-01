@@ -118,7 +118,7 @@
               cancel-button-text="否"
               confirm-button-type="danger"
               cancel-button-type="primary"
-              @confirm="deleteRow(scope.$index)"
+              @confirm="deleteRow(scope.row, scope.$index)"
             >
               <template #reference>
                 <el-button v-if="scope.row.codE_USED">
@@ -202,6 +202,7 @@
   const loading = ref(true)
   const tableData = ref<User[]>([]) //渲染結果在畫面上
   const url = "/tarf6net/api/StatusCode/" // 連到API
+  // const url = "https://localhost:7227/api/StatusCode/" // 連到API
   const UserId = ref(() => {
     sessionStorage.getItem("UserId")
   }) // 儲存UserId
@@ -349,10 +350,12 @@
           if (statusCode == "1002") {
             alert(message)
             row.editable = false
-            const Item = JSON.parse(localStorage.getItem("obj"))
-            storageData.values = Item
+            // const Item = JSON.parse(localStorage.getItem("obj"))
+            // storageData.values = Item
+            window.location.reload()
           } else {
             alert(message)
+            row.editable = false
             tableData.value = storageData
           }
           //console.log(res.data);
@@ -367,10 +370,9 @@
   }
 
   //刪除表格
-  const deleteRow = (index: number) => {
+  const deleteRow = (row, index: number) => {
     // tableData.value.splice(index, 1)
-    const urlDelete =
-      url + "DeleteStatusCode?StatusCode=" + index["casE_STATUS"] // 連api刪除功能
+    const urlDelete = url + "DeleteStatusCode?StatusCode=" + row["casE_STATUS"] // 連api刪除功能
     axios
       .get(urlDelete)
       .then((res) => {
@@ -384,7 +386,7 @@
           // window.location.reload() //重整頁面
         } else {
           alert(message)
-          tableData.value = storageData.splice(index, 1)
+          tableData.value.splice(index, 1)
           // window.location.reload() //重整頁面
           // .splice(index, row.)
         }

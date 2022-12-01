@@ -179,8 +179,7 @@
   // axios
   //各標號廠商窗口資訊
   const url = "/tarf6net/api/ContactInfoQuery/GetOtherChargQuery"
-  // const url = "https://localhost:7227/api/test/GetOtherChargQuery"
-  // const url = "./api/Test/GetOtherChargQuery"
+  // const url = "https://localhost:7227/api/ContactInfoQuery/GetOtherChargQuery"
 
   const tabledata = ref<User[]>([])
 

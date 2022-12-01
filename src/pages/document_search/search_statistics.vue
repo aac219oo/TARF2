@@ -537,6 +537,7 @@
   const language = ref("zh-tw")
   const locale = computed(() => (language.value === "zh-tw" ? zhTw : en))
   const url = "/tarf6net/api/StatisticsProjidCount/"
+  // const url = "https://localhost:7227/api/StatisticsProjidCount/"
   // loading
   const loading = ref(true)
   // 統計圖表
@@ -625,15 +626,14 @@
   }
 
   onMounted(() => {
-    loading.value = true
     // 各標送審文件統計
+    loading.value = true
     const StartDate = dayjs().subtract(5, "month").format("YYYY-MM")
     const EndDate = dayjs(new Date()).format("YYYY-MM")
     console.log(StartDate + ";" + EndDate)
     const urlBascDateValue =
       url + "GetCaseBascDate?StartDate=" + StartDate + "&EndDate=" + EndDate
     console.log(urlBascDateValue)
-    loading.value = true
     axios
       .get(urlBascDateValue)
       .then((res) => {
@@ -644,8 +644,11 @@
       .catch(function (error) {
         console.log(error)
       })
+  })
 
-    //歷年審查案件數量統計
+  //歷年審查案件數量統計
+  onMounted(() => {
+    loading.value = true
     const urlCaseTotleValue =
       url +
       "GetStatisticsDeptCaseTotle?UserId=" +
@@ -663,9 +666,13 @@
       })
       .catch(function (error) {
         console.log(error)
+        loading.value = false
       })
+  })
 
-    //審查案件辦理情形統計
+  //審查案件辦理情形統計
+  onMounted(() => {
+    loading.value = true
     // const CountYear = dayjs(new Date(HandleCountYearValue.value)).format("YYYY")
     const CountYear = dayjs(new Date()).format("YYYY")
     const CountMonth = dayjs(new Date()).format("MM")
@@ -686,9 +693,13 @@
       })
       .catch(function (error) {
         console.log(error)
+        loading.value = false
       })
+  })
 
-    //主辦單位審查文件數量統計
+  //主辦單位審查文件數量統計
+  onMounted(() => {
+    loading.value = true
     const urlTotleCountsValue = url + "GetStatisticsTotleCounts"
     // console.log(urlTotleCountsValue)
     axios
