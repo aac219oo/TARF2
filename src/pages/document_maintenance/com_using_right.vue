@@ -603,7 +603,6 @@
           tableData.value = storageData
         } else {
           alert(message)
-          tableData.value = storageData
         }
         // console.log(storageData)
       })
@@ -614,7 +613,6 @@
 
   // 送出標號維護
   const submitProjData = (row, val) => {
-    row.openQueryProjData = false
     const urlSaveProj =
       url +
       "SaveProj?EmplSeri=" +
@@ -627,16 +625,16 @@
     axios
       .get(urlSaveProj)
       .then((res) => {
-        // const statusCode = res.data[0].statusCode //儲存狀態代碼
-        // const message = res.data[0].message //儲存狀態訊息
-        // console.log(res)
-        // if (statusCode == "1002") {
-        //   alert(message)
-        // } else {
-        //   alert(message)
-        //   window.location.reload() //重整頁面
-        // }
-        // console.log(statusCode + "Save") //狀態代碼為新增
+        console.log(res.data)
+        const statusCode = res.data[0].statusCode
+        const message = res.data[0].message
+        if (statusCode == "1002") {
+          alert(message)
+          // tableData.value = storageData
+        } else {
+          alert(message)
+          // tableData.value = storageData
+        }
       })
       .catch(function (error) {
         console.log(error)

@@ -293,6 +293,14 @@
 
   // 編輯表格
   const handleEdit = (row) => {
+    sessionStorage.setItem(
+      "aplY_ITEM_CODE",
+      JSON.stringify(row["aplY_ITEM_CODE"])
+    )
+    sessionStorage.setItem(
+      "aplY_ITEM_NAME",
+      JSON.stringify(row["aplY_ITEM_NAME"])
+    )
     AddorEdit.value = false //編輯
     row.editable = true
     AplyItemCodeOrg.value = row.aplY_ITEM_CODE //原本的值
@@ -363,15 +371,19 @@
           if (statusCode == "1002") {
             alert(message)
             row.editable = false
-            // const Item = JSON.parse(localStorage.getItem("obj"))
-            // storageData.values = Item
-            window.location.reload()
+            const aplY_ITEM_CODE = JSON.parse(
+              sessionStorage.getItem("aplY_ITEM_CODE")
+            )
+            const aplY_ITEM_NAME = JSON.parse(
+              sessionStorage.getItem("aplY_ITEM_NAME")
+            )
+            row.aplY_ITEM_CODE = aplY_ITEM_CODE
+            row.aplY_ITEM_NAME = aplY_ITEM_NAME
           } else {
             alert(message)
             row.editable = false
             tableData.value = storageData
           }
-          row.editable = true
           // tableData.value = res.data
           //console.log(res.data);
           console.log(statusCode + "Edit") //狀態代碼為編輯

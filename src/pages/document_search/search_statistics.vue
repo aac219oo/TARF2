@@ -628,7 +628,7 @@
   onMounted(() => {
     // 各標送審文件統計
     loading.value = true
-    const StartDate = dayjs().subtract(5, "month").format("YYYY-MM")
+    const StartDate = dayjs(new Date()).format("YYYY-MM")
     const EndDate = dayjs(new Date()).format("YYYY-MM")
     console.log(StartDate + ";" + EndDate)
     const urlBascDateValue =

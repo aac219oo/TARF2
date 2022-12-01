@@ -167,6 +167,7 @@
                     '/tarf6net/api/CaseBascQueryDept/GetCaseFile?FileName=' +
                     filE_PATH
                   "
+                  target="_blank"
                 >
                   <img
                     src="../../assets/icon02.png"
@@ -342,7 +343,7 @@
   const tables = reactive({
     newsdata: "",
   })
-  const loading = ref(true)
+  const loading = ref(false)
   const pageSize = ref(5)
   const pageSizes = [5, 10, 15, 20]
   const currentPage = ref(1)
@@ -401,22 +402,22 @@
   const filE_PATH = ref()
 
   onMounted(() => {
-    const urlLoadQueryData = url + "LoadQueryData?UserId=" + UserId
-    loading.value = true
-    axios
-      .get(urlLoadQueryData)
-      .then((res) => {
-        console.log(res.data)
-        tables.newsdata = res.data
-        loading.value = false
-        files_count.value = res.data.length
-        filE_PATH.value = res.data[0].filE_PATH
-        console.log(filE_PATH)
-      })
-      .catch(function (error) {
-        console.log(error)
-        loading.value = false
-      })
+    // const urlLoadQueryData = url + "LoadQueryData?UserId=" + UserId
+    // loading.value = true
+    // axios
+    //   .get(urlLoadQueryData)
+    //   .then((res) => {
+    //     console.log(res.data)
+    //     tables.newsdata = res.data
+    //     loading.value = false
+    //     files_count.value = res.data.length
+    //     filE_PATH.value = res.data[0].filE_PATH
+    //     console.log(filE_PATH)
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error)
+    //     loading.value = false
+    //   })
 
     const urlLoadDropDownList =
       url +
@@ -500,6 +501,8 @@
             console.log(res.data)
             tables.newsdata = res.data
             files_count.value = res.data.length
+            filE_PATH.value = res.data[0].filE_PATH
+            console.log(filE_PATH)
             loading.value = false
           })
           .catch(function (error) {

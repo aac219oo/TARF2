@@ -258,6 +258,7 @@
 
   // 編輯表格
   const handleEdit = (row) => {
+    sessionStorage.setItem("phrasE_DESC", JSON.stringify(row["phrasE_DESC"]))
     AddorEdit.value = false //編輯
     row.editable = true
     argPhraseDescDB.value = row["phrasE_DESC"]
@@ -330,9 +331,10 @@
           if (statusCode == "1002") {
             alert(message)
             row.editable = false
-            // const Item = JSON.parse(localStorage.getItem("obj"))
-            // tableData.value = Item
-            window.location.reload()
+            const phrasE_DESC = JSON.parse(
+              sessionStorage.getItem("phrasE_DESC")
+            )
+            row.phrasE_DESC = phrasE_DESC
           } else {
             alert(message)
             row.editable = false

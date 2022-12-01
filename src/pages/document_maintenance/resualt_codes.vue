@@ -287,6 +287,8 @@
 
   // 編輯表格
   const handleEdit = (row) => {
+    sessionStorage.setItem("resulT_CODE", JSON.stringify(row["resulT_CODE"]))
+    sessionStorage.setItem("resulT_NAME", JSON.stringify(row["resulT_NAME"]))
     AddorEdit.value = false //編輯
     row.editable = true
     ;(ResultCodeOrg.value = row["resulT_CODE"]), row["resulT_NAME"]
@@ -337,10 +339,6 @@
         })
     } else {
       //執行編輯
-      // const storageEdit = localStorage.setItem(
-      //   "obj",
-      //   JSON.stringify(row.editable)
-      // )
       // console.log(storageEdit)
       const UserId = sessionStorage.getItem("UserId")
       const urlEdit =
@@ -361,11 +359,18 @@
           if (statusCode == "1002") {
             alert(message)
             row.editable = false
-            // const Item = JSON.parse(localStorage.getItem("obj"))
-            // storageData.values = Item
-            window.location.reload()
+            const resulT_CODE = JSON.parse(
+              sessionStorage.getItem("resulT_CODE")
+            )
+            const resulT_NAME = JSON.parse(
+              sessionStorage.getItem("resulT_NAME")
+            )
+            row.resulT_CODE = resulT_CODE
+            row.resulT_NAME = resulT_NAME
+            // window.location.reload()
           } else {
             alert(message)
+            row.editable = false
             tableData.value = storageData
           }
           // tableData.value = res.data

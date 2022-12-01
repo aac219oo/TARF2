@@ -287,6 +287,8 @@
 
   // 編輯表格
   const handleEdit = (row) => {
+    sessionStorage.setItem("casE_STATUS", JSON.stringify(row["casE_STATUS"]))
+    sessionStorage.setItem("statuS_DESC", JSON.stringify(row["statuS_DESC"]))
     AddorEdit.value = false //編輯
     row.editable = true
     StatusCodeOrg.value = row.casE_STATUS
@@ -350,9 +352,14 @@
           if (statusCode == "1002") {
             alert(message)
             row.editable = false
-            // const Item = JSON.parse(localStorage.getItem("obj"))
-            // storageData.values = Item
-            window.location.reload()
+            const casE_STATUS = JSON.parse(
+              sessionStorage.getItem("casE_STATUS")
+            )
+            const statuS_DESC = JSON.parse(
+              sessionStorage.getItem("statuS_DESC")
+            )
+            row.casE_STATUS = casE_STATUS
+            row.statuS_DESC = statuS_DESC
           } else {
             alert(message)
             row.editable = false
