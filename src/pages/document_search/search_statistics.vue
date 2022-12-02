@@ -652,7 +652,6 @@
 
   //歷年審查案件數量統計
   onMounted(() => {
-    loading.value = true
     const urlCaseTotleValue =
       url +
       "GetStatisticsDeptCaseTotle?UserId=" +
@@ -666,9 +665,6 @@
       .get(urlCaseTotleValue)
       .then((res) => {
         tableDataCaseTotle.value = res.data
-        setTimeout(() => {
-          loading.value = false
-        }, 2000)
       })
       .catch(function (error) {
         console.log(error)
@@ -706,25 +702,27 @@
   //       loading.value = false
   //     })
   // })
-
+  const depA_ND_CODE = ref()
   //主辦單位審查文件數量統計
   onMounted(() => {
     const urlTotleCountsValue = url + "GetStatisticsTotleCounts"
     // console.log(urlTotleCountsValue)
-    // totaL_COUNT.value = "讀取中"
-    // prE_COUNT.value = "讀取中"
-    // noW_COUNT.value = "讀取中"
     axios
       .get(urlTotleCountsValue)
       .then((res) => {
-        console.log(res.data[0])
+        console.log(res.data)
         tableDataTotleCounts.value = res.data
         totaL_COUNT.value = res.data[0].totaL_COUNT
         prE_COUNT.value = res.data[0].prE_COUNT
         noW_COUNT.value = res.data[0].noW_COUNT
-        setTimeout(() => {
-          loading.value = false
-        }, 2000)
+        loading.value = false
+        // for (let i = 0; i < res.data.length; i++) {
+        //   depA_ND_CODE.value = res.data[i].depA_ND_CODE
+        //   if ((depA_ND_CODE.value = "")) {
+        //     test.value = false
+        //   }
+        //   console.log(depA_ND_CODE.value)
+        // }
       })
       .catch(function (error) {
         alert("主辦單位審查文件數量統計資料無法讀取，請洽系統人員")

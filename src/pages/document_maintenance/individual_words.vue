@@ -94,7 +94,7 @@
                   v-model="scope.row[item.prop]"
                   :placeholder="`請輸入${item.label}`"
                   @change="handleAdd(scope.row)"
-                  @keydown.esc="closeEdit(scope.row)"
+                  @keydown.esc="closeEdit(scope.row, scope.$index)"
                 />
               </template>
             </div>
@@ -274,7 +274,6 @@
 
   // 儲存表格
   const handleSave = (row, index: number) => {
-    localStorage.setItem("obj", JSON.stringify(tableData.value))
     row.editable = false
     //console.log(row["phrasE_DESC"]); //印JSON中需獲取的值 //row['需要的值']
     // 判斷編輯新增
@@ -302,14 +301,14 @@
           } else {
             alert(message)
             console.log(statusCode + "Add")
+            tableData.value = res.data
           }
-          tableData.value = res.data
           //console.log(res.data);
           console.log(statusCode + "Add") //狀態代碼為新增
           //console.log(tableData.value[0].statusCode);
         })
         .catch(function (error) {
-          alert("資料無法儲存，請洽系統人員")
+          // alert("資料無法儲存，請洽系統人員")
           console.log(error)
           row.phrasE_DESC = ""
           tableData.value.splice(index, 1)
@@ -343,8 +342,8 @@
           } else {
             alert(message)
             row.editable = false
+            tableData.value = res.data
           }
-          tableData.value = res.data
           //console.log(res.data);
           console.log(statusCode + "Edit") //狀態代碼為編輯
           //console.log(tableData.value[0].statusCode);
@@ -353,6 +352,7 @@
           // handle error
           alert("資料無法編輯，請洽系統人員")
           console.log(error)
+          row.editable = false
           const phrasE_DESC = JSON.parse(sessionStorage.getItem("phrasE_DESC"))
           row.phrasE_DESC = phrasE_DESC
         })
@@ -379,10 +379,6 @@
         if (statusCode == "1002") {
           alert(message)
           tableData.value = res.data
-          if ((row.phrasE_DESC = null)) {
-            res.data = ""
-            tableData.value = res.data
-          }
         } else {
           alert(message)
           tableData.value.splice(index, 1)
@@ -392,14 +388,19 @@
       })
       .catch(function (error) {
         // handle error
-        alert("資料無法刪除，請洽系統人員")
+        // alert("資料無法正常刪除，請洽系統人員")
         console.log(error)
-        // tableData.value.splice(index, 1)
+        tableData.value.splice(index, 1)
       })
   }
 
-  const closeEdit = (row) => {
-    row.editable = false
-    row.phrasE_DESC.resetFields()
+  const closeEdit = (row, index: number) => {
+    if (AddorEdit.value) {
+      tableData.value.splice(index, 1)
+    } else {
+      const phrasE_DESC = JSON.parse(sessionStorage.getItem("phrasE_DESC"))
+      row.phrasE_DESC = phrasE_DESC
+      row.editable = false
+    }
   }
 </script>

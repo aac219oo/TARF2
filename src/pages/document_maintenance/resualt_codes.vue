@@ -90,7 +90,7 @@
                   @keyup="
                     scope.row[item.prop] = scope.row[item.prop].toUpperCase()
                   "
-                  @keydown.esc="closeEdit(scope.row)"
+                  @keydown.esc="closeEdit(scope.row, scope.$index)"
                 />
               </template>
             </div>
@@ -339,6 +339,7 @@
         .catch(function (error) {
           alert("資料無法儲存，請洽系統人員")
           console.log(error)
+          tableData.value.splice(index, 1)
         })
     } else {
       //執行編輯
@@ -385,6 +386,10 @@
           // handle error
           alert("資料無法編輯，請洽系統人員")
           console.log(error)
+          const resulT_CODE = JSON.parse(sessionStorage.getItem("resulT_CODE"))
+          const resulT_NAME = JSON.parse(sessionStorage.getItem("resulT_NAME"))
+          row.resulT_CODE = resulT_CODE
+          row.resulT_NAME = resulT_NAME
         })
     }
   }
@@ -401,7 +406,11 @@
         // 錯誤訊息顯示
         if (statusCode == "1002") {
           alert(message)
-          tableData.value = storageData
+          row.editable = false
+          const resulT_CODE = JSON.parse(sessionStorage.getItem("resulT_CODE"))
+          const resulT_NAME = JSON.parse(sessionStorage.getItem("resulT_NAME"))
+          row.resulT_CODE = resulT_CODE
+          row.resulT_NAME = resulT_NAME
           // window.location.reload()
         } else {
           alert(message)
@@ -420,7 +429,15 @@
       })
   }
 
-  const closeEdit = (row) => {
-    row.editable = false
+  const closeEdit = (row, index: number) => {
+    if (AddorEdit.value) {
+      tableData.value.splice(index, 1)
+    } else {
+      const resulT_CODE = JSON.parse(sessionStorage.getItem("resulT_CODE"))
+      const resulT_NAME = JSON.parse(sessionStorage.getItem("resulT_NAME"))
+      row.resulT_CODE = resulT_CODE
+      row.resulT_NAME = resulT_NAME
+      row.editable = false
+    }
   }
 </script>

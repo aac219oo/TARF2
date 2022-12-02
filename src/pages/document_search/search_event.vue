@@ -507,8 +507,9 @@
             if (statusCode == "1002") {
               alert(message)
               loading.value = false
+              tables.newsdata = ""
             } else {
-              alert(message)
+              // alert(message)
               tables.newsdata = res.data
               loading.value = false
             }

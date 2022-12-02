@@ -487,6 +487,10 @@
     // //讀取標號維護已有標號
     openQueryProjData.value = (row) => {
       row.openQueryProjData = true
+      sessionStorage.setItem(
+        "QueryProjDataValue",
+        JSON.stringify(QueryProjData.value)
+      )
       const urlQueryProjData = url + "QueryProjData?UserId=" + row["useR_ID"]
       // console.log(urlQueryProjData)
       axios
@@ -618,6 +622,7 @@
 
   // 送出標號維護
   const submitProjData = (row, val) => {
+    row.openQueryProjData = false
     const urlSaveProj =
       url +
       "SaveProj?EmplSeri=" +
@@ -655,22 +660,9 @@
   }
   const cancelQueryProjData = (row) => {
     row.openQueryProjData = false
-    // console.log(row.useR_ID)
-    const urlQueryProjData = url + "QueryProjData?UserId=" + row["useR_ID"]
-    // console.log(urlQueryProjData)
-    axios
-      .get(urlQueryProjData)
-      .then((res) => {
-        // console.log(res.data)
-        for (let i = 0; i < res.data.length; i++) {
-          QueryProjDataOrg[i] = res.data[i].proJ_ID
-        }
-        QueryProjData.value = QueryProjDataOrg
-        console.log(QueryProjData.value)
-      })
-      .catch(function (error) {
-        alert("預設標號無法讀取，請洽系統人員")
-        console.log(error)
-      })
+    const QueryProjDataValue = JSON.parse(
+      sessionStorage.getItem("QueryProjDataValue")
+    )
+    QueryProjData.value = QueryProjDataValue
   }
 </script>

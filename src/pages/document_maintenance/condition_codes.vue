@@ -90,6 +90,7 @@
                   @keyup="
                     scope.row[item.prop] = scope.row[item.prop].toUpperCase()
                   "
+                  @keydown.esc="closeEdit(scope.row, scope.$index)"
                 />
               </template>
             </div>
@@ -248,7 +249,7 @@
       .catch(function (error) {
         // handle error
         console.log(error)
-        alert("資料無法讀取，請洽系統人員")
+        // alert("資料無法讀取，請洽系統人員")
         loading.value = false
       })
   })
@@ -332,6 +333,7 @@
         .catch(function (error) {
           alert("資料無法儲存，請洽系統人員")
           console.log(error)
+          tableData.value.splice(index, 1)
         })
     } else {
       //執行編輯
@@ -374,6 +376,11 @@
           // handle error
           alert("資料無法編輯，請洽系統人員")
           console.log(error)
+          row.editable = false
+          const casE_STATUS = JSON.parse(sessionStorage.getItem("casE_STATUS"))
+          const statuS_DESC = JSON.parse(sessionStorage.getItem("statuS_DESC"))
+          row.casE_STATUS = casE_STATUS
+          row.statuS_DESC = statuS_DESC
         })
     }
   }
@@ -391,8 +398,11 @@
         // 錯誤訊息顯示
         if (statusCode == "1002") {
           alert(message)
-          tableData.value = storageData
-          // window.location.reload() //重整頁面
+          row.editable = false
+          const casE_STATUS = JSON.parse(sessionStorage.getItem("casE_STATUS"))
+          const statuS_DESC = JSON.parse(sessionStorage.getItem("statuS_DESC"))
+          row.casE_STATUS = casE_STATUS
+          row.statuS_DESC = statuS_DESC
         } else {
           alert(message)
           tableData.value.splice(index, 1)
@@ -408,5 +418,17 @@
         alert("資料無法刪除，請洽系統人員")
         console.log(error)
       })
+  }
+
+  const closeEdit = (row, index: number) => {
+    if (AddorEdit.value) {
+      tableData.value.splice(index, 1)
+    } else {
+      const casE_STATUS = JSON.parse(sessionStorage.getItem("casE_STATUS"))
+      const statuS_DESC = JSON.parse(sessionStorage.getItem("statuS_DESC"))
+      row.casE_STATUS = casE_STATUS
+      row.statuS_DESC = statuS_DESC
+      row.editable = false
+    }
   }
 </script>

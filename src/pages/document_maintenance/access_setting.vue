@@ -187,6 +187,7 @@
   const optionsContact = ref()
   // 代理人設定
   const valueSetting = ref<string[]>([])
+  const valueSettingOrg = ref<string[]>([])
   interface valueFace {
     empL_SERI_AGENT: string
     empL_NAME_AGENT: string
@@ -206,10 +207,10 @@
       .then((res) => {
         const statusCode = res.data[0].statusCode //儲存狀態代碼
         const message = res.data[0].message //儲存狀態訊息
-        // console.log(res.data)
+        console.log(res.data)
         optionsContact.value = res.data
         if (statusCode == "1002") {
-          // console.log(message)
+          alert(message)
         } else {
         }
       })
@@ -231,7 +232,7 @@
           valueSetting.value[i] =
             res.data[i].empL_NAME_AGENT + ";" + res.data[i].empL_SERI_AGENT
         }
-        console.log(valueSetting)
+        console.log(res.data)
         // console.log(res.data)
       })
       .catch(function (error) {
@@ -324,11 +325,6 @@
   }
   const change = () => {}
   const onSubmitSetting = () => {
-    console.log(valueSetting.value)
-    sessionStorage.setItem(
-      "valueSettingValue",
-      JSON.stringify(valueSetting.value)
-    )
     const re = /\s*(?:;|$)\s*/ // 符號分割
     const value = reactive([])
     const EmpName = reactive([])
@@ -357,10 +353,29 @@
         console.log(res.data)
         if (statusCode == "1002") {
           alert(message)
-          const valueSettingValue = JSON.parse(
-            sessionStorage.getItem("valueSettingValue")
-          )
-          valueSetting.value = valueSettingValue
+          // 讀取代理人
+          const urlLoadStuffAll =
+            url + "LoadStuffAll?UserId=" + UserId + "&UserName=" + UserName
+          console.log(urlLoadStuffAll)
+          axios
+            .get(urlLoadStuffAll)
+            .then((res) => {
+              // valueSetting.value = res.data
+              for (let i = 0; i < res.data.length; i++) {
+                valueSettingOrg.value[i] =
+                  res.data[i].empL_NAME_AGENT +
+                  ";" +
+                  res.data[i].empL_SERI_AGENT
+              }
+              console.log(res.data)
+              valueSetting.value = valueSettingOrg.value
+              // console.log(res.data)
+            })
+            .catch(function (error) {
+              // handle error
+              alert("預設代理人無法讀取，請洽系統人員")
+              console.log(error)
+            })
           // window.location.reload() //重整頁面
         } else {
           alert(message)
