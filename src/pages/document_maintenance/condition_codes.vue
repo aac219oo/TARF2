@@ -248,6 +248,7 @@
       .catch(function (error) {
         // handle error
         console.log(error)
+        alert("資料無法讀取，請洽系統人員")
         loading.value = false
       })
   })
@@ -299,7 +300,6 @@
 
   // 儲存表格
   const handleSave = (row, index: number) => {
-    localStorage.setItem("obj", JSON.stringify(storageData))
     row.editable = false
     //console.log(row["phrasE_DESC"]); //印JSON中需獲取的值 //row['需要的值']
     // 判斷編輯新增
@@ -330,6 +330,7 @@
           //console.log(tableData.value[0].statusCode);
         })
         .catch(function (error) {
+          alert("資料無法讀取，請洽系統人員")
           console.log(error)
         })
     } else {
@@ -371,6 +372,7 @@
         })
         .catch(function (error) {
           // handle error
+          alert("資料無法讀取，請洽系統人員")
           console.log(error)
         })
     }
@@ -403,6 +405,7 @@
       })
       .catch(function (error) {
         // handle error
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
   }

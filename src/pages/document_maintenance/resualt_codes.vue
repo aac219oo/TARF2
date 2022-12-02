@@ -247,6 +247,7 @@
       // 錯誤API提示
       .catch(function (error) {
         // handle error
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
         loading.value = false
       })
@@ -335,6 +336,7 @@
           //console.log(tableData.value[0].statusCode);
         })
         .catch(function (error) {
+          alert("資料無法讀取，請洽系統人員")
           console.log(error)
         })
     } else {
@@ -380,6 +382,7 @@
         })
         .catch(function (error) {
           // handle error
+          alert("資料無法讀取，請洽系統人員")
           console.log(error)
         })
     }
@@ -411,6 +414,7 @@
       })
       .catch(function (error) {
         // handle error
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
   }

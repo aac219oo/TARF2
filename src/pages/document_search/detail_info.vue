@@ -459,6 +459,7 @@
         GetReviewCaseBasc.value = res.data
       })
       .catch(function (error) {
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
 
@@ -477,6 +478,7 @@
         GetReviewExamRecd.value = res.data
       })
       .catch(function (error) {
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
 
@@ -495,6 +497,7 @@
         GetReviewPsnExamRecd.value = res.data
       })
       .catch(function (error) {
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
 
@@ -514,6 +517,7 @@
         GetReviewAnswerComm.value = res.data
       })
       .catch(function (error) {
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
 
@@ -532,6 +536,7 @@
         GetReviewCaseFile.value = res.data
       })
       .catch(function (error) {
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
 
@@ -550,6 +555,7 @@
         GetReviewAttachFile.value = res.data
       })
       .catch(function (error) {
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
   })
@@ -570,6 +576,7 @@
         TmDsGetFile.value = res.data
       })
       .catch(function (error) {
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
   }

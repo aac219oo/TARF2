@@ -418,7 +418,6 @@
     //     console.log(error)
     //     loading.value = false
     //   })
-
     const urlLoadDropDownList =
       url +
       "LoadDropDownList?UserId=" +
@@ -439,6 +438,7 @@
         optionHandleTypeDesc.value = res.data[0].statuS_DESC
       })
       .catch(function (error) {
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
   })
@@ -499,14 +499,23 @@
           })
           .then((res) => {
             console.log(res.data)
-            tables.newsdata = res.data
+            const statusCode = res.data[0].statusCode //儲存狀態代碼
+            const message = res.data[0].message //儲存狀態訊息
             files_count.value = res.data.length
             filE_PATH.value = res.data[0].filE_PATH
             console.log(filE_PATH)
-            loading.value = false
+            if (statusCode == "1002") {
+              alert(message)
+              loading.value = false
+            } else {
+              alert(message)
+              tables.newsdata = res.data
+              loading.value = false
+            }
           })
           .catch(function (error) {
             console.log(error)
+            alert("資料無法讀取，請洽系統人員")
             loading.value = false
           })
         console.log("submit!")

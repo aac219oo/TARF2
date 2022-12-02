@@ -40,6 +40,7 @@
                         end-placeholder="請選擇月份"
                         :size="size"
                       />
+                      <!-- :default-value="[new Date(), new Date()]" -->
                     </el-form-item>
                     <el-form-item class="button-items">
                       <div class="button-items-search">
@@ -605,9 +606,9 @@
   const tableDataCaseTotle = ref()
   const tableDataHandleCount = ref()
   const tableDataTotleCounts = ref()
-  const totaL_COUNT = ref()
-  const prE_COUNT = ref()
-  const noW_COUNT = ref()
+  const totaL_COUNT = ref("讀取中")
+  const prE_COUNT = ref("讀取中")
+  const noW_COUNT = ref("讀取中")
 
   // children展開只盞開一行
   const expands = ref()
@@ -639,10 +640,13 @@
       .then((res) => {
         tableDataBasc.value = res.data
         console.log(res.data)
-        loading.value = false
+        setTimeout(() => {
+          loading.value = false
+        }, 2000)
       })
       .catch(function (error) {
         console.log(error)
+        alert("資料無法讀取，請洽系統人員")
       })
   })
 
@@ -662,10 +666,13 @@
       .get(urlCaseTotleValue)
       .then((res) => {
         tableDataCaseTotle.value = res.data
-        loading.value = false
+        setTimeout(() => {
+          loading.value = false
+        }, 2000)
       })
       .catch(function (error) {
         console.log(error)
+        alert("資料無法讀取，請洽系統人員")
         loading.value = false
       })
   })
@@ -689,19 +696,24 @@
       .get(urlHandleCountMonthValue)
       .then((res) => {
         tableDataHandleCount.value = res.data
-        loading.value = false
+        setTimeout(() => {
+          loading.value = false
+        }, 2000)
       })
       .catch(function (error) {
         console.log(error)
+        alert("資料無法讀取，請洽系統人員")
         loading.value = false
       })
   })
 
   //主辦單位審查文件數量統計
   onMounted(() => {
-    loading.value = true
     const urlTotleCountsValue = url + "GetStatisticsTotleCounts"
     // console.log(urlTotleCountsValue)
+    // totaL_COUNT.value = "讀取中"
+    // prE_COUNT.value = "讀取中"
+    // noW_COUNT.value = "讀取中"
     axios
       .get(urlTotleCountsValue)
       .then((res) => {
@@ -710,10 +722,12 @@
         totaL_COUNT.value = res.data[0].totaL_COUNT
         prE_COUNT.value = res.data[0].prE_COUNT
         noW_COUNT.value = res.data[0].noW_COUNT
-        loading.value = false
-        console.log(res.data)
+        setTimeout(() => {
+          loading.value = false
+        }, 2000)
       })
       .catch(function (error) {
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
         loading.value = false
         totaL_COUNT.value = "暫無資料"
@@ -741,6 +755,7 @@
         loading.value = false
       })
       .catch(function (error) {
+        alert("資料無法讀取，請洽系統人員")
         tableDataBasc.value = ""
         console.log(error)
         loading.value = false
@@ -768,6 +783,7 @@
         loading.value = false
       })
       .catch(function (error) {
+        alert("資料無法讀取，請洽系統人員")
         tableDataHandleCount.value = ""
         console.log(error)
         loading.value = false

@@ -187,6 +187,7 @@
       })
       .catch(function (error) {
         // handle error
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
       .then(function () {

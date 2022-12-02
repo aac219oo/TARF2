@@ -215,6 +215,7 @@
       })
       .catch(function (error) {
         // handle error
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
 
@@ -235,6 +236,7 @@
       })
       .catch(function (error) {
         // handle error
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
 
@@ -267,6 +269,7 @@
       })
       .catch(function (error) {
         // handle error
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
   })
@@ -289,6 +292,7 @@
       })
       .catch(function (error) {
         // handle error
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
   }
@@ -314,11 +318,17 @@
         dialogTableVisible.value = false
       })
       .catch(function (error) {
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
   }
   const change = () => {}
   const onSubmitSetting = () => {
+    console.log(valueSetting.value)
+    sessionStorage.setItem(
+      "valueSettingValue",
+      JSON.stringify(valueSetting.value)
+    )
     const re = /\s*(?:;|$)\s*/ // 符號分割
     const value = reactive([])
     const EmpName = reactive([])
@@ -347,6 +357,10 @@
         console.log(res.data)
         if (statusCode == "1002") {
           alert(message)
+          const valueSettingValue = JSON.parse(
+            sessionStorage.getItem("valueSettingValue")
+          )
+          valueSetting.value = valueSettingValue
           // window.location.reload() //重整頁面
         } else {
           alert(message)
@@ -354,6 +368,7 @@
         console.log(statusCode + "Add") //狀態代碼為新增
       })
       .catch(function (error) {
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
   }

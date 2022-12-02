@@ -480,6 +480,7 @@
       .catch(function (error) {
         // handle error
         console.log(error)
+        alert("資料無法讀取，請洽系統人員")
         loading.value = false
       })
 
@@ -500,6 +501,7 @@
         })
         .catch(function (error) {
           console.log(error)
+          alert("資料無法讀取，請洽系統人員")
         })
     }
 
@@ -514,6 +516,7 @@
       .catch(function (error) {
         // handle error
         console.log(error)
+        alert("資料無法讀取，請洽系統人員")
       })
   })
 
@@ -557,6 +560,7 @@
           })
           .catch(function (error) {
             // handle error
+            alert("資料無法讀取，請洽系統人員")
             console.log(error)
           })
       } else {
@@ -607,6 +611,7 @@
         // console.log(storageData)
       })
       .catch(function (error) {
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
   }
@@ -637,6 +642,7 @@
         }
       })
       .catch(function (error) {
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
   }
@@ -663,6 +669,7 @@
         console.log(QueryProjData.value)
       })
       .catch(function (error) {
+        alert("資料無法讀取，請洽系統人員")
         console.log(error)
       })
   }
