@@ -94,6 +94,7 @@
                   v-model="scope.row[item.prop]"
                   :placeholder="`請輸入${item.label}`"
                   @change="handleAdd(scope.row)"
+                  @keydown.esc="closeEdit(scope.row)"
                 />
               </template>
             </div>
@@ -308,8 +309,10 @@
           //console.log(tableData.value[0].statusCode);
         })
         .catch(function (error) {
-          alert("資料無法讀取，請洽系統人員")
+          alert("資料無法儲存，請洽系統人員")
           console.log(error)
+          row.phrasE_DESC = ""
+          tableData.value.splice(index, 1)
         })
     } else {
       //執行編輯
@@ -348,15 +351,16 @@
         })
         .catch(function (error) {
           // handle error
-          alert("資料無法讀取，請洽系統人員")
+          alert("資料無法編輯，請洽系統人員")
           console.log(error)
+          const phrasE_DESC = JSON.parse(sessionStorage.getItem("phrasE_DESC"))
+          row.phrasE_DESC = phrasE_DESC
         })
     }
   }
 
   //刪除表格
   const deleteRow = (row, index: number) => {
-    // tableData.value.splice(index, 1)
     // 儲存session
     // const UserId = sessionStorage.getItem("UserId")
     const urlDelete =
@@ -375,6 +379,10 @@
         if (statusCode == "1002") {
           alert(message)
           tableData.value = res.data
+          if ((row.phrasE_DESC = null)) {
+            res.data = ""
+            tableData.value = res.data
+          }
         } else {
           alert(message)
           tableData.value.splice(index, 1)
@@ -384,8 +392,14 @@
       })
       .catch(function (error) {
         // handle error
-        alert("資料無法讀取，請洽系統人員")
+        alert("資料無法刪除，請洽系統人員")
         console.log(error)
+        // tableData.value.splice(index, 1)
       })
+  }
+
+  const closeEdit = (row) => {
+    row.editable = false
+    row.phrasE_DESC.resetFields()
   }
 </script>

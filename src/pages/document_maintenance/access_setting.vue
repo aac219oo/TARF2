@@ -215,7 +215,7 @@
       })
       .catch(function (error) {
         // handle error
-        alert("資料無法讀取，請洽系統人員")
+        alert("聯絡窗口選項無法讀取，請洽系統人員")
         console.log(error)
       })
 
@@ -236,7 +236,7 @@
       })
       .catch(function (error) {
         // handle error
-        alert("資料無法讀取，請洽系統人員")
+        alert("預設代理人無法讀取，請洽系統人員")
         console.log(error)
       })
 
@@ -269,7 +269,7 @@
       })
       .catch(function (error) {
         // handle error
-        alert("資料無法讀取，請洽系統人員")
+        alert("代理人選單無法讀取，請洽系統人員")
         console.log(error)
       })
   })
@@ -292,7 +292,7 @@
       })
       .catch(function (error) {
         // handle error
-        alert("資料無法讀取，請洽系統人員")
+        alert("聯絡窗口無法讀取，請洽系統人員")
         console.log(error)
       })
   }
@@ -318,7 +318,7 @@
         dialogTableVisible.value = false
       })
       .catch(function (error) {
-        alert("資料無法讀取，請洽系統人員")
+        alert("聯絡窗口無法更改，請洽系統人員")
         console.log(error)
       })
   }
@@ -368,7 +368,7 @@
         console.log(statusCode + "Add") //狀態代碼為新增
       })
       .catch(function (error) {
-        alert("資料無法讀取，請洽系統人員")
+        alert("代理人設定無法送出，請洽系統人員")
         console.log(error)
       })
   }

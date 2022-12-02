@@ -626,29 +626,29 @@
     }
   }
 
-  onMounted(() => {
-    // 各標送審文件統計
-    loading.value = true
-    const StartDate = dayjs(new Date()).format("YYYY-MM")
-    const EndDate = dayjs(new Date()).format("YYYY-MM")
-    console.log(StartDate + ";" + EndDate)
-    const urlBascDateValue =
-      url + "GetCaseBascDate?StartDate=" + StartDate + "&EndDate=" + EndDate
-    console.log(urlBascDateValue)
-    axios
-      .get(urlBascDateValue)
-      .then((res) => {
-        tableDataBasc.value = res.data
-        console.log(res.data)
-        setTimeout(() => {
-          loading.value = false
-        }, 2000)
-      })
-      .catch(function (error) {
-        console.log(error)
-        alert("資料無法讀取，請洽系統人員")
-      })
-  })
+  // onMounted(() => {
+  //   // 各標送審文件統計
+  //   loading.value = true
+  //   const StartDate = dayjs(new Date()).format("YYYY-MM")
+  //   const EndDate = dayjs(new Date()).format("YYYY-MM")
+  //   console.log(StartDate + ";" + EndDate)
+  //   const urlBascDateValue =
+  //     url + "GetCaseBascDate?StartDate=" + StartDate + "&EndDate=" + EndDate
+  //   console.log(urlBascDateValue)
+  //   axios
+  //     .get(urlBascDateValue)
+  //     .then((res) => {
+  //       tableDataBasc.value = res.data
+  //       console.log(res.data)
+  //       setTimeout(() => {
+  //         loading.value = false
+  //       }, 2000)
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error)
+  //       alert("資料無法讀取，請洽系統人員")
+  //     })
+  // })
 
   //歷年審查案件數量統計
   onMounted(() => {
@@ -672,40 +672,40 @@
       })
       .catch(function (error) {
         console.log(error)
-        alert("資料無法讀取，請洽系統人員")
+        alert("歷年審查案件數量統計資料無法讀取，請洽系統人員")
         loading.value = false
       })
   })
 
-  //審查案件辦理情形統計
-  onMounted(() => {
-    loading.value = true
-    // const CountYear = dayjs(new Date(HandleCountYearValue.value)).format("YYYY")
-    const CountYear = dayjs(new Date()).format("YYYY")
-    const CountMonth = dayjs(new Date()).format("MM")
-    console.log(CountYear + ";" + CountMonth)
-    const urlHandleCountMonthValue =
-      url +
-      "GetStatisticsCaseHandleCount?CountYear=" +
-      CountYear +
-      "&CountMonth=" +
-      CountMonth
-    console.log(urlHandleCountMonthValue)
-    loading.value = true
-    axios
-      .get(urlHandleCountMonthValue)
-      .then((res) => {
-        tableDataHandleCount.value = res.data
-        setTimeout(() => {
-          loading.value = false
-        }, 2000)
-      })
-      .catch(function (error) {
-        console.log(error)
-        alert("資料無法讀取，請洽系統人員")
-        loading.value = false
-      })
-  })
+  // //審查案件辦理情形統計
+  // onMounted(() => {
+  //   loading.value = true
+  //   // const CountYear = dayjs(new Date(HandleCountYearValue.value)).format("YYYY")
+  //   const CountYear = dayjs(new Date()).format("YYYY")
+  //   const CountMonth = dayjs(new Date()).format("MM")
+  //   console.log(CountYear + ";" + CountMonth)
+  //   const urlHandleCountMonthValue =
+  //     url +
+  //     "GetStatisticsCaseHandleCount?CountYear=" +
+  //     CountYear +
+  //     "&CountMonth=" +
+  //     CountMonth
+  //   console.log(urlHandleCountMonthValue)
+  //   loading.value = true
+  //   axios
+  //     .get(urlHandleCountMonthValue)
+  //     .then((res) => {
+  //       tableDataHandleCount.value = res.data
+  //       setTimeout(() => {
+  //         loading.value = false
+  //       }, 2000)
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error)
+  //       alert("資料無法讀取，請洽系統人員")
+  //       loading.value = false
+  //     })
+  // })
 
   //主辦單位審查文件數量統計
   onMounted(() => {
@@ -727,7 +727,7 @@
         }, 2000)
       })
       .catch(function (error) {
-        alert("資料無法讀取，請洽系統人員")
+        alert("主辦單位審查文件數量統計資料無法讀取，請洽系統人員")
         console.log(error)
         loading.value = false
         totaL_COUNT.value = "暫無資料"
@@ -755,7 +755,7 @@
         loading.value = false
       })
       .catch(function (error) {
-        alert("資料無法讀取，請洽系統人員")
+        alert("各標送審文件統計資料無法查詢，請洽系統人員")
         tableDataBasc.value = ""
         console.log(error)
         loading.value = false
@@ -783,7 +783,7 @@
         loading.value = false
       })
       .catch(function (error) {
-        alert("資料無法讀取，請洽系統人員")
+        alert("審查案件辦理情形統計資料無法查詢，請洽系統人員")
         tableDataHandleCount.value = ""
         console.log(error)
         loading.value = false

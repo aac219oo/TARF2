@@ -90,6 +90,7 @@
                   @keyup="
                     scope.row[item.prop] = scope.row[item.prop].toUpperCase()
                   "
+                  @keydown.esc="closeEdit(scope.row)"
                 />
               </template>
             </div>
@@ -336,7 +337,7 @@
           //console.log(tableData.value[0].statusCode);
         })
         .catch(function (error) {
-          alert("資料無法讀取，請洽系統人員")
+          alert("資料無法儲存，請洽系統人員")
           console.log(error)
         })
     } else {
@@ -382,7 +383,7 @@
         })
         .catch(function (error) {
           // handle error
-          alert("資料無法讀取，請洽系統人員")
+          alert("資料無法編輯，請洽系統人員")
           console.log(error)
         })
     }
@@ -414,8 +415,12 @@
       })
       .catch(function (error) {
         // handle error
-        alert("資料無法讀取，請洽系統人員")
+        alert("資料無法刪除，請洽系統人員")
         console.log(error)
       })
+  }
+
+  const closeEdit = (row) => {
+    row.editable = false
   }
 </script>

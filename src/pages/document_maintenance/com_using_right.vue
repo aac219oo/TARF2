@@ -480,7 +480,7 @@
       .catch(function (error) {
         // handle error
         console.log(error)
-        alert("資料無法讀取，請洽系統人員")
+        alert("廠商資料無法讀取，請洽系統人員")
         loading.value = false
       })
 
@@ -501,7 +501,7 @@
         })
         .catch(function (error) {
           console.log(error)
-          alert("資料無法讀取，請洽系統人員")
+          alert("預設標號無法讀取，請洽系統人員")
         })
     }
 
@@ -516,7 +516,7 @@
       .catch(function (error) {
         // handle error
         console.log(error)
-        alert("資料無法讀取，請洽系統人員")
+        alert("標號選單無法讀取，請洽系統人員")
       })
   })
 
@@ -560,7 +560,7 @@
           })
           .catch(function (error) {
             // handle error
-            alert("資料無法讀取，請洽系統人員")
+            alert("無法送出新增帳號表單，請洽系統人員")
             console.log(error)
           })
       } else {
@@ -611,7 +611,7 @@
         // console.log(storageData)
       })
       .catch(function (error) {
-        alert("資料無法讀取，請洽系統人員")
+        alert("資料無法註銷，請洽系統人員")
         console.log(error)
       })
   }
@@ -642,7 +642,7 @@
         }
       })
       .catch(function (error) {
-        alert("資料無法讀取，請洽系統人員")
+        alert("標號無法送出，請洽系統人員")
         console.log(error)
       })
   }
@@ -669,7 +669,7 @@
         console.log(QueryProjData.value)
       })
       .catch(function (error) {
-        alert("資料無法讀取，請洽系統人員")
+        alert("預設標號無法讀取，請洽系統人員")
         console.log(error)
       })
   }

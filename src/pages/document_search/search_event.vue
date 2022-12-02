@@ -438,7 +438,7 @@
         optionHandleTypeDesc.value = res.data[0].statuS_DESC
       })
       .catch(function (error) {
-        alert("資料無法讀取，請洽系統人員")
+        alert("選單資料無法讀取，請洽系統人員")
         console.log(error)
       })
   })
@@ -515,7 +515,7 @@
           })
           .catch(function (error) {
             console.log(error)
-            alert("資料無法讀取，請洽系統人員")
+            alert("資料無法搜尋，請洽系統人員")
             loading.value = false
           })
         console.log("submit!")

@@ -459,7 +459,7 @@
         GetReviewCaseBasc.value = res.data
       })
       .catch(function (error) {
-        alert("資料無法讀取，請洽系統人員")
+        alert("送審案件基本資料無法讀取，請洽系統人員")
         console.log(error)
       })
 
@@ -478,7 +478,7 @@
         GetReviewExamRecd.value = res.data
       })
       .catch(function (error) {
-        alert("資料無法讀取，請洽系統人員")
+        alert("分/會審單位無法讀取，請洽系統人員")
         console.log(error)
       })
 
@@ -497,7 +497,7 @@
         GetReviewPsnExamRecd.value = res.data
       })
       .catch(function (error) {
-        alert("資料無法讀取，請洽系統人員")
+        alert("協審同仁無法讀取，請洽系統人員")
         console.log(error)
       })
 
@@ -517,7 +517,7 @@
         GetReviewAnswerComm.value = res.data
       })
       .catch(function (error) {
-        alert("資料無法讀取，請洽系統人員")
+        alert("答覆意見無法讀取，請洽系統人員")
         console.log(error)
       })
 
@@ -536,7 +536,7 @@
         GetReviewCaseFile.value = res.data
       })
       .catch(function (error) {
-        alert("資料無法讀取，請洽系統人員")
+        alert("送審檔案無法讀取，請洽系統人員")
         console.log(error)
       })
 
@@ -555,29 +555,29 @@
         GetReviewAttachFile.value = res.data
       })
       .catch(function (error) {
-        alert("資料無法讀取，請洽系統人員")
+        alert("附件檔案無法讀取，請洽系統人員")
         console.log(error)
       })
   })
 
   // 讀取檔案
-  const onClickTmDsGetFile = () => {
-    const urlTmDsGetFile =
-      url +
-      "TmDsGetFile?CaseId=" +
-      CaseId +
-      "&CaseVer=" +
-      CaseVer +
-      "&CaseSeqNo=" +
-      CaseSeqNo
-    axios
-      .get(urlTmDsGetFile)
-      .then((res) => {
-        TmDsGetFile.value = res.data
-      })
-      .catch(function (error) {
-        alert("資料無法讀取，請洽系統人員")
-        console.log(error)
-      })
-  }
+  // const onClickTmDsGetFile = () => {
+  //   const urlTmDsGetFile =
+  //     url +
+  //     "TmDsGetFile?CaseId=" +
+  //     CaseId +
+  //     "&CaseVer=" +
+  //     CaseVer +
+  //     "&CaseSeqNo=" +
+  //     CaseSeqNo
+  //   axios
+  //     .get(urlTmDsGetFile)
+  //     .then((res) => {
+  //       TmDsGetFile.value = res.data
+  //     })
+  //     .catch(function (error) {
+  //       alert("資料無法讀取，請洽系統人員")
+  //       console.log(error)
+  //     })
+  // }
 </script>
